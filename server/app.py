@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
 
-# Standard library imports
-
 # Remote library imports
-from flask import request
+from flask import request, make_response, jsonify, session, abort
 from flask_restful import Resource
+from werkzeug.exceptions import NotFound, Unauthorized
 
 # Local imports
-from config import app, db, api
+from config import app, db, api, bcrypt
 # Add your model imports
-
-
-# Views go here!
+from models import db, User, Movie
 
 @app.route('/')
 def index():
