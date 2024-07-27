@@ -1,0 +1,26 @@
+import React from "react";
+import EditUser from "./EditUser";
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+
+
+function Profile({ user }) {
+    const { currentUser } = useAuth();
+    const history = useHistory();
+    
+    return (
+        <div classname="Profile">
+            <h1>Profile</h1>
+            <h2>{user.name}</h2>
+            <h2>{currentUser.email}</h2>
+            <h2>{user.phone}</h2>
+            <h2>{user.zipcode}</h2>
+            <button onClick={() => { history.push("/edituser/") }}>
+                Update Profile
+            </button>
+            <EditUser user={user} />
+        </div>
+    );
+}
+
+export default Profile;
