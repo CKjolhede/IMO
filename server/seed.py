@@ -19,7 +19,7 @@ def create_users():
             email=fake.email(),
             _password_hash=fake.password(),
             phone=fake.phone_number(),
-            zip_code=fake.zipcode(),
+            zipcode=fake.zipcode(),
             image=fake.image_url(),
             private=rc([True, False]),
         )
@@ -28,16 +28,21 @@ def create_users():
 
 def create_movies():
     movies = []
-    for _ in range(50):
-        movie = Movie(
-            title=fake.sentence(),
-            overview=fake.paragraph(),
-            release_date=fake.date(),
-            genre=fake.word(),
-            director=fake.name(),
-            rating=fake.random_number(1, 10),
-        )
-        movies.append(movie)
+    used_tmdb_ids = set()  # Set to keep track of used tmdb_id values
+    while len(movies) < 100:
+        tmdb_id = fake.unique.random_int(min=1, max=10000)
+        if tmdb_id not in used_tmdb_ids:
+            used_tmdb_ids.add(tmdb_id)
+            movie = Movie(
+                tmdb_id=tmdb_id,
+                title=fake.sentence(),
+                overview=fake.paragraph(),
+                release_date=fake.date(),
+                genre=fake.word(),
+                director=fake.name(),
+                rating=fake.random_number(1, 10),
+            )
+            movies.append(movie)
     return movies
 
 def create_follows(users):

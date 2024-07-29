@@ -1,6 +1,6 @@
 // src/contexts/AuthContext.js
 import React, { useContext, useState, createContext, useEffect } from "react";
-//import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -8,7 +8,9 @@ export const AuthProvider = ({ children }) => {
         isLoggedIn: false,
         user: null
     });
-    const [currentUser, setcurrentUser] = useState(null);
+    
+
+    const history = useHistory();
 
 
     useEffect(() => {
@@ -20,7 +22,6 @@ export const AuthProvider = ({ children }) => {
                     isLoggedIn: true,
                     user
                 });
-                setcurrentUser(user);
             };
             }
 
@@ -32,7 +33,7 @@ export const AuthProvider = ({ children }) => {
             isLoggedIn: true,
             user,
         });
-        setcurrentUser(user);
+        
     };
 
     const logout = async () => {
@@ -44,14 +45,13 @@ export const AuthProvider = ({ children }) => {
                 isLoggedIn: false,
                 user: null
             })
-            setcurrentUser(null);
             
 }
-            //history.push('/');
+            history.push('/');
     };
 
     return (
-        <AuthContext.Provider value={{ currentUser, auth, login, logout }}>
+        <AuthContext.Provider value={{ currentUser : auth.currentUser, auth, isLoggedIn : auth.isLoggedIn, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

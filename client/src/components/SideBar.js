@@ -6,14 +6,53 @@ function SideBar() {
     const { auth, logout, currentUser } = useAuth();
     const history = useHistory();
     return (
-        <>
-        <div className="sidebar">
-            <button className="sidebar-btn" onClick={() => { history.push('/makerec/') }
-            }>Make a Recommendation</button>;
-            <button className="sidebar-btn" onClick={() => { history.push('/viewrec') }}>View Recommendations</button>;
-            <button className="sidebar-btn" onClick={() => { history.push('/friends') }}>Friends</button>;
-            <button className="sidebar-btn" onClick={() => { history.push('/carousel') }}>Browse Movies</button>;
-        </div>
+        <>SIDEBAR
+            <div className="sidebar">
+                <button
+                    className="sidebar-btn"
+                    onClick={() => {
+                        history.push("/makerec/");
+                    }}
+                >
+                    Make a Recommendation
+                </button>
+                ;
+                <button
+                    className="sidebar-btn"
+                    onClick={() => {
+                        history.push("/viewrec");
+                    }}
+                >
+                    View Recommendations
+                </button>
+                ;
+                <button
+                    className="sidebar-btn"
+                    onClick={() => {
+                        history.push("/friends");
+                    }}
+                >
+                    Friends
+                </button>
+                ;
+                <button
+                    className="sidebar-btn"
+                    onClick={() => {
+                        history.push("/carousel");
+                    }}
+                >
+                    Browse Movies
+                </button>
+                ;
+                <button
+                    className="sidebar-btn"
+                    onClick={() => {
+                        ("/edituser/");
+                    }}
+                >
+                    Account Settings
+                </button>
+            </div>
         </>
     );
 }

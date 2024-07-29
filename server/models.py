@@ -3,13 +3,12 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from sqlalchemy.orm import validates
-from config import bcrypt
+from config import bcrypt, db
 from sqlalchemy.ext.hybrid import hybrid_property
-from config import db
+import tmdbsimple as tmdb
 
 
 
-# Models
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
@@ -19,7 +18,7 @@ class User(db.Model, SerializerMixin):
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String, nullable=False)
     phone = db.Column(db.String, nullable=True)
-    zip_code = db.Column(db.String, nullable=False)
+    zipcode = db.Column(db.String, nullable=False)
     image = db.Column(db.String, nullable=True, default='/images/user_default.jpg')
     private = db.Column(db.Boolean, default=False)
     
@@ -28,24 +27,28 @@ class User(db.Model, SerializerMixin):
     followers = db.relationship(
         'User', 
         secondary = 'follows', 
-        primaryjoin = ('follows.c.following_id == User.id'), 
-        secondaryjoin = ('follows.c.follower_id == User.id'), 
+        primaryjoin = ('follows.c.follower_id == User.id'), 
+        secondaryjoin = ('follows.c.following_id == User.id'), 
         back_populates='following')
     
-    #followers = db.relationship('User', secondary='follows', primaryjoin='User.id==follows.c.following_id', secondaryjoin='User.id==follows.c.follower_id', back_populates='users')
     following = db.relationship(
         'User', 
         secondary='follows', 
-        primaryjoin='follows.c.follower_id == User.id', 
-        secondaryjoin='User.id==follows.c.following_id', back_populates='followers')
-    #follows = db.relationship('Follow', back_populates='user', cascade='all, delete', passive_deletes=True)
+        primaryjoin='follows.c.following_id == User.id', 
+        secondaryjoin='follows.c.follower_id == User.id', back_populates='followers')
     
-    serializer_rules = ('-recommendations.user', '-recommendations.movie' '-follows.follower', '-follows.following', '-password_hash', '-private', '-followers') 
-
+    serializer_rules = ('-recommendations.user', '-recommendations.movie' '-follows.follower', '-follows.following', '-_password_hash', '-private', '-followers', '-followers', '-follows.status') 
+    
+    @validates('password_hash')
+    def validate_password(self, key, password_hash):
+        if not password_hash:
+            raise ValueError('Password cannot be left blank')
+        return password_hash
+    
     @hybrid_property
     def password_hash(self):
         return self._password_hash
-    
+    0
     @password_hash.setter
     def password_hash(self, password):
         password_hash = bcrypt.generate_password_hash(password.encode("utf8"))
@@ -65,6 +68,10 @@ class Follow(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     following_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     follower_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    status = db.Column(db.String, nullable=True)
+
+    def __repr__(self):
+        return f'<Following ID: {self.following.first_name} {self.following.last_name} | Follower ID: {self.follower.first_name} {self.follower.last_id} | Status: {self.status}>'
 
 #####################################################################
 
@@ -72,11 +79,12 @@ class Movie(db.Model, SerializerMixin):
     __tablename__ = 'movies'
     
     id = db.Column(db.Integer, primary_key=True)
+    tmdb_id = db.Column(db.String, nullable=True, unique=True)
     title = db.Column(db.String, nullable=False)
     overview = db.Column(db.Text, nullable=False)
     release_date = db.Column(db.String, nullable=True)
     poster= db.Column(db.String, nullable=True, default='/images/heads.jpg')
-    genre = db.Column(db.String, nullable=False)
+    genre = db.Column(db.String, nullable=True)
     director = db.Column(db.String, nullable=True)
     rating = db.Column(db.Integer, nullable=True)
     

@@ -15,11 +15,21 @@ import Register from './Register';
 
 function Main() {
     const { auth, logout, currentUser } = useAuth();
-
+   
     
     
     return (
-        <div>
+        <div className="Main">
+            {/*<RecFeed />
+            <RecList />
+            <Carousel />
+            <About />
+            <Contact />
+            <LoginForm />
+            <MakeRec />            <Register />
+            <EditUser />
+            <Profile />
+            <Friends />*/}
             <h1>Main</h1>
         </div>
     );

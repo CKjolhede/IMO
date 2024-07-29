@@ -1,43 +1,34 @@
 import * as React from "react";
-import { BrowserRouter as Router, Route, useHistory, NavLink, Link} from "react-router-dom";
+import { NavLink, Link} from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import logo from './imo_logo.gif';
 
 
-function Header({ setUser, user }) {
-    const { currentUser, auth, logout } = useAuth();
+function Header() {
+    const { isLoggedIn, logout } = useAuth();
     
     return (
         <div className="Header">
-            {auth.isLoggedIn ? (
+            {isLoggedIn ? (
                 <div className="logged-in-landing">
-                    <h1>IMO</h1>
-                    <div id="links">
+                    <img className="logo" src={logo} alt="logo" />
+                    <div>
                         <h3>
                             <Link to="/" onClick={logout}>
                                 Logout
                             </Link>
                         </h3>
                     </div>
-                    <button onClick={() => { ("/edituser/") }}>
-                        Edit Profile
-                    </button>
                 </div>
             ) : (
-                <div className="no-session-landing">
-                    <h1>IMO</h1>
-                    <div className="links">
-                        <NavLink to="/loginform" className="link">
-                            Login
-                        </NavLink>
+                <div className="No-session-landing">
+                    <img className="logo" src={logo} alt="logo" />
+                    IMO is the greatest
+                    <div className="login-links">
+                        <NavLink to="/loginform"><button className="button-login">Log In</button></NavLink>
+                        
+                        <NavLink to="/register"><button className="register-btn">Register</button></NavLink>
                     </div>
-                    <Router>
-                        <Route path="/register">
-                            {/*<Register onSignUp={setUser} />*/}
-                        </Route>
-                        <Route path="/loginform">
-                            {/*element={<LoginForm onLogin={setUser} />}>*/}
-                        </Route>
-                    </Router>
                 </div>
             )}
         </div>

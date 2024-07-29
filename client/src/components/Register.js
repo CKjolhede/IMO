@@ -8,6 +8,7 @@ function Register({
     user: { id, first_name, last_name, email, zip_code, phone,},
     onEdit,
 }) {
+
     const history = useHistory();
     const [errors, setErrors] = useState([]);
     const formik = useFormik({
