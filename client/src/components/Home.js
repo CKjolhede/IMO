@@ -1,41 +1,63 @@
-import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Main from './Main';
+import React, {useState} from 'react';
+import { Routes, Route} from 'react-router-dom';
+import ContentContainer from './ContentContainer';
 import Sidebar from './SideBar';
-import LoginForm from './LoginForm';
-import Register from './Register';
+import LoginFormContainer from './LoginFormContainer';
+import RegisterContainer from './RegisterContainer';
 import { useAuth } from '../contexts/AuthContext';
 
 function Home() {
     
-    const{ auth, isloggedIn, currentUser } = useAuth();
+    const { isLoggedIn } = useAuth();
+    const [registered, setRegistered] = useState(true);
+    
+    const regi = () => {
+        setRegistered(!registered);
+    };
+    
+    
     return (
-            <div>
-                {isloggedIn ? (
-                    <div >
-                        <Sidebar className="sidebar"/><h2>SideBar</h2>
-                        <Main className="main" /><h2>Main</h2>
+        <div className="home-container-loggedin">
+            {isLoggedIn ? (
+                <>
+                    <div className="sidebar">
+                        Sidebar
+                        <Routes>
+                            <Route
+                                exact
+                                path="/sidebar"
+                                element={<Sidebar />}
+                            />
+                        </Routes>
                     </div>
-            ) : ( 
-                    <>
-                        <div className="sidebar">
-                            <Sidebar /><h2>SideBar</h2>
-                        </div>
-                        <div className="main">
-                            <Main /><h2>Main</h2>
-                        </div>
-                        
-                        <div className="home-login-register">
-                            <Router>
-                                <Route exact path="/loginform">
-                                    <LoginForm /></Route>
-                                <Route exact path="/register">
-                                    <Register /></Route>
-                            </Router>
-                        </div>
-                    </>)
-            }
-            </div>
-        )                
-}
+                    <div className="contentcontainer">
+                        ContentContainer
+                        <Routes>
+                            <Route
+                                exact
+                                path="/contentcontainer"
+                                element={<ContentContainer />}
+                            />
+                        </Routes>
+                    </div>
+                </>
+            ) : (registered ? (
+                <>
+                        <LoginFormContainer setReg={regi} />
+                    <Routes>
+                    <Route exact path="/loginformcontainer"
+                        element={<LoginFormContainer setReg={regi}/>}
+                    />
+                        </Routes>
+                </>
+            ) : (
+                <RegisterContainer setReg={regi}/>
+                //<Routes>
+                //    <Route path="/registercontainer" element = {<RegisterContainer />} />
+                //</Routes>
+            ))}
+        </div>
+    );              
+}                    
+
 export default Home;

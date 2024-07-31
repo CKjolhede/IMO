@@ -1,17 +1,17 @@
 import React from "react";
-import { BrowserRouter as Router, Route, NavLink, Link, useHistory } from "react-router-dom"
-import { useAuth } from "../contexts/AuthContext";
+import {  useNavigate } from "react-router-dom"
+//import { useAuth } from "../contexts/AuthContext";
 
 function SideBar() {
-    const { auth, logout, currentUser } = useAuth();
-    const history = useHistory();
+    
+    const navigate = useNavigate();
     return (
         <>SIDEBAR
             <div className="sidebar">
                 <button
                     className="sidebar-btn"
                     onClick={() => {
-                        history.push("/makerec/");
+                        navigate("/makerec/");
                     }}
                 >
                     Make a Recommendation
@@ -20,7 +20,7 @@ function SideBar() {
                 <button
                     className="sidebar-btn"
                     onClick={() => {
-                        history.push("/viewrec");
+                        navigate("/viewrec");
                     }}
                 >
                     View Recommendations
@@ -29,16 +29,16 @@ function SideBar() {
                 <button
                     className="sidebar-btn"
                     onClick={() => {
-                        history.push("/friends");
+                        navigate("/follows");
                     }}
                 >
-                    Friends
+                    Follows
                 </button>
                 ;
                 <button
                     className="sidebar-btn"
                     onClick={() => {
-                        history.push("/carousel");
+                        navigate("/carousel");
                     }}
                 >
                     Browse Movies
@@ -47,7 +47,7 @@ function SideBar() {
                 <button
                     className="sidebar-btn"
                     onClick={() => {
-                        ("/edituser/");
+                        navigate("/edituser/");
                     }}
                 >
                     Account Settings

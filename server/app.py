@@ -5,6 +5,7 @@ from sqlalchemy.exc import MultipleResultsFound
 from flask import request, make_response, jsonify, session, abort
 from config import app, db, api, bcrypt
 import requests
+import ipdb
 
 @app.route('/')
 def index():
@@ -12,18 +13,20 @@ def index():
 
 @app.route("/login", methods=["POST"])
 def login():
-    user = User.query.filter(User.email == request.get_json()["email"]).first()     
+    user = User.query.filter(User.email == request.get_json()["email"]).first()   
     if user and user.authenticate(request.get_json()["password"]):
         session["user_id"] = user.id 
-        return make_response(user.to_dict(), 200)
+        return make_response(user.to_dict(only=['id', 'first_name', 'last_name', 'email', 'zipcode','phone', 'password_hash', 'recommendations', 'image', 'private']), 200)
     else:
         raise Unauthorized
+    # 'recommendations', 'phone', 'password_hash', 'zipcode', 'image', followers','private'
+
 
     
 @app.route("/authorized")
 def authorized():
     if user := User.query.filter(User.id == session.get("user_id")).first():
-        return make_response(user.to_dict(), 200)
+        return make_response(user.to_dict(only=['id', 'followers', 'following', 'recommendations', 'first_name', 'last_name', 'email', 'phone', 'password_hash', 'zipcode', 'image', 'private']), 200)
     else:
         raise Unauthorized
 
@@ -52,8 +55,8 @@ class Users(Resource):
         except ValueError as e:
             abort(422, e.args[0])
 
-from flask import Flask, jsonify, make_response
-from models import User  # Assuming you have a models.py file with a User class defined
+
+
 
 @app.route('/users/search', methods=['GET'])
 def search_users():

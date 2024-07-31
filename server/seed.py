@@ -17,7 +17,7 @@ def create_users():
             first_name=fake.first_name(),
             last_name=fake.last_name(),
             email=fake.email(),
-            _password_hash=fake.password(),
+            password_hash = 'password',
             phone=fake.phone_number(),
             zipcode=fake.zipcode(),
             image=fake.image_url(),

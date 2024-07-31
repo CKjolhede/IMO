@@ -37,13 +37,13 @@ class User(db.Model, SerializerMixin):
         primaryjoin='follows.c.following_id == User.id', 
         secondaryjoin='follows.c.follower_id == User.id', back_populates='followers')
     
-    serializer_rules = ('-recommendations.user', '-recommendations.movie' '-follows.follower', '-follows.following', '-_password_hash', '-private', '-followers', '-followers', '-follows.status') 
+    serializer_rules = ( '-following', '-followers', '-recommendations', '-recommendations', '-follows' ) 
     
-    @validates('password_hash')
-    def validate_password(self, key, password_hash):
-        if not password_hash:
+    @validates('password')
+    def validate_password(self, key, password):
+        if not password:
             raise ValueError('Password cannot be left blank')
-        return password_hash
+        return password
     
     @hybrid_property
     def password_hash(self):
@@ -90,7 +90,7 @@ class Movie(db.Model, SerializerMixin):
     
     recommendations = db.relationship('Recommendation', back_populates='movie', cascade="all, delete-orphan")
     
-    serialize_rules = ('-recommendations.movie', '-recommendations.user')
+    serialize_rules = ('-recommendations.movie', '-recommendations.user', '-recommendations.media_type', '-recommendations.accepted', '-recommendations.public', '-recommendations.comment')
 
     def __repr__(self):
         return f'<Poster: {self.poster} | ID: {self.id} | Title: {self.title} | Director: {self.director} | Overview: {self.overview} | Release Date: {self.release_date} | Genre: {self.genre} | Rating: {self.rating}>'
@@ -113,7 +113,7 @@ class Recommendation(db.Model, SerializerMixin):
     user = db.relationship('User', back_populates='recommendations')
     movie = db.relationship('Movie', back_populates='recommendations')
     
-    serialize_rules = ('-user.recommendations', '-movie.recommendations')
+    serialize_rules = ('-user.recommendations', '-movie.recommendations', '-user.followers', '-movie.followers', '-user.following', '-movie.following')
     
     def __repr__(self):
         return f'<ID: {self.id} | Movie: {self.movie_id} | User: {self.user_id}> | Comment: {self.comment}>'

@@ -8,8 +8,8 @@ import { AuthProvider } from "./contexts/AuthContext";
 const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(
-    <AuthProvider>
-        <Router>
-            <App />
-        </Router>
-    </AuthProvider>);
+    <Router>
+        <AuthProvider>
+                <App />
+        </AuthProvider>
+    </Router>);

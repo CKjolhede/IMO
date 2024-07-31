@@ -1,12 +1,12 @@
 import React from "react";
 import EditUser from "./EditUser";
-import { useHistory } from 'react-router-dom';
+import { BrowserRouter as Router,useNavigate} from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 
 function Profile({ user }) {
     const { currentUser } = useAuth();
-    const history = useHistory();
+    const navigate  = useNavigate();
     
     return (
         <div classname="Profile">
@@ -15,7 +15,7 @@ function Profile({ user }) {
             <h2>{currentUser.email}</h2>
             <h2>{user.phone}</h2>
             <h2>{user.zipcode}</h2>
-            <button onClick={() => { history.push("/edituser/") }}>
+            <button onClick={() => { navigate("/edituser/") }}>
                 Update Profile
             </button>
             <EditUser user={user} />

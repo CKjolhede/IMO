@@ -1,10 +1,10 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
 import React, { useState, useEffect } from "react";
-import Main from "./Main";
+//import ContentContainer from "./ContentContainer";
 import { NavLink, Link, useHistory } from "react-router-dom";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+//import { useAuth } from "../contexts/AuthContext";
 
 function EditUser({ user: { id, first_name, last_name, email, zip_code, phone}, onEdit }) {
     const [errors, setErrors] = useState([]);

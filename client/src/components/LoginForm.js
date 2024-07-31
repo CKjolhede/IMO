@@ -1,44 +1,41 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { useHistory, NavLink, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 
-function LoginForm({ onLogin}) {
+//function LoginForm({ onSignUp}) {
+function LoginForm() {
     const [errors, setErrors] = useState([]);
-    const { login } = useAuth();
-    const history = useHistory();
+    const { login, isLoggedIn, logout} = useAuth();
+    const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {
             email: "",
             password: ""
         },
-    
         onSubmit: async (values) => {
-            console.log(values);
             try {
                 setErrors([]);
-
+                
                 const response = await fetch("/login", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(values),
-                });
-
+                }); 
                 if (response.ok) {
                     const user = await response.json();
                     login(user);
-                    onLogin(user);
-                    history.push("/dashboard/");
+                    console.log(isLoggedIn, user)
+                    navigate("/home");
                 } else {
                     const errorData = await response.json();
                     setErrors(errorData);
                 }
             } catch (error) {
-                console.error("Error Loggin In:", error);
                 setErrors([
                     {
                         message:
@@ -50,6 +47,7 @@ function LoginForm({ onLogin}) {
     });
     return (
         <form onSubmit={formik.handleSubmit}>
+
             <div className="input-container">
                 <input
                     id="email"
@@ -69,7 +67,7 @@ function LoginForm({ onLogin}) {
                 <input
                     id="password"
                     name="password"
-                    type="text"
+                    type="password"
                     placeholder="Password"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}

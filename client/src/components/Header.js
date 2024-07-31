@@ -1,38 +1,40 @@
 import * as React from "react";
-import { NavLink, Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import logo from './imo_logo.gif';
 
 
+
 function Header() {
-    const { isLoggedIn, logout } = useAuth();
+    const { user, logout } = useAuth();
+    
     
     return (
         <div className="Header">
-            {isLoggedIn ? (
-                <div className="logged-in-landing">
+            
+            {user ? (
+                <div className="logged-in-header">
                     <img className="logo" src={logo} alt="logo" />
                     <div>
                         <h3>
-                            <Link to="/" onClick={logout}>
+                            <Link to="/home" onClick={logout}>
                                 Logout
                             </Link>
                         </h3>
                     </div>
                 </div>
             ) : (
-                <div className="No-session-landing">
+                <div className="no-session-header">
                     <img className="logo" src={logo} alt="logo" />
-                    IMO is the greatest
-                    <div className="login-links">
-                        <NavLink to="/loginform"><button className="button-login">Log In</button></NavLink>
-                        
-                        <NavLink to="/register"><button className="register-btn">Register</button></NavLink>
-                    </div>
+                    <p className="header-text">IMO is the greatest</p>
+                        <div className="login-links">
+                            <Link to="/home/">Log In</Link>
+                        </div>
                 </div>
-            )}
+            )
+}
         </div>
-    );
+    )
 }
 
 export default Header;
