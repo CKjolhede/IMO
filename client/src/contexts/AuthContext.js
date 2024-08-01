@@ -1,15 +1,34 @@
 // src/contexts/AuthContext.js
-import React, { useContext, useState, createContext, useEffect } from "react";
-import { redirect, useNavigate} from "react-router-dom";
+import React, { useContext, useState, createContext, useEffect, } from "react";
+import { useNavigate } from
+    "react-router-dom";
+//import datetime, {timedelta} from "datetime" ;
 const AuthContext = createContext();
 
+export const useAuth = () => useContext(AuthContext);
+
 export const AuthProvider = ({ children }) => {
-    //const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const [auth, setAuth] = useState({
         isLoggedIn: false,
         user: null
     });
+    
+    
+    //const [recFeed, setRecFeed] = useState ([]);
+    //const recFeedHistory = ({ user_input }) => {
+    //        let "user_id" = useAuth.user.id;
+    //        let "delta" = ((datetime.now() - timedelta({ user_input })));
+        
+    //    useEffect(() => {
+    //        res: fetch("/recommendations/:userid:delta", { method: 'GET' })
+    //            .then(res => res.json().to_dict())
+    //            .then(data => setRecFeed(data))
+    //    }, [{ user_input }])
+    //    )
+
+    //};
+
 
 
     useEffect(() => {
@@ -19,7 +38,10 @@ export const AuthProvider = ({ children }) => {
                 const user = await response.json();
                 setAuth({
                     isLoggedIn: true,
-                    user: user});}};
+                    user: user
+                });
+            }
+        };
         checkAuthorization();
     }, []);
 
@@ -28,7 +50,7 @@ export const AuthProvider = ({ children }) => {
             isLoggedIn: true,
             user: user
         });
-        navigate('/home/');;
+        navigate('/home/');
     };
 
     const logout = async () => {
@@ -39,18 +61,14 @@ export const AuthProvider = ({ children }) => {
             setAuth({
                 isLoggedIn: false,
                 user: null
-            })
-            console.log(auth.user)
-            
-}
-            //navigate('/');
+            });
+            navigate("/app");
+        }
     };
 
     return (
-        <AuthContext.Provider value={{ auth,  isLoggedIn: auth.isLoggedIn, user: auth.user, login, logout }}>
+        <AuthContext.Provider value={{ auth, isLoggedIn: auth.isLoggedIn, user: auth.user, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
-
-export const useAuth = () => useContext(AuthContext);

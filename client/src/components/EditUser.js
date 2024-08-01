@@ -1,12 +1,12 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
-import React, { useState, useEffect } from "react";
+import React, { useState, } from "react";
 //import ContentContainer from "./ContentContainer";
-import { NavLink, Link, useHistory } from "react-router-dom";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+//import {  useNavigate} from "react-router-dom";
+//import { Routes, Route } from "react-router-dom";
 //import { useAuth } from "../contexts/AuthContext";
 
-function EditUser({ user: { id, first_name, last_name, email, zip_code, phone}, onEdit }) {
+function EditUser({ user: { id, first_name, last_name, email, zipcode, phone}, onEdit }) {
     const [errors, setErrors] = useState([]);
     const formik = useFormik({
         initialValues: {
@@ -14,7 +14,7 @@ function EditUser({ user: { id, first_name, last_name, email, zip_code, phone}, 
             first_name: first_name,
             last_name: last_name,
             email: email,
-            zip_code: zip_code,
+            zipcode: zipcode,
             phone: phone,
             public: false,
         },
@@ -24,7 +24,7 @@ function EditUser({ user: { id, first_name, last_name, email, zip_code, phone}, 
                 .required("Required"),
             first_name: yup.string().required("Required"),
             last_name: yup.string().required("Required"),
-            zip_code: yup.string().required("Required").matches(/^\d{5}$/, "Zip code must be 5 digits long"),
+            zipcode: yup.string().required("Required").matches(/^\d{5}$/, "Zip code must be 5 digits long"),
             phone: yup.string().required("Required").matches(/^\d{10}$/, "Phone number must be 10 digits long"),
             public: yup.boolean().required("Required")
         }),
@@ -36,7 +36,6 @@ function EditUser({ user: { id, first_name, last_name, email, zip_code, phone}, 
                 const response = await fetch("/users/" + id, {
                     method: "PATCH",
                     headers: {
-
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(values),
@@ -115,17 +114,17 @@ function EditUser({ user: { id, first_name, last_name, email, zip_code, phone}, 
                 </div>
                 <div className="input-container">
                 <input
-                    id="zip_code"
-                    name="zip_code"
+                    id="zipcode"
+                    name="zipcode"
                     type="text"
-                    placeholder="Zip Code"
+                    placeholder="ZipCode"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.zip_code}
+                    value={formik.values.zipcode}
                     />
                 
-                    {formik.errors.zip_code && formik.touched.zip_code ? (
-                        <p className="error">{formik.errors.zip_code}</p>
+                    {formik.errors.zipcode && formik.touched.zipcode ? (
+                        <p className="error">{formik.errors.zipcode}</p>
                     ) : null}
                 </div>
                 <div id="submit-button">

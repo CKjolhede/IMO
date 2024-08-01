@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Routes, Route} from 'react-router-dom';
-import ContentContainer from './ContentContainer';
+import ContentContainer from '../_ContentContainer';
 import Sidebar from './SideBar';
 import LoginFormContainer from './LoginFormContainer';
 import RegisterContainer from './RegisterContainer';
@@ -17,18 +17,11 @@ function Home() {
     
     
     return (
-        <div className="home-container-loggedin">
+        <div className="home-loggedin">
             {isLoggedIn ? (
                 <>
                     <div className="sidebar">
-                        Sidebar
-                        <Routes>
-                            <Route
-                                exact
-                                path="/sidebar"
-                                element={<Sidebar />}
-                            />
-                        </Routes>
+                    <Sidebar />
                     </div>
                     <div className="contentcontainer">
                         ContentContainer

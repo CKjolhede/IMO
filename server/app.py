@@ -116,7 +116,7 @@ class RecommendationsByUserId(Resource):
         recommendations = Recommendation.query.filter(Recommendation.user_id == id).all()
         if recommendations == []:
             raise NotFound
-        recommendations = [recommendation.to_dict(only=('id', 'movie_id', 'user.first_name', 'comment', 'movie.title', 'movie.poster', 'accepted', 'public')) for recommendation in recommendations]
+        recommendations = [recommendation.to_dict(only=('id', 'movie_id', 'user.first_name', 'user.last_name','user.image','comment', 'movie.title', 'movie.poster', 'accepted', 'public')) for recommendation in recommendations]
         return make_response(recommendations, 200)
 
 class RecommendationsById(Resource):  

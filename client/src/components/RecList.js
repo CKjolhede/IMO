@@ -1,10 +1,8 @@
 import React from "react";
-import { BrowserRouter as Router, Route, NavLink, Link, useHistory } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
 
 
 function RecList() {
-    const { auth, logout, currentUser } = useAuth();
+    
 
     return (
         <div className="RecList">

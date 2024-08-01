@@ -25,7 +25,7 @@ body {
   size: 100% 100px;
   font-family: 'Budmo';
   justify-content: flex-end over;
-  /*align-content: flex-start;*/
+  align-content: flex-start;
   margin: 0px;
   background-color: transparent; 
   padding: 0px;
@@ -46,7 +46,15 @@ body {
   background-size: auto 100px;
   text-decoration: none;}
 
-.No-session-content {
+.layout {
+    display: flex;}
+
+.sidebar {
+    width: 250px;
+}
+
+.home-no-session{
+
   display: flex;
   size: 100% 100px;
   font-family: 'Budmo';
@@ -75,7 +83,7 @@ body {
     font-family: 'Budmo'; }
 
 
-    .login-links {
+.login-links {
     display: flex ;
     flex-direction: row;
     text-decoration: none;
@@ -89,8 +97,6 @@ body {
     background-color: transparent;
     font-family: 'Budmo';
     }
-
-
 
 
 .Header{
@@ -125,15 +131,31 @@ body {
 .sidebar {
   display: flex; 
   flex-direction: column;
-  align-content: center;
-  width: 25%;
-  height: 100vh;
-  background-image: url('./posterframe.png');
-  align-items: start; 
-  height: 100px;
+  align-content: start;
+  width: 250px;
+  height: 500vh;
+  /*background-image: url('./posterframe.png');*/
+  align-items: space-evenly; 
+  background-repeat: no-repeat;
   background-color: #23432c;
   color: var(--text);
   text-decoration: none;}
+
+.sidebar-btn {
+  display: flex;
+  flex-direction: column;
+  position: start;
+  justify-content: right;
+  flex-wrap: nowrap;
+  background-color: var(--button);
+  color: var(--text);
+  font-family: 'Budmo';
+  font-size: 20px;
+  align-items: flex-start; }
+
+.main-content {
+flex-grow: 1;
+padding: 20px;}
 
 .button-login, .register-btn {
   display: flex;

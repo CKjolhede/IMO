@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import ContentContainer from "./ContentContainer";
+import {Router, Route } from "react-router-dom";
 
 
 function Contact() {

@@ -1,15 +1,15 @@
 import React from 'react';
-import { Routes, Route, useNavigate} from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 //import { useAuth } from '../contexts/AuthContext';
-import About from './About';
-import Carousel from './Carousel';
-import Contact from './Contact';
-import EditUser from './EditUser';
-import FollowsList from './FollowsList';
-import MakeRec from './MakeRec';
-import Profile from './Profile';
-import RecFeed from './RecFeed';
-import RecList from './RecList';
+import About from './components/About';
+import Carousel from './components/Carousel';
+import Contact from './components/Contact';
+import EditUser from './components/EditUser';
+import FollowsList from './components/FollowsList';
+import MakeRec from './components/MakeRec';
+import Profile from './components/Profile';
+import RecFeed from './components/RecFeed';
+import RecList from './components/RecList';
 
 function ContentContainer() {    
    

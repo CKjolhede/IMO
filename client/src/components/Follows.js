@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import SearchUsers from './SearchUsers';
 import { useAuth } from '../contexts/AuthContext';
 import FollowsList from './FollowsList';
