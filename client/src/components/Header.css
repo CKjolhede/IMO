@@ -1,0 +1,27 @@
+
+.header {
+    display: flex;
+    font: 'Budmo';
+    width: 100%; 
+    background-image: url("./redcurtains.jpg");
+    background-repeat: no-repeat;
+    padding: 0px;
+    align-items: center;
+    background-size: cover;
+justify-content: space-between;
+    height: 100px;
+}
+
+.button-header{
+    color: var(--text);
+    display: flex;
+    font-size: 25px;
+    align-content: space-between;
+    font-family: 'Budmo';
+    text-decoration: none;
+    align-items: center right;
+}
+.logo {
+    align-items: top left;
+    width: 1;
+    height: 100px;}

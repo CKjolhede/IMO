@@ -2,32 +2,33 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import logo from './imo_logo.gif'
+import "./Header.css";
 
 function Header() {
-    const { user, logout } = useAuth();
+    const { isLoggedIn, logout } = useAuth();
     
     return (
         <div className="header">
-            {user ? (
-                <div className="header-in">
+            { isLoggedIn ? (
+                <div className="header">
                     <Link to={"/"}>
                         {<img className="logo" src={logo} alt="logo" />}
                     </Link>
-                    <Link className="button-logout" to="/" onClick={logout}>
+                    <Link className="button-header" to="/" onClick={logout}>
                         Logout
                     </Link>
                 </div>
             ) : (
-                <div className="header-in">
+                <div className="header">
                     <Link to={"/"}>
                         {<img className="logo" src={logo} alt="logo" />}
                     </Link>
-                    <p className="header-text">IMO is the greatest</p>
-                    <div className="button-login">
-                        {<Link to="/">Log In</Link>}
+
+                    <div className="button-header">
+                        {<Link to="/loginformcontainer">Log In</Link>}
                     </div>
-                    <div className="button-signup">
-                        <Link to="/">Sign Up</Link>
+                    <div className="button-header">
+                        <Link to="registercontainer">Sign Up</Link>
                     </div>
                 </div>
             )}

@@ -1,6 +1,5 @@
 
-* {
-  box-sizing: border-box;}
+* {  box-sizing: border-box;}
 
 :root {
   --bg: #282c34;
@@ -20,29 +19,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-.no-session-header {
-  display: flex;
-  size: 100% 100px;
-  font-family: 'Budmo';
-  justify-content: flex-end over;
-  align-content: flex-start;
-  margin: 0px;
-  background-color: transparent; 
-  padding: 0px;
-  background-size: auto 100px;}
-
-.home-no-session{
-  display: relative;
-  size: 100% 100px;
-  font-family: 'Budmo';
-  justify-content: flex-end over;
-  align-content: flex-start;
-  margin: 0px;
-  background-color: var(--bg);
-  text-decoration: none;
-  padding: 0px;
-  background-size: auto 100px;
-  text-decoration: none;}
 
 .login-form-container {
     display: relative;
@@ -74,30 +50,8 @@ body {
     font-family: 'Budmo';
     }
 
-.Header{
-  display: relative;
-  font: 'Budmo';
-  width: 100%;
-  flex-wrap: nowrap;
-  background-image: url("./redcurtains.jpg");
-  background-repeat: no-repeat;
-  background-position: end;
-  padding: 0px;
-  flex-direction: row;
-  justify-content: space-between;
-  background-size: cover;
-  height: 100px;}
 
-.logo {
-  display: flex; 
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: start;
-  width: 30%;
-  height: 100px;}
-
-
-.content-container-layout {
+.contentcontainer {
   display: flex;
   flex-grow: 1;
   flex-direction: row;
@@ -115,7 +69,7 @@ body {
 
 .aside {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   background-color: #23432c;
   align-content: center;
   width: 16rem;
@@ -125,6 +79,7 @@ body {
   padding: 2rem;
   background-repeat: no-repeat;
   text-decoration: none;}
+
 
 .aside ul {
   display: flex;
@@ -175,27 +130,6 @@ body {
   font-size: 25px;
   align-items: flex-start; }
 
-
-.button-logout {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: nowrap;
-  background-color: transparent;
-  color: var(--text);
-  font-family: 'Budmo';
-  font-size: 25px;
-  margin: 0px;
-  padding: 0px, 30px, 20px, 30px;
-  background-position: cover; }
-
-.button-login, .register-btn {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  color: var(--text);
-  font-family: 'Budmo';
-  gap: 25px;}
 
 .movie-card {
   position: relative;

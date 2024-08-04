@@ -2,10 +2,9 @@ import React from "react";
 import { useNavigate, Link, useMatch, useResolvedPath } from "react-router-dom";
 
 function SideBar() {
-    const navigate = useNavigate();
     
     return (
-        <aside className="aside">
+        <aside className="asidecom">
 
             <ul>
                 <CustomLink to="/recfeed">RecFeed</CustomLink>

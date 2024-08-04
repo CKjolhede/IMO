@@ -10,7 +10,6 @@ function EditUser({ user: { id, first_name, last_name, email, zipcode, phone}, o
     const [errors, setErrors] = useState([]);
     const formik = useFormik({
         initialValues: {
-            id: id,
             first_name: first_name,
             last_name: last_name,
             email: email,

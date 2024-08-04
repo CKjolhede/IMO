@@ -15,7 +15,7 @@ import RecList from './RecList';
 
 function ContentContainer() {    
     return (
-        <div className="content-container-layout">Container
+        <div className="contentcontainer">Container
             <Routes>
                 <Route exact path="/about" element={<About />} />
                 <Route exact path="/carousel" element={<Carousel />} />
@@ -29,7 +29,6 @@ function ContentContainer() {
                 <Route exact path="/recfeed" element={<RecFeed />} />
                 <Route exact path="/reclist" element={<RecList />} />
             </Routes>
-            <h1>ContentContainer</h1>
         </div>
     );
 };
