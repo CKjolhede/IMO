@@ -2,22 +2,20 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
 
-function LoginFormContainer( {setReg} ) { 
+function LoginFormContainer() { 
     const navigate = useNavigate();
     return (
-            <div>
+        <div className="login-form-container">
             <LoginForm />
             <button
-                className="login-btn"
-                onClick={() => {
-                    setReg();
-                    navigate("/home");
-                }}
+                className="button-login"
+                onClick={() => navigate("/home")}
             >
                 Create an Account
             </button>   
-            </div >
-            )
+            <section className="login-form-container"></section>
+        </div>
+    );
 }
-    
+
 export default LoginFormContainer;

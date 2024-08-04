@@ -2,7 +2,7 @@ import React from 'react';
 import Register from './Register';
 import { useNavigate } from 'react-router-dom';
 
-function RegisterContainer ({ setReg }) { 
+function RegisterContainer () { 
     const navigate = useNavigate();
     
     return (
@@ -10,12 +10,9 @@ function RegisterContainer ({ setReg }) {
             <Register />
             <button
                 className="login-btn"
-                onClick={() => {
-                    setReg();
-                    navigate("/home");
-                }}
-            >
-                Already have an Account
+                onClick= {                navigate("/LoginContainer")
+                }
+            >Already have an Account
             </button>   
             </div >
             )

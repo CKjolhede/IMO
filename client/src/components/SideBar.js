@@ -1,77 +1,36 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, useMatch, useResolvedPath } from "react-router-dom";
 
 function SideBar() {
     const navigate = useNavigate();
     
     return (
-        <>
-            <button
-                className="sidebar-btn"
-                onClick={() => {
-                    navigate("/makeRec");
-                }}
-            >Make a Recommendation
-            </button>
-            
-            <button
-                className="sidebar-btn"
-                onClick={() => {
-                    navigate("/registercontainer");
-                }}
-            >
-                View Recommendations
-            </button>
-            
-            
-            <button
-                className="sidebar-btn"
-                onClick={() => {
-                    navigate("/follows");
-                }}
-            >
-                View Friends
-            </button>
-            
-            
-            <button
-                className="sidebar-btn"
-                onClick={() => {
-                    navigate("/carousel");
-                }}
-            >
-                Rate Movies
-            </button>
-            
-            
-            <button
-                className="sidebar-btn"
-                onClick={() => {
-                    navigate("/edituser/");
-                }}
-            >
-                Account Settings
-            </button>  
-            
-            <button
-                className="sidebar-btn"
-                onClick={() => {
-                    navigate("/about/");
-                }}
-            >
-                About IMO
-            </button>
-            
-            <button
-                className="sidebar-btn"
-                onClick={() => {
-                    navigate("/contact");
-                }}
-            >
-                Contact US
-            </button>
-        </>
-    );
+        <aside className="aside">
+
+            <ul>
+                <CustomLink to="/recfeed">RecFeed</CustomLink>
+                <CustomLink to="/about">About</CustomLink>
+                <CustomLink to="/contact">Contact</CustomLink>
+                <CustomLink to="/follows">Follows</CustomLink>
+                <CustomLink to="/makerec">Make Rec</CustomLink>
+                <CustomLink to="/reclist">Rec List</CustomLink>
+                <CustomLink to="/profile">Profile</CustomLink>
+                <CustomLink to="/carousel">Carousel</CustomLink>
+                <CustomLink to="/edituser">Edit User</CustomLink>
+            </ul>
+        </aside>
+    )
+}  
+                    
+function CustomLink({ to, children, ...props }) {
+    const resolvedPath = useResolvedPath(to);
+    const isActive = useMatch({ path: resolvedPath.pathname, end: true }); 
+    return (    
+        <li className={isActive ? "active" : ""}>
+            <Link to={to} {...props}>
+                {children}
+            </Link>
+        </li>)
 }
 
 export default SideBar;

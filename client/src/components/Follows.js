@@ -4,7 +4,6 @@ import SearchUsers from './SearchUsers';
 import { useAuth } from '../contexts/AuthContext';
 import FollowsList from './FollowsList';
 
-
 function Follows() {
     const { user } = useAuth();
     const [follows, setFollows] = useState([]);
@@ -14,19 +13,22 @@ function Follows() {
         fetch('/followsbyid/' + userId, {method: 'GET' })
             .then(res => res.json())
             .then(data => setFollows(data))
-    }, [user.id]);
-    
+        console.log(user.id, follows);
+    }, [user.id, follows]);
     return (
         <>
-            <Routes>
                 <div>
+            <Routes>
                     <Route path="/searchusers" element={<SearchUsers />} />
+            </Routes>
+                    <SearchUsers />;
                 </div>
                 <h1>Following</h1>
                 <div>
+            <Routes>
                     <Route path='/followlist' element={<FollowsList follows={follows} />}/>
-                </div>
             </Routes>
+                </div>
         </>
     );
 }

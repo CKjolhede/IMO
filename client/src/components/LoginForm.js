@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/AuthContext";
 //function LoginForm({ onSignUp}) {
 function LoginForm() {
     const [errors, setErrors] = useState([]);
-    const { login, isLoggedIn, logout} = useAuth();
+    const {  login } = useAuth();
     const navigate = useNavigate();
 
     const formik = useFormik({
@@ -18,8 +18,8 @@ function LoginForm() {
         onSubmit: async (values) => {
             try {
                 setErrors([]);
+                const  response = await fetch("/login", {
                 
-                const response = await fetch("/login", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -29,8 +29,7 @@ function LoginForm() {
                 if (response.ok) {
                     const user = await response.json();
                     login(user);
-                    console.log(isLoggedIn, user)
-                    navigate("/home");
+                    navigate("/app");
                 } else {
                     const errorData = await response.json();
                     setErrors(errorData);
@@ -47,40 +46,44 @@ function LoginForm() {
     });
     return (
         <form onSubmit={formik.handleSubmit}>
+            <div>
+                <div className="input-container">
+                    Email Address*
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="Email"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.email}
+                    />
+                    {formik.errors.email && formik.touched.email ? (
+                        <p className="error">{formik.errors.email}</p>
+                    ) : null}
+                </div>
 
-            <div className="input-container">
-                <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.email}
-                />
-                {formik.errors.email && formik.touched.email ? (
-                    <p className="error">{formik.errors.email}</p>
-                ) : null}
+                <div className="input-container">
+                    Password*
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Password"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.password}
+                    />
+                    {formik.errors.password && formik.touched.password ? (
+                        <p className="error">{formik.errors.password}</p>
+                    ) : null}
+                </div>
+                
+                <div id="submit-button">
+                    <button type="submit">Submit</button>
+                </div>
+                <div id="errors">{errors.error}</div>
             </div>
-
-            <div className="input-container">
-                <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.password}
-                />
-                {formik.errors.password && formik.touched.password ? (
-                    <p className="error">{formik.errors.password}</p>
-                ) : null}
-            </div>
-            <div id="submit-button">
-                <button type="submit">Submit</button>
-            </div>
-            <div id="errors">{errors.error}</div>
         </form>
     );
 }

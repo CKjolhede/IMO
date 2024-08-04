@@ -12,7 +12,7 @@ from models import db, User, Movie, Follow, Recommendation
 
 def create_users():
     users = []
-    for _ in range(50):
+    for _ in range(500):
         user = User(
             first_name=fake.first_name(),
             last_name=fake.last_name(),
@@ -29,8 +29,8 @@ def create_users():
 def create_movies():
     movies = []
     used_tmdb_ids = set()  # Set to keep track of used tmdb_id values
-    while len(movies) < 100:
-        tmdb_id = fake.unique.random_int(min=1, max=10000)
+    while len(movies) < 500:
+        tmdb_id = fake.unique.random_int(min=1, max=100000)
         if tmdb_id not in used_tmdb_ids:
             used_tmdb_ids.add(tmdb_id)
             movie = Movie(
@@ -47,7 +47,7 @@ def create_movies():
 
 def create_follows(users):
     follows = []
-    for _ in range(200):
+    for _ in range(200000):
         follow = Follow(
             following_id=rc(users).id,
             follower_id=rc(users).id
@@ -57,7 +57,7 @@ def create_follows(users):
 
 def create_recommendations(users, movies):
     recommendations = []
-    for _ in range(1000):
+    for _ in range(500):
         recommendation = Recommendation(
             user_id=rc(users).id,
             movie_id=rc(movies).id
