@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink} from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 function Register() {
@@ -76,6 +76,7 @@ function Register() {
     });
 
     return (
+        <div className="form-container">
         <form onSubmit={formik.handleSubmit}>
             <div className="input-container">
                 <input
@@ -170,6 +171,10 @@ function Register() {
                 ))}
             </div>
         </form>
+        <button className="button-register" >
+            <NavLink to="../loginformcontainer">Already have an Account</NavLink>
+            </button>
+    </div>
     );
 }
 

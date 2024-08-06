@@ -1,20 +1,17 @@
 import React from 'react';
 import FollowCard from './FollowCard';
 
-import { useNavigate } from 'react-router-dom';
+function FollowsList({ followsData }){
 
-function FollowsList({ follows }){
-    
     return (
         <>
-        <h2>Current Followers</h2>
-        <div><ul className="FollowsList">
-                <li className="FollowsCard">
-                    {follows.map((follow) =>
-                        (<FollowCard key={follow.id} follow={follow} />)
-                    )}</li>
-            </ul>
-        </div>
+            <div className="FollowsList">
+                <h2>FollowsList</h2>
+                    {followsData.map((follow) =>
+                        (<FollowCard key={follow.id} follow={follow.to_dict()} />)
+                    )}
+            </div>
+            
         </>
     );
 }   

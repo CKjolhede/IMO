@@ -1,4 +1,5 @@
 from models import db, User, Movie, Recommendation, Follow
+from sqlalchemy_serializer import SerializerMixin
 from werkzeug.exceptions import NotFound, Unauthorized
 from flask_restful import Resource
 from sqlalchemy.exc import MultipleResultsFound
@@ -61,8 +62,8 @@ class Users(Resource):
 @app.route('/users/search', methods=['GET'])
 def search_users():
     name = request.args.get('name', '')  # Get the 'name' query parameter
-    users = User.query.filter(User.first_name.ilike(f'%{name}%')).all()
-    users_dict = list(map(lambda user: user.to_dict(), users))
+    users = User.query.filter(User.first_name(f'%{name}%')).all()
+    users_dict = list(map(lambda user: user.to_dict(only=['id', 'first_name', 'last_name', 'image']), users))
     return make_response(jsonify(users_dict), 200)
 
 #**********************************  USERS BY ID
@@ -99,9 +100,9 @@ class FollowsById(Resource):
     def get(self, id):
         followings = Follow.query.filter(Follow.follower_id == id).all()
         if followings == []:
-            raise NotFound
+            return make_response("No Followings found", 404)
         following = [follow.to_dict() for follow in followings] 
-        return make_response(following, 200)
+        return make_response(jsonify(following), 200)
         
     def delete(self,id):
         follow = Follow.query.filter(Follow.id == id).first()
@@ -187,12 +188,31 @@ class Movies(Resource):
         return make_response(new_movie.to_dict(), 201)
     
 
-@app.route('/movies/search', methods=['GET'])
-def search_movies():
-    title = request.args.get('title', '')  
-    movies = Movie.query.filter(Movie.title.ilike(f'%{title}%')).all()
-    movies_dict = list(map(lambda movie: movie.to_dict(), movies))
+@app.route('/movies/search/<string:searchTerm>', methods=['GET'])
+def search_movies(searchTerm):
+    TMDB_API_KEY = "691764fd447005d65f8471166c212648"
+
+    base_url = "https://api.themoviedb.org/3/search/movie"
+    
+    params = {'query' : searchTerm, 'api_key' : TMDB_API_KEY, 'language' : "en-US", 'page' : 1}
+    
+    response = requests.get(base_url, params=params)
+    data = response.json()
+    
+    if 'results' in data and data['results']:
+        movie = data['results']
+    movies_dict = list(map(lambda movie: movie.to_dict(only=({
+            'movie_id' : movie['id'],
+            'title' : movie['title'],
+            'overview' : movie['overview'],
+            'release_date' : movie['release_date'],
+            'genre' : movie['genre_ids'],
+            'poster_path' : movie['poster_path'],
+            'rating' : movie['vote_average']
+        })), data['results']))
     return make_response(jsonify(movies_dict), 200)    
+
+
 
 
 api.add_resource(Users, '/users')

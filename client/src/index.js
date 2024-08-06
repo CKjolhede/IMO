@@ -3,7 +3,7 @@ import App from "./components/App";
 import "./index.css";
 //import "./chris.css";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 
 const container = document.getElementById("root");
@@ -11,6 +11,7 @@ const root = createRoot(container);
 root.render(
     <Router>
         <AuthProvider>
-            <App />
+            <Routes><Route path="/app" element={<App />} /></Routes>
+                <App />
         </AuthProvider>
     </Router>);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 
@@ -29,7 +29,7 @@ function LoginForm() {
                 if (response.ok) {
                     const user = await response.json();
                     login(user);
-                    navigate("/app");
+                    navigate("/home/");
                 } else {
                     const errorData = await response.json();
                     setErrors(errorData);
@@ -44,11 +44,10 @@ function LoginForm() {
             }
         },
     });
-    return (
+    return (<div>
         <form onSubmit={formik.handleSubmit}>
             <div>
                 <div className="input-container">
-                    Email Address*
                     <input
                         id="email"
                         name="email"
@@ -64,7 +63,6 @@ function LoginForm() {
                 </div>
 
                 <div className="input-container">
-                    Password*
                     <input
                         id="password"
                         name="password"
@@ -78,13 +76,16 @@ function LoginForm() {
                         <p className="error">{formik.errors.password}</p>
                     ) : null}
                 </div>
-                
-                <div id="submit-button">
+
+                <div className="input-container">
                     <button type="submit">Submit</button>
                 </div>
                 <div id="errors">{errors.error}</div>
             </div>
-        </form>
-    );
+    
+        </form><button >
+        <NavLink to="../registercontainer">Create an Account</NavLink> 
+        </button>
+    </div> );
 }
 export default LoginForm;

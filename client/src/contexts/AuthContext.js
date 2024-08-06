@@ -32,9 +32,8 @@ export const AuthProvider = ({ children }) => {
         setAuth({
             isLoggedIn: true,
             user: user,
-    
         });
-        navigate('/home/');
+        navigate('/home');
     };
 
     const logout = async () => {
@@ -46,7 +45,7 @@ export const AuthProvider = ({ children }) => {
                 isLoggedIn: false,
                 user: null
             });
-            navigate("/app");
+            navigate("/");
         }
     };
 

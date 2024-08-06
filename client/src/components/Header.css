@@ -2,26 +2,48 @@
 .header {
     display: flex;
     font: 'Budmo';
-    width: 100%; 
+    width: 100vw; 
+    height: 100px;       
+    align-items: center;
     background-image: url("./redcurtains.jpg");
     background-repeat: no-repeat;
-    padding: 0px;
-    align-items: center;
+    padding: 0px 100px 0px 0px;
+    margin: 0px;
+    border: 0px;
     background-size: cover;
-justify-content: space-between;
-    height: 100px;
+    justify-content: space-between;
 }
+.logo {
+    width: 25vw;
+    height: 100px;}
 
-.button-header{
-    color: var(--text);
+.button-header-logout {
+    color: white;
     display: flex;
     font-size: 25px;
+    justify-content: end;
+    padding: 0px 0px 0px 0px;
+    align-items: end;
+    font-family: 'Budmo';
+    text-decoration: none;
+}
+.button-header-login {
+    color: white;
+    display: flex;
+    font-size: 25px;
+    gap: 30px;
+    padding: 50px 0px px 150px;
     align-content: space-between;
     font-family: 'Budmo';
     text-decoration: none;
-    align-items: center right;
 }
-.logo {
-    align-items: top left;
-    width: 1;
-    height: 100px;}
+.button-header{
+    color: white;
+    display: flex;
+    font-size: 25px;
+    gap: 30px;
+    padding: 50px 0px px 150px;
+    align-content: space-between;
+    font-family: 'Budmo';
+    text-decoration: none;
+}

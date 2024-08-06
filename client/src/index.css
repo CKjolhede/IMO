@@ -19,30 +19,46 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
+.home {
+  display: flex;
+  align-items: start;
+  justify-content: left;
+  flex-direction: column;
+  padding: 0px 0px 0px 0px; 
+  flex-wrap: nowrap;
+  color: var(--text);
+  background-color: var(--bg);
+  font-family: 'Budmo';}
+
+.home-content {
+  display: flex;
+  flex-direction: row; }f
+
+.home-content > * {
+  flex: 1;}
 
 .login-form-container {
-    display: relative;
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-content: center;
-    left: 30%;
-    gap: 20px;
-    padding:20px250px; 
-    align-items: middle;
-    background-position: center;
-    background-size: 10em;
+    align-items: center;
+    /*left: 10%;*/
+    /*gap: 10px;*/
+    /*background-position: center;*/
+    /*background-size: 10em;*/
     background-color: var(--bg);
     accent-color: var(--button);
     font-family: 'Budmo';}
 
-.login-form {
-    display: relative; }
 
 .input-container {
-    display: relative;
-    align-content: space-between;
-    gap:30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-content: center;
     padding: 10px 300px;
-    align-items: middle;
+    /*align-items: center;*/
     background-position: center;
     background-size: 100% 100%;
     background-color: var(--bg);
@@ -53,13 +69,16 @@ body {
 
 .contentcontainer {
   display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 20px;
-  left: 100px;
+  width: 85vw;
+  height: 100vh;
+  flex: 1;
+  /*flex-grow: 1;*/
+  /*flex-direction: row;
+  flex-wrap: nowrap;*/
+  /*align-items: flex-start;
+  justify-content: flex-start;*/
+  padding: 20px 20px;
+  /*left: 100px;*/
   font-family: 'Budmo';
   font-size: 25px; 
   color: var(--text);
@@ -70,14 +89,14 @@ body {
 .aside {
   display: flex;
   flex-direction: row;
+  flex: .2;
   background-color: #23432c;
   align-content: center;
-  width: 16rem;
+  /*width: 15vw;*/
   height: 100vh;
   /*background-image: url('./posterframe.png');*/
-  align-items: flex-start;
+  align-items: start;
   padding: 2rem;
-  background-repeat: no-repeat;
   text-decoration: none;}
 
 
@@ -89,7 +108,7 @@ body {
   list-style: none; 
   display: absolute;
   gap: 2rem;
-  flex-direction: column;
+
 }
 
 .aside a {
@@ -100,15 +119,36 @@ body {
   align-items: flex-start;
   padding: 1rem;
   flex-wrap: nowrap;
-  text-decoration: none;
 }  
 .aside li:active {
-  background-color: var(--button);}
+  background-color: var(--bg);}
 
 .aside li:hover {
-  background-color: var(--button);
+  background-color: var(--bg);
   color: var(--text);
   transition: background-color 0.3s ease; }
+
+.movie-card {
+  position: relative;
+  width: 300px; /* Adjust the width as needed */
+  height: 450px; /* Adjust the height as needed */
+  background-image: url("./components/poster-frame.png");
+  background-size: cover;
+  background-repeat: no-repeat;;
+}
+
+.movie-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.login-form {
+    display: relative; }
+
 
 .sidebar-btn:hover {
   background-color: var(--header);
@@ -129,23 +169,3 @@ body {
   font-family: 'Budmo';
   font-size: 25px;
   align-items: flex-start; }
-
-
-.movie-card {
-  position: relative;
-  width: 300px; /* Adjust the width as needed */
-  height: 450px; /* Adjust the height as needed */
-  background-image: url("./components/poster-frame.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  overflow: hidden;
-}
-
-.movie-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-}

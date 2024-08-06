@@ -1,12 +1,13 @@
 import React from "react";
-import { useNavigate, Link, useMatch, useResolvedPath } from "react-router-dom";
+import {  Link, useMatch, useResolvedPath } from "react-router-dom";
 
 function SideBar() {
     
     return (
-        <aside className="asidecom">
+        <aside className="aside">
 
             <ul>
+                <Link to="follows">Folllows</Link>
                 <CustomLink to="/recfeed">RecFeed</CustomLink>
                 <CustomLink to="/about">About</CustomLink>
                 <CustomLink to="/contact">Contact</CustomLink>

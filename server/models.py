@@ -48,7 +48,7 @@ class User(db.Model, SerializerMixin):
     @hybrid_property
     def password_hash(self):
         return self._password_hash
-    0
+    
     @password_hash.setter
     def password_hash(self, password):
         password_hash = bcrypt.generate_password_hash(password.encode("utf8"))
@@ -71,7 +71,7 @@ class Follow(db.Model, SerializerMixin):
     status = db.Column(db.String, nullable=True)
 
     def __repr__(self):
-        return f'<Following ID: {self.following.first_name} {self.following.last_name} | Follower ID: {self.follower.first_name} {self.follower.last_id} | Status: {self.status}>'
+        return f'<Following ID: {self.following.first_name} {self.following.last_name} | Follower ID: {self.follower.first_name} {self.follower.last_name} | Status: {self.status}>'
 
 #####################################################################
 
@@ -105,7 +105,7 @@ class Recommendation(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
-    accepted = db.Column(db.Boolean, default=False)
+    accept = db.Column(db.Boolean, default=False)
     public = db.Column(db.Boolean, default=True)
     comment = db.Column(db.Text, nullable=True)
     media_type = db.Column(db.String, nullable=False, default='movie')
