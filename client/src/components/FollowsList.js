@@ -7,21 +7,27 @@ async function getUser(following_id) {
     );
 }
 
-function FollowsList({ friends, pendingFriends, requestedFriends }) {
+function FollowsList({ props }) {
     const [friendData, setFriendData] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
             const data = await Promise.all(
-                friends.map(async (friend) => {
-                    const response = await getUser(friend.following_id);
-                    return { ...friend, ...response };
+                props.map(async (prop) => {
+                    return Promise.all(
+                        prop.map(async (friend) => {
+                            const response = await getUser(friend.following_id);
+                            return { ...friend, ...response };
+                        })
+                    );
                 })
             );
-            setFriendData(data);
+        
+            setFriendData(data.flat());
+            console.log(data);
         }
         fetchData();
-    }, [friends]);
+    }, [props]);
 
     return (
         <div className="FriendList">

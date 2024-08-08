@@ -37,7 +37,7 @@ function Follows() {
             </div>
             <h1>Friends</h1>
             <div>
-                <FollowsList friends={acceptedFollows} pendingFriends={pendingFollows} requestedFriends={requestedFollows}  />
+                <FollowsList props = {[requestedFollows, pendingFollows,acceptedFollows]}  />
             </div>
         </>
     );
