@@ -6,7 +6,6 @@ import Header from "./Header";
 import LoginFormContainer from "./LoginFormContainer";
 import RegisterContainer from "./RegisterContainer";
 import { useAuth } from "../contexts/AuthContext";
-
 import NotFound from "./NotFound";
 
 

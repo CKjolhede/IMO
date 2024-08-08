@@ -37,7 +37,7 @@ class User(db.Model, SerializerMixin):
         primaryjoin='follows.c.following_id == User.id', 
         secondaryjoin='follows.c.follower_id == User.id', back_populates='followers')
     
-    serializer_rules = ( '-following', '-followers', '-recommendations', '-recommendations', '-follows' ) 
+    serializer_rules = (  '-followers', '-recommendations', '-follows' ) 
     
     @validates('password')
     def validate_password(self, key, password):
@@ -70,6 +70,9 @@ class Follow(db.Model, SerializerMixin):
     follower_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     status = db.Column(db.String, nullable=True)
 
+    following = db.relationship('User', foreign_keys=[following_id])
+    
+    serializer_rules = ( '-following.following', '-following.follower', )
     def __repr__(self):
         return f'<Following ID: {self.following.first_name} {self.following.last_name} | Follower ID: {self.follower.first_name} {self.follower.last_name} | Status: {self.status}>'
 

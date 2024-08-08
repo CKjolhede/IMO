@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Outlet} from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 import SideBar from './SideBar';
 import MakeRec from "./MakeRec";
 import RecList from "./RecList";
@@ -26,9 +26,9 @@ function Home() {
                         <Route path="reclist" element={<RecList />} />
                         <Route path="about" element={<About />} />
                         <Route path="contact" element={<Contact />} />
-                        <Route path="profile/<int:userid>" element={<Profile />} />
+                        <Route path="profile/:id" element={<Profile />} />
                     </Routes>
-                <Outlet />
+                
                 </div>
             </div>                        
                 

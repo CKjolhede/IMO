@@ -59,11 +59,11 @@ class Users(Resource):
 
 
 
-@app.route('/users/search', methods=['GET'])
+@app.route('/users/search/<string:name>', methods=['GET'])
 def search_users():
     name = request.args.get('name', '')  # Get the 'name' query parameter
     users = User.query.filter(User.first_name(f'%{name}%')).all()
-    users_dict = list(map(lambda user: user.to_dict(only=['id', 'first_name', 'last_name', 'image']), users))
+    users_dict = list(map(lambda user: user.to_dict(only=['id', 'first_name', 'last_name', 'image', 'private']), users))
     return make_response(jsonify(users_dict), 200)
 
 #**********************************  USERS BY ID
@@ -73,7 +73,7 @@ class UserById(Resource):
         try:
             user = User.query.filter(User.id == id).first()
             if user is not None:
-                return make_response(user.to_dict(only=['id', 'first_name', 'last_name', 'emai', 'zipcode']), 200)
+                return make_response(user.to_dict(only=['id', 'first_name', 'last_name', 'email', 'zipcode', 'image']), 200)
         except NotFound:
             return make_response({'error': 'User not found'}, 404)
     
@@ -96,14 +96,14 @@ class UserById(Resource):
 
 #************************************  FOLLOWS
 
-class FollowsById(Resource):
+class FollowsByUser(Resource):
     def get(self, id):
         followings = Follow.query.filter(Follow.follower_id == id).all()
         if followings == []:
             return make_response("No Followings found", 404)
-        following = [follow.to_dict() for follow in followings] 
+        following = [follow.to_dict(only=('following_id', 'status')) for follow in followings] 
         return make_response(jsonify(following), 200)
-        
+    
     def delete(self,id):
         follow = Follow.query.filter(Follow.id == id).first()
         db.session.delete(follow)
@@ -217,7 +217,7 @@ def search_movies(searchTerm):
 
 api.add_resource(Users, '/users')
 api.add_resource(UserById, '/users/<int:id>')
-api.add_resource(FollowsById, '/follows/<int:id>')
+api.add_resource(FollowsByUser, '/follows/<int:id>')
 api.add_resource(RecommendationsByUserId, '/recommendations/<int:id>')
 api.add_resource(RecommendationsById, '/recommendations/<int:id>')
 api.add_resource(Recommendations, '/recommendations')   

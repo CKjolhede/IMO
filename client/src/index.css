@@ -169,3 +169,15 @@ body {
   font-family: 'Budmo';
   font-size: 25px;
   align-items: flex-start; }
+
+.follow-card-header-img {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: right;
+  align-items: center;
+  width: 100px;
+  height: 150px;;
+  object-fit: cover;
+  margin-right: 20px;
+}
