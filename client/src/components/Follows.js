@@ -29,8 +29,6 @@ function Follows() {
             acceptedFollows.push(friend);
         }
     }
-        
-    
     return (
         <>
             <div>
