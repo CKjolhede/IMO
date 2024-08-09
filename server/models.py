@@ -1,11 +1,12 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, Column, Integer, String, UniqueConstraint
 from sqlalchemy.orm import validates
 from config import bcrypt, db
 from sqlalchemy.ext.hybrid import hybrid_property
 import tmdbsimple as tmdb
+
 
 
 
@@ -69,6 +70,7 @@ class Follow(db.Model, SerializerMixin):
     following_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     follower_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     status = db.Column(db.String, nullable=True)
+    __table_args__ = (UniqueConstraint('following_id', 'follower_id', name='unique_user_pair'),)
 
     #following = db.relationship('User', foreign_keys=[following_id])
     
