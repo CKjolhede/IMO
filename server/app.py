@@ -57,13 +57,11 @@ class Users(Resource):
             abort(422, e.args[0])
 
 
-
-
-@app.route('/users/search/<string:name>', methods=['GET'])
+@app.route('/users/search', methods=['GET'])
 def search_users():
-    name = request.args.get('name', '')  # Get the 'name' query parameter
-    users = User.query.filter(User.first_name(f'%{name}%')).all()
-    users_dict = list(map(lambda user: user.to_dict(only=['id', 'first_name', 'last_name', 'image', 'private']), users))
+    name = request.args.get('name', '')
+    users = User.query.filter(User.first_name.ilike(f'%{name}%') | User.last_name.ilike(f'%{name}%')).all()
+    users_dict = [user.to_dict(only=['id', 'email', 'first_name', 'last_name', 'image', 'private']) for user in users] 
     return make_response(jsonify(users_dict), 200)
 
 #**********************************  USERS BY ID
@@ -78,7 +76,7 @@ class UserById(Resource):
             return make_response({'error': 'User not found'}, 404)
     
     def patch(self, id):
-        user=db.session.get(User, id)
+        user = User.query.filter(User.id == id).first()
         if not user:
             return make_response({'error': 'User not found'}, 404)
         form_json = request.get_json()
@@ -100,15 +98,39 @@ class FollowsByUser(Resource):
     def get(self, id):
         followings = Follow.query.filter(Follow.follower_id == id).all()
         if followings == []:
-            return make_response("No Followings found", 404)
-        following = [follow.to_dict(only=('following_id', 'status')) for follow in followings] 
+            return make_response(jsonify("No Followings found"), 404)
+        following = [follow.to_dict(only=('id','following_id', 'follower_id','status')) for follow in followings] 
         return make_response(jsonify(following), 200)
-    
-    def delete(self,id):
-        follow = Follow.query.filter(Follow.id == id).first()
-        db.session.delete(follow)
+
+class FollowByUserIdFollowingId(Resource):
+    def delete(self, friendUser_id, user_id):
+        follow = Follow.query.filter(Follow.following_id == friendUser_id and Follow.follower_id == user_id).first()
+        db.session.delete(follow)   
         db.session.commit()
         return make_response('', 204)
+
+    def patch(self, friendUser_id, user_id):
+    
+        follow = Follow.query.filter(
+                Follow.following_id == friendUser_id
+                and Follow.follower_id == user_id
+            ).first()
+        
+        if not follow:
+            return make_response({'error': 'follow not found'}, 404)
+        form_json = request.get_json()
+        for key, value in form_json.items():
+            setattr(follow, key, value)
+        response = follow.to_dict()
+        db.session.add(follow)
+        db.session.commit()
+        return make_response(response, 202)
+
+    def post(self, friendUser_id, user_id):
+        follow = Follow(following_id = friendUser_id, follower_id = user_id, status         = 'pending')
+        db.session.add(follow)
+        db.session.commit()
+        return make_response(follow.to_dict(only=('id','following_id', 'follower_id','status')), 201)
 
 #*************************************  RECOMMENDATIONS 
 
@@ -218,6 +240,7 @@ def search_movies(searchTerm):
 api.add_resource(Users, '/users')
 api.add_resource(UserById, '/users/<int:id>')
 api.add_resource(FollowsByUser, '/follows/<int:id>')
+api.add_resource(FollowByUserIdFollowingId, '/follows/<int:user_id>/<int:friendUser_id>')
 api.add_resource(RecommendationsByUserId, '/recommendations/<int:id>')
 api.add_resource(RecommendationsById, '/recommendations/<int:id>')
 api.add_resource(Recommendations, '/recommendations')   

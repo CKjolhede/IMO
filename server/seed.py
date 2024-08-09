@@ -47,11 +47,11 @@ def create_movies():
 
 def create_follows(users):
     follows = []
-    for _ in range(200):
+    for _ in range(400):
         follow = Follow(
             following_id=rc(users).id,
             follower_id=rc(users).id,
-            status=rc(['accepted', 'requested', 'rejected']),
+            status=rc(['accepted', 'requested', 'pending']),
         )
         follows.append(follow)
     return follows
@@ -73,10 +73,10 @@ if __name__ == '__main__':
     with app.app_context():
         print("Starting seed...")
         # Seed code goes here!
-        User.query.delete()
-        Movie.query.delete()
-        Follow.query.delete()
-        Recommendation.query.delete()
+        #User.query.delete()
+        #Movie.query.delete()
+        #Follow.query.delete()
+        #Recommendation.query.delete()
         print("Tables cleared.")
         
         print("Seeding Users")
@@ -84,19 +84,19 @@ if __name__ == '__main__':
         db.session.add_all(users)
         db.session.commit()
         
-        print("Seeding Movies")        
-        movies = create_movies()
-        db.session.add_all(movies)
-        db.session.commit()
+        #print("Seeding Movies")        
+        #movies = create_movies()
+        #db.session.add_all(movies)
+        #db.session.commit()
         
         print("Seeding Follows")
         follows = create_follows(users)
         db.session.add_all(follows)
         db.session.commit()
         
-        print("Seeding Recommendations")
-        recommendations = create_recommendations(users, movies)
-        db.session.add_all(recommendations)
-        db.session.commit()
+        #print("Seeding Recommendations")
+        #recommendations = create_recommendations(users, movies)
+        #db.session.add_all(recommendations)
+        #db.session.commit()
         
         print("Done seeding!")
