@@ -1,37 +1,75 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
-function FollowCard({ friendprop }) {
-    //const [friend, setFriend] = useState({});
-    //useEffect(() => {
-    //    const friendById = async () => {
-    //        const response = await fetch("/users/" + friendprop.following_id);
-    //        if (response.ok) {
-    //            const friend = await response.json();
-    //            setFriend(friend);
-    //        }
-    //    };
-    //    friendById();
-    //}, [friendprop.following_id]);
-    console.log(friendprop);
-
-    return (
-        <NavLink to={`/profile/${friendprop.id}`} className="follow-card-link">
+function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendRequest, friendUser }) {
+    const { user } = useAuth();
+    if (friendUser.status === 'rejected') {
+        return (null)
+    }
+    else if (friendUser.status === 'accepted') {
+        return (
             <div className='follow-card' >
+                <NavLink to={`/profile/${friendUser.id}`} className="follow-card-link">
+                    <img
+                        className="follow-card-header-img"
+                        src={friendUser.image}
+                        alt="profile pic"></img>
+                </NavLink>
                 <div className="follow-card-header">
-                    <div className="follow-card-header-left">
-                        <img
-                            className="follow-card-header-img"
-                            src={friendprop.image}
-                            alt="profile pic"></img> 
-                        {friendprop.first_name} {friendprop.last_name}
-                    </div>
-                    {/*<div className="follow-card-header-right">
-                        <button className="follow-card-header-btn">Follow</button>
-                    </div>*/}
+                    {friendUser.first_name} {friendUser.last_name}
                 </div>
+                <button className="follow-card-header-btn" onClick={() => { handleRemoveFriend(friendUser.id, user.id) }}>Unfriend</button>    
+            </div>)
+    }
+    else if (friendUser.status === 'requested') {
+        return (
+            <div className='follow-card' >
+                <NavLink to={`/profile/${friendUser.id}`} className="follow-card-link">
+                    <img
+                        className="follow-card-header-img"
+                        src={friendUser.image}
+                        alt="profile pic"></img>
+                </NavLink>
+                <div className="follow-card-header">
+                    {friendUser.first_name} {friendUser.last_name}
+                </div>
+                <button className="follow-card-header-btn" onClick={() => { handleAcceptFriend(friendUser.id, user.id) }}>Accept</button> 
+                <button className="follow-card-header-btn" onClick={() => { handleRemoveFriend(friendUser.id, user.id) }}>Decline</button>                
             </div>
-        </NavLink>
-    );
+        )
+    }
+    else if (friendUser.status === 'pending') {                 
+        return (
+            <div className='follow-card' >
+                <NavLink to={`/profile/${friendUser.id}`} className="follow-card-link">
+                    <img
+                        className="follow-card-header-img"
+                        src={friendUser.image}
+                        alt="profile pic"></img>
+                </NavLink>
+                <div className="follow-card-header">
+                    {friendUser.first_name} {friendUser.last_name}
+                </div>
+                <button className="follow-card-header-btn" onClick={() => { handleRemoveFriend(friendUser.id, user.id) }}>Cancel</button>                
+            </div>
+        )
+    }
+    else {
+        return (
+            <div className='follow-card' >
+                <NavLink to={`/profile/${friendUser.id}`} className="follow-card-link">
+                    <img
+                        className="follow-card-header-img"
+                        src={friendUser.image}
+                        alt="profile pic"></img>
+                </NavLink>
+                <div className="follow-card-header">
+                    {friendUser.first_name} {friendUser.last_name}
+                </div>
+                <button className="follow-card-header-btn" onClick={() => { handleFriendRequest(friendUser.id, user.id) }}>Friend Request</button>                
+            </div>
+        )
+    }
 }    
 export default FollowCard;

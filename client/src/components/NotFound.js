@@ -4,7 +4,7 @@ import {useNavigate, Link} from 'react-router-dom';
 export default function NotFound (){
     const navigate = useNavigate();
     useEffect(() => {
-        const timer = setTimeout(() => { navigate("/home"); }, 2000);
+        const timer = setTimeout(() => { navigate(-1) }, 2000);
     return () => {clearTimeout(timer);}
     }, [navigate]);
     return (

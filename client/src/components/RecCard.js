@@ -15,9 +15,12 @@ function RecCard({ rec }) {
                 <div className="movie-card">
                     <img src={poster_path} alt={title} />
                 </div>
-                {/*<div className="rec-card-rating">{rating}</div>
-                <button className="rec-card-rate" default='none' onClick={({ handleRecAccept()}) => setAccepted(true)}>Accept</button>*/}
+                <div className="rec-card-rating">{rating}</div>
+
+                <button className="rec-card-rate" default='none' onClick={() => setAccepted(true)}>Accept</button>
+
                 <button className="rec-card-rate" default='none' onClick={() => setAccepted(false)}>Decline</button>
+                
                 <p className="rec-card-comment">{comment}</p>
                 <div className="rec-card-header-right">
                     <button

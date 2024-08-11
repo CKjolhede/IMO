@@ -20,13 +20,13 @@ function Home() {
                 <div className="home-content">
                     <Routes>
                         <Route path="follows" element={<Follows />} />
-                        <Route path="edituser" element={<EditUser />} />
+                        <Route path="edituser"element={<EditUser />} />
                         <Route path="makerec" element={<MakeRec />} />
                         <Route path="carousel" element={<Carousel />} />
                         <Route path="reclist" element={<RecList />} />
                         <Route path="about" element={<About />} />
                         <Route path="contact" element={<Contact />} />
-                        <Route path="profile/:id" element={<Profile />} />
+                        <Route path="profile" element={<Profile />} />
                     </Routes>
                 
                 </div>

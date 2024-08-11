@@ -1,7 +1,7 @@
 import React from "react";
-//import EditUser from "./EditUser";
 import { useNavigate} from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import profilePic from './userDefault.png';
 
 
 function Profile() {
@@ -9,17 +9,16 @@ function Profile() {
     const navigate  = useNavigate();
     
     return (
-        <div classname="Profile">
-            <placeholder className="Profile-pic" src={user.image}></placeholder>
+        <div className="Profile">
             <h1>Account Information</h1>
-            <h2>{user.name}</h2>
+            <img className="profilePic" src ={profilePic} alt="profilePic" />
+            <h2>{user.first_name} {user.last_name}</h2>
             <h2>{user.email}</h2>
             <h2>{user.phone}</h2>
             <h2>{user.zipcode}</h2>
-            <button onClick={() => { navigate("/edituser/" + user.id) }}>
+            <button onClick={() => { navigate(".../home/edituser/") }}>
                 Update Profile
             </button>
-            {/*<EditUser user={user} />*/}
         </div>
     );
 }

@@ -1,21 +1,27 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
 import React, { useState, } from "react";
-//import ContentContainer from "./ContentContainer";
+import { useAuth} from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 //import {  useNavigate} from "react-router-dom";
 //import { Routes, Route } from "react-router-dom";
-//import { useAuth } from "../contexts/AuthContext";
 
-function EditUser({ user: { id, first_name, last_name, email, zipcode, phone}, onEdit }) {
+//TODO   use context to setup Blocked accounts
+//TODO   connect Gravatar or offer MovieStar head shots as choices for avatars
+
+function EditUser() {
+    const { user, setUser } = useAuth()
+    const navigate = useNavigate();
     const [errors, setErrors] = useState([]);
     const formik = useFormik({
         initialValues: {
-            first_name: first_name,
-            last_name: last_name,
-            email: email,
-            zipcode: zipcode,
-            phone: phone,
-            public: false,
+            id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            zipcode: user.zipcode,
+            phone: user.phone,
+            private: user.private,
         },
         validationSchema: yup.object().shape({
             email: yup
@@ -25,14 +31,14 @@ function EditUser({ user: { id, first_name, last_name, email, zipcode, phone}, o
             last_name: yup.string().required("Required"),
             zipcode: yup.string().required("Required").matches(/^\d{5}$/, "Zip code must be 5 digits long"),
             phone: yup.string().required("Required").matches(/^\d{10}$/, "Phone number must be 10 digits long"),
-            public: yup.boolean().required("Required")
+            private: yup.boolean().required("Required")
         }),
         onSubmit: async (values) => {
             console.log(values);
             try {
                 setErrors([]);
                 
-                const response = await fetch("/users/" + id, {
+                const response = await fetch("/users/" + user.id, {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",
@@ -42,13 +48,14 @@ function EditUser({ user: { id, first_name, last_name, email, zipcode, phone}, o
             
                 if (response.ok) {
                     const user = await response.json();
-                    onEdit(user); fetch("/profile/");
+                    setUser(user);
+                    navigate("/home/profile/");
                 } else {
                     const errorData = await response.json();
                     setErrors(errorData);
                 }
             } catch (error) {
-                console.error("Error updating:", error);
+                //console.error("Error updating:", error);
                 setErrors([{ message: "An error occurred while updating profilee. Please try again later." }]);
             }
         }
@@ -127,7 +134,7 @@ function EditUser({ user: { id, first_name, last_name, email, zipcode, phone}, o
                     ) : null}
                 </div>
                 <div id="submit-button">
-                    <button type="submit">
+                    <button type="submit" onClick={formik.onSubmit}className="submit-button">
                         Update
                     </button>
                 </div>

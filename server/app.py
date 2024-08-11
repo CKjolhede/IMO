@@ -86,6 +86,7 @@ class UserById(Resource):
         db.session.commit()
         return make_response(user.to_dict(only=['id', 'first_name', 'last_name', 'email', 'zipcode']), 202)    
     
+    
     def delete(self, id):
         user = User.query.filter(User.id == id).first()
         db.session.delete(user)
@@ -102,13 +103,20 @@ class FollowsByUser(Resource):
         following = [follow.to_dict(only=('id','following_id', 'follower_id','status')) for follow in followings] 
         return make_response(jsonify(following), 200)
 
-class FollowByUserIdFollowingId(Resource):
-    def delete(self, friendUser_id, user_id):
-        follow = Follow.query.filter(Follow.following_id == friendUser_id and Follow.follower_id == user_id).first()
-        db.session.delete(follow)   
-        db.session.commit()
-        return make_response('', 204)
+    def post(self, id):
+            data = request.get_json()
+            try:
+                new_follow = Follow(**data)
+                
+                db.session.add(new_follow)
+                db.session.commit()     
+                return make_response(new_follow.to_dict(), 201) 
+                #return make_response(new_follow.to_dict(only=('following_id', 'follower_id','status')), 201) 
+            except ValueError as e:
+                abort(422, e.args[0])
+            
 
+class FollowByUserIdFollowingId(Resource):
     def patch(self, friendUser_id, user_id):
     
         follow = Follow.query.filter(
@@ -125,12 +133,14 @@ class FollowByUserIdFollowingId(Resource):
         db.session.add(follow)
         db.session.commit()
         return make_response(response, 202)
-
-    def post(self, friendUser_id, user_id):
-        follow = Follow(following_id = friendUser_id, follower_id = user_id, status         = 'pending')
-        db.session.add(follow)
+    
+    def delete(self, friendUser_id, user_id):
+        follow = Follow.query.filter(Follow.following_id == friendUser_id and Follow.follower_id == user_id).first()
+        db.session.delete(follow)   
         db.session.commit()
-        return make_response(follow.to_dict(only=('id','following_id', 'follower_id','status')), 201)
+        return make_response('', 204)
+
+
 
 #*************************************  RECOMMENDATIONS 
 
@@ -210,7 +220,7 @@ class Movies(Resource):
         return make_response(new_movie.to_dict(), 201)
     
 
-@app.route('/movies/search/<string:searchTerm>', methods=['GET'])
+@app.route('/movies/searchMovies<string:searchTerm>', methods=['GET'])
 def search_movies(searchTerm):
     TMDB_API_KEY = "691764fd447005d65f8471166c212648"
 

@@ -9,9 +9,12 @@ import { AuthProvider } from "./contexts/AuthContext";
 const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(
+    
     <Router>
         <AuthProvider>
-            <Routes><Route path="/app" element={<App />} /></Routes>
-                <App />
+            <Routes>
+                <Route path="/app" component={<App />} />
+            </Routes>
+            <App />
         </AuthProvider>
     </Router>);

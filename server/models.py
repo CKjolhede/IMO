@@ -70,7 +70,7 @@ class Follow(db.Model, SerializerMixin):
     following_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     follower_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     status = db.Column(db.String, nullable=True)
-    __table_args__ = (UniqueConstraint('following_id', 'follower_id', name='unique_user_pair'),)
+    #__table_args__ = (UniqueConstraint('following_id', 'follower_id', name='unique_user_pair'),)
 
     #following = db.relationship('User', foreign_keys=[following_id])
     

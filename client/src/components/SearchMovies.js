@@ -1,27 +1,37 @@
 import React, { useState } from "react";
 import axios from "axios";
+import RecCard from "./RecCard";
 
-function SearchMovies() {
+function SearchMovies(removeMovie, recMovie) {
     const [searchTerm, setSearchTerm] = useState("");
+    const [movies, setMovies] = useState([]);
+    const [errors, setErrors] = useState([]);
+    
 
-    const onInputChange = (event) => {
-        setSearchTerm(event.target.value);
+    const handleMovieSearch = async () => {
+    try{
+        const response = await axios.get('/movies/searchMovies', { params: { searchTerm }});
+        setMovies(response.data);
+    } catch (error) {
+        setErrors(error, ...errors)
+        console.error('Unable to fetch movies:', error);
+    }
     };
-
-    const onFormSubmit = async (event) => {
-        event.preventDefault();
-
-        const response = await axios.get(
-            `http://localhost:5555/movies/searchMovies?searchTerm=${searchTerm}`
-        );
-    console.log(response);
-    };
+    
     return (
-        <form onSubmit={onFormSubmit}>
-            <input type="text" value={searchTerm} onChange={onInputChange} />
-            <button type="submit">Search Movies</button>
-        </form>
-    );
+        <div>
+            <h1>Search Movies</h1> 
+            <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search for a movie"/>
+            <button onClick={handleMovieSearch}>Search Movies</button>
+            <ul>
+                {movies?.map((movie) => (
+                    <RecCard key={movie.id} removeMovie={removeMovie} recMovie={recMovie} movie={movie} />
+                ))}
+        </ul>
+        </div>
+);  
+
 };
 
 export default SearchMovies;

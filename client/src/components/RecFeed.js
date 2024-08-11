@@ -26,17 +26,5 @@ function RecFeed() {
         </div>
     );
 }  
-    //const [recFeed, setRecFeed] = useState ([]);
-    //const recFeedHistory = ({ user_input }) => {
-    //        let "user_id" = useAuth.user.id;
-    //        let "delta" = ((datetime.now() - timedelta({ user_input })));
-        
-    //    useEffect(() => {
-    //        res: fetch("/recommendations/:userid:delta", { method: 'GET' })
-    //            .then(res => res.json().to_dict())
-    //            .then(data => setRecFeed(data))
-    //    }, [{ user_input }])
-    //    )
 
-    //};
 export default RecFeed;
