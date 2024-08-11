@@ -61,7 +61,7 @@ class Users(Resource):
 def search_users():
     name = request.args.get('name', '')
     users = User.query.filter(User.first_name.ilike(f'%{name}%') | User.last_name.ilike(f'%{name}%')).all()
-    users_dict = [user.to_dict(only=['id', 'email', 'first_name', 'last_name', 'image', 'private']) for user in users] 
+    users_dict = [user.to_dict(only=['id', 'email', 'first_name', 'last_name', 'phone', 'image', 'private']) for user in users] 
     return make_response(jsonify(users_dict), 200)
 
 #**********************************  USERS BY ID
@@ -71,7 +71,7 @@ class UserById(Resource):
         try:
             user = User.query.filter(User.id == id).first()
             if user is not None:
-                return make_response(user.to_dict(only=['id', 'first_name', 'last_name', 'email', 'zipcode', 'image']), 200)
+                return make_response(user.to_dict(only=['id', 'first_name', 'last_name', 'email', 'phone', 'zipcode', 'image']), 200)
         except NotFound:
             return make_response({'error': 'User not found'}, 404)
     
@@ -84,7 +84,7 @@ class UserById(Resource):
             setattr(user, key, value)
         db.session.add(user)
         db.session.commit()
-        return make_response(user.to_dict(only=['id', 'first_name', 'last_name', 'email', 'zipcode']), 202)    
+        return make_response(user.to_dict(only=['id', 'first_name', 'last_name', 'email', 'phone', 'zipcode']), 202)    
     
     
     def delete(self, id):
