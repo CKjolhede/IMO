@@ -3,7 +3,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData, Column, Integer, String, UniqueConstraint
 from sqlalchemy.orm import validates
-from config import bcrypt, db
+from config import bcrypt, db, TMDB_API_KEY
 from sqlalchemy.ext.hybrid import hybrid_property
 import tmdbsimple as tmdb
 
@@ -20,7 +20,7 @@ class User(db.Model, SerializerMixin):
     last_name = db.Column(db.String, nullable=False)
     phone = db.Column(db.String, nullable=True)
     zipcode = db.Column(db.String, nullable=False)
-    image = db.Column(db.String, nullable=True, default='/images/user_default.jpg')
+    image = db.Column(db.String, nullable=True, default='./userDefault.png')
     private = db.Column(db.Boolean, default=False)
     
     recommendations = db.relationship('Recommendation', back_populates='user')
@@ -74,7 +74,7 @@ class Follow(db.Model, SerializerMixin):
 
     #following = db.relationship('User', foreign_keys=[following_id])
     
-    serializer_rules = ( '-following.following', '-following.follower', )
+    serializer_rules = ( '-follow.user' , '-following.following', '-following.follower', )
     def __repr__(self):
         return f'<Follow ID: {self.id} |Following ID: {self.following.first_name} {self.following.last_name} | Follower ID: {self.follower.first_name} {self.follower.last_name} | Status: {self.status}>'
 
@@ -118,7 +118,7 @@ class Recommendation(db.Model, SerializerMixin):
     user = db.relationship('User', back_populates='recommendations')
     movie = db.relationship('Movie', back_populates='recommendations')
     
-    serialize_rules = ('-user.recommendations', '-movie.recommendations', '-user.followers', '-movie.followers', '-user.following', '-movie.following')
+    serialize_rules = ('-user.recommendations', '-movie.recommendations', '-user.followers', '-user.user_id', '-movie.movie_id', ' -movie.followers', '-user.following', '-movie.following')
     
     def __repr__(self):
         return f'<ID: {self.id} | Movie: {self.movie_id} | User: {self.user_id}> | Comment: {self.comment}>'

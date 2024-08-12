@@ -4,7 +4,9 @@ from werkzeug.exceptions import NotFound, Unauthorized
 from flask_restful import Resource
 from sqlalchemy.exc import MultipleResultsFound
 from flask import request, make_response, jsonify, session, abort
-from config import app, db, api, bcrypt
+from config import app, db, api, bcrypt, TMDB_API_KEY
+import os
+from dotenv import load_dotenv
 import requests
 import ipdb
 
@@ -94,6 +96,41 @@ class UserById(Resource):
         return make_response('deleted', 204)
 
 #************************************  FOLLOWS
+class Follows(Resource):
+    def get(self):
+        follows = [follow.to_dict(only=('id','following_id', 'follower_id','status')) for follow in Follow.query.all()]
+        return make_response(jsonify(follows), 200)
+    
+    def post(self):
+        data = request.get_json()
+        try:
+            new_follow = Follow(**data)
+            
+            db.session.add(new_follow)
+            db.session.commit()     
+            return make_response(new_follow.to_dict(), 201) 
+            #return make_response(new_follow.to_dict(only=('following_id', 'follower_id','status')), 201) 
+        except ValueError as e:
+            abort(422, e.args[0])
+            
+class FollowsById(Resource):    
+    def patch(self, follows_id):
+        follow = Follow.query.filter(Follow.id == follows_id).first()
+        if not follow:
+            return make_response({'error': 'Follow not found'}, 404)
+        form_json = request.get_json()
+        for key, value in form_json.items():
+            setattr(follow, key, value)
+        db.session.add(follow)
+        db.session.commit()
+        return make_response(follow.to_dict(only=('id','following_id', 'follower_id','status')), 202)
+        
+    def delete(self, follows_id):
+        follow = Follow.query.filter(Follow.id == follows_id).first()
+        db.session.delete(follow)   
+        db.session.commit()
+        return make_response('', 204)
+        
 
 class FollowsByUser(Resource):
     def get(self, id):
@@ -134,11 +171,6 @@ class FollowByUserIdFollowingId(Resource):
         db.session.commit()
         return make_response(response, 202)
     
-    def delete(self, friendUser_id, user_id):
-        follow = Follow.query.filter(Follow.following_id == friendUser_id and Follow.follower_id == user_id).first()
-        db.session.delete(follow)   
-        db.session.commit()
-        return make_response('', 204)
 
 
 
@@ -220,28 +252,36 @@ class Movies(Resource):
         return make_response(new_movie.to_dict(), 201)
     
 
-@app.route('/movies/searchMovies<string:searchTerm>', methods=['GET'])
-def search_movies(searchTerm):
-    TMDB_API_KEY = "691764fd447005d65f8471166c212648"
-
+@app.route('/movies/searchMovies', methods=['GET'])
+def search_movies():
+    searchTerm = request.args.get('searchTerm')
+    if not searchTerm:
+        return make_response({'error': 'searchTerm parameter is required'}, 400)
+    load_dotenv()
     base_url = "https://api.themoviedb.org/3/search/movie"
-    
+    headers = {"Authorization": f"Bearer {TMDB_API_KEY}", "accept": "application/json"}
     params = {'query' : searchTerm, 'api_key' : TMDB_API_KEY, 'language' : "en-US", 'page' : 1}
     
+
     response = requests.get(base_url, params=params)
-    data = response.json()
+    if response.status_code != 200:
+        return make_response({'error': 'Unable to fetch movies from TMDB'}, response.status_code)
     
-    if 'results' in data and data['results']:
-        movie = data['results']
-    movies_dict = list(map(lambda movie: movie.to_dict(only=({
-            'movie_id' : movie['id'],
-            'title' : movie['title'],
-            'overview' : movie['overview'],
-            'release_date' : movie['release_date'],
-            'genre' : movie['genre_ids'],
-            'poster_path' : movie['poster_path'],
-            'rating' : movie['vote_average']
-        })), data['results']))
+    data = response.json()
+    if 'results' not in data or not data['results']:
+        return make_response({'error': 'No movies found'}, 404)
+    
+    movies_dict = list(map(lambda movie: {
+        'movie_id': movie['id'],
+        'title': movie['title'],
+        'backdrop_path': movie['backdrop_path'],
+        'overview': movie['overview'],
+        'release_date': movie['release_date'],
+        'genre': movie['genre_ids'],
+        'poster_path': movie['poster_path'],
+        'rating': movie['vote_average']
+    }, data['results']))
+    
     return make_response(jsonify(movies_dict), 200)    
 
 
@@ -249,6 +289,8 @@ def search_movies(searchTerm):
 
 api.add_resource(Users, '/users')
 api.add_resource(UserById, '/users/<int:id>')
+api.add_resource(Follows, '/follows')
+api.add_resource(FollowsById, '/follows/<int:follows_id>')
 api.add_resource(FollowsByUser, '/follows/<int:id>')
 api.add_resource(FollowByUserIdFollowingId, '/follows/<int:user_id>/<int:friendUser_id>')
 api.add_resource(RecommendationsByUserId, '/recommendations/<int:id>')
