@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchMovies from './SearchMovies';
+import MovieSearch from './MovieSearch';
 
 
 function MakeRec() {
@@ -9,7 +9,7 @@ function MakeRec() {
         </div>
         <div>
                     <h2>Search Movies</h2>
-                    <SearchMovies />
+                    <MovieSearch/>
                 </div>
             </>);
 }    

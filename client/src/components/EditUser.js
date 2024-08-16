@@ -1,18 +1,13 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
-import React, { useState, } from "react";
-import { useAuth} from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
-//import {  useNavigate} from "react-router-dom";
-//import { Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
-//TODO   use context to setup Blocked accounts
-//TODO   connect Gravatar or offer MovieStar head shots as choices for avatars
 
 function EditUser() {
-    const { user, setUser } = useAuth()
-    const navigate = useNavigate();
+    const { user, onEdit } = useAuth();
     const [errors, setErrors] = useState([]);
+    
     const formik = useFormik({
         initialValues: {
             id: user.id,
@@ -21,7 +16,6 @@ function EditUser() {
             email: user.email,
             zipcode: user.zipcode,
             phone: user.phone,
-            private: user.private,
         },
         validationSchema: yup.object().shape({
             email: yup
@@ -31,7 +25,6 @@ function EditUser() {
             last_name: yup.string().required("Required"),
             zipcode: yup.string().required("Required").matches(/^\d{5}$/, "Zip code must be 5 digits long"),
             phone: yup.string().required("Required").matches(/^\d{10}$/, "Phone number must be 10 digits long"),
-            private: yup.boolean().required("Required")
         }),
         onSubmit: async (values) => {
             console.log(values);
@@ -45,21 +38,19 @@ function EditUser() {
                     },
                     body: JSON.stringify(values),
                 });
-            
                 if (response.ok) {
                     const user = await response.json();
-                    setUser(user);
-                    navigate("/home/profile/");
+                    onEdit(user);
                 } else {
                     const errorData = await response.json();
                     setErrors(errorData);
                 }
             } catch (error) {
-                //console.error("Error updating:", error);
-                setErrors([{ message: "An error occurred while updating profilee. Please try again later." }]);
+                setErrors([{ message: "An error occurred while updating profile. Please try again later." }]);
             }
         }
     });
+
     return (
         <>
             <form onSubmit={formik.handleSubmit}>
@@ -71,7 +62,8 @@ function EditUser() {
                         placeholder="Email"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.email} />
+                        value={formik.values.email}
+                    />
                     {formik.errors.email && formik.touched.email ? (
                         <p className="error">{formik.errors.email}</p>
                     ) : null}
@@ -100,10 +92,10 @@ function EditUser() {
                         onBlur={formik.handleBlur}
                         value={formik.values.last_name}
                     />
+                    {formik.errors.last_name && formik.touched.last_name ? (
+                        <p className="error">{formik.errors.last_name}</p>
+                    ) : null}
                 </div>
-                {formik.errors.last_name && formik.touched.last_name ? (
-                    <p className="error">{formik.errors.last_name}</p>
-                ) : null}
                 <div className="input-container">
                     <input
                         id="phone"
@@ -119,26 +111,37 @@ function EditUser() {
                     ) : null}
                 </div>
                 <div className="input-container">
-                <input
-                    id="zipcode"
-                    name="zipcode"
-                    type="text"
-                    placeholder="ZipCode"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.zipcode}
+                    <input
+                        id="zipcode"
+                        name="zipcode"
+                        type="text"
+                        placeholder="ZipCode"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.zipcode}
                     />
-                
                     {formik.errors.zipcode && formik.touched.zipcode ? (
                         <p className="error">{formik.errors.zipcode}</p>
                     ) : null}
                 </div>
+                
                 <div id="submit-button">
-                    <button type="submit" onClick={formik.onSubmit}className="submit-button">
+                    <button type="submit" className="submit-button">
                         Update
                     </button>
                 </div>
-                <div id="errors">{errors.error}</div>
-            </form></>)
+                {errors.length > 0 && (
+                    <div id="errors">
+                        {errors.map((error, index) => (
+                            <p key={index} className="error">
+                                {error.message}
+                            </p>
+                        ))}
+                    </div>
+                )}
+            </form>
+        </>
+    );
 }
-export default EditUser
+
+export default EditUser;

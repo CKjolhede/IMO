@@ -1,88 +1,108 @@
 import React, { useState, useEffect } from 'react';
 import SearchUsers from './SearchUsers';
-
 import { useAuth } from '../contexts/AuthContext';
 import FollowsList from './FollowsList';
+import setUsers from './SearchUsers';
+
 
 function Follows() {
     const { user } = useAuth();
     const [follows, setFollows] = useState([]);
-    
 
     useEffect(() => {
-        fetch('/follows/' + user.id, { method: 'GET' })
-            .then(res => res.json())
-            .then(data => setFollows(data));
+        try {
+            const response = async () => await fetch('/follows/' + user.id, { method: 'GET' });
+            if (response.ok) {
+                const data = response.json();
+                console.log(data)
+                setFollows(data);
+            }
+        }
+        catch (error) {
+            console.error('Unable to fetch follows:', error);
+        }
     }, [user.id]);
 
-    
-    const handleRemoveFriend = async (friendUserId, userId) => {
-        const response = await fetch('/follows/' + userId + '/' + friendUserId, { method: 'DELETE' });
-        response.ok ? onRemove(friendUserId) : console.error("Failed to remove friend")
+
+    const handleRemoveFriend = async (follows_Id) => {
+        const response = await fetch('/follows/' + follows_Id, { method: 'DELETE' });
+
+        response.ok ? onRemove(follows_Id) : console.error("Failed to remove friend")
     }
         
     const onRemove = (id) => {
-        console.log(follows)
-        setFollows(follows.filter((follow) => follow.following_id !== id));
+        setFollows(follows?.filter((follow) => follow.id !== id)
+        );
     }
 
     
-    const handleAcceptFriend = async (friendUserId, user_id) => {
+    const handleAcceptFriend = async (follows_id) => {
         try {
+
             const response = await fetch(
-                "/follows/" + user_id + "/" + friendUserId,
+                "/follows/" + follows_id,
                 {
                     method: "PATCH",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ status: "accepted" }),
                 });
-            if (response.ok) {
-                const updatedFollow = await response.json();
-                setFollows(
-                    follows?.map((follow) =>
-                        follow.id === updatedFollow.id ? updatedFollow : follow
-                    ));
-            }
+            const updatedFriend = await response.json();
+            response.ok ? onAccept(updatedFriend) : console.error("Failed to accept friend")
+        
         }
         catch (error) {
             console.error("Failed to accept friend");
         }
+    };
+    
+    const onAccept = (updatedFriend) => {
+        setFollows(follows?.map((follow) => follow.following_id === updatedFriend.id ? updatedFriend : follow));
     }
     
-    const handleFriendRequest = async (friendUserId, user_id,) => {
+    const handleFriendRequest = async (friendUserId, user_id) => {
         try {
-            console.log(friendUserId, user_id);
             const response = await fetch(
-                "/follows/" + user_id, {
+                "/follows/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    following_id: friendUserId,
-                    follower_id: user_id,
+                    "following_id": friendUserId,
+                    "follower_id": user_id,
                     status: "pending",
                 }),
             });
-            if (response.ok) {
-                const newFollow = await response.json();
-                console.log(newFollow);
-                setFollows(newFollow, ...follows);
-            } 
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = response.json();
+            setFollows([data, ...follows]);
+            setUsers([]);
         }
-        catch (error) 
-                {console.error("Failed to send friend request"); }
-        }
+        catch (error) {
+            console.error("Failed to send friend request", error);
+        }};
+    
+        
         return (
             <>
                 <div>
                     <h2>Search for Friends</h2>
-                    <SearchUsers handleRemoveFriend={handleRemoveFriend} handleAcceptFriend={handleAcceptFriend} handleFriendRequest={handleFriendRequest} />
+                    <SearchUsers
+                        handleFriendRequest={handleFriendRequest}
+                    />
                 </div>
-                <h1>Friends</h1>
                 <div>
-                    <FollowsList handleRemoveFriend={handleRemoveFriend} handleAcceptFriend={handleAcceptFriend} handleFriendRequest={handleFriendRequest} friends={follows} />
+                <h1>Friends</h1>
+                    <FollowsList
+                        handleFriendRequest={handleFriendRequest}
+                        handleRemoveFriend={handleRemoveFriend}
+                        handleAcceptFriend={handleAcceptFriend}
+                        friends={follows}
+                    />
                 </div>
             </>
         );
-    }
-
+    
+}
 export default Follows;

@@ -21,7 +21,7 @@ def create_users():
             phone=fake.phone_number(),
             zipcode=fake.zipcode(),
             image= "./userDefault.png",
-            private=rc([True, False]),
+            #private=rc([True, False]),
         )
         users.append(user)
     return users
@@ -36,12 +36,11 @@ def create_movies():
             movie = Movie(
                 tmdb_id=tmdb_id,
                 title=fake.sentence(),
-                poster=fake.image_url(),
                 overview=fake.paragraph(),
                 release_date=fake.date(),
-                genre=fake.word(),
-                director=fake.name(),
-                rating=fake.random_number(1, 10),
+                poster_path=fake.image_url(),
+                #backdrop_path=fake.image_url(),
+                #rating=fake.random_number(1, 10),
             )
             movies.append(movie)
     return movies

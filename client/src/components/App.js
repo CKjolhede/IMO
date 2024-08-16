@@ -1,11 +1,10 @@
-
 import React from "react";
-import { Routes, Route} from "react-router-dom";
 import Home from "./Home";
+import { useAuth } from "../contexts/AuthContext";
+import { Routes, Route } from "react-router-dom";
 import Header from "./Header";
 import LoginFormContainer from "./LoginFormContainer";
 import RegisterContainer from "./RegisterContainer";
-import { useAuth } from "../contexts/AuthContext";
 import NotFound from "./NotFound";
 
 
@@ -17,13 +16,14 @@ function App() {
             {isLoggedIn ? (
                 <>
                     <Routes>
-                        <Route path="/home/*" element={<Home />}/>       
-                        <Route path="/*" element={<NotFound />} />
+                        <Route path="/home/*" element={<Home />} />
+                        <Route path="/*" element={<NotFound /> } />
                     </Routes>
                 </>
             ) : (
                 <>
-                    <Routes>
+                        <Routes>
+                            
                         <Route
                             path="/loginformcontainer"
                             element={<LoginFormContainer />}
@@ -32,7 +32,7 @@ function App() {
                             path="/registercontainer"
                             element={<RegisterContainer />}
                         />
-                        <Route path="/*" component={NotFound} />
+                        <Route path="/*" element={<NotFound />} />
                     </Routes>
                 </>
             )}
@@ -40,6 +40,4 @@ function App() {
     );
 }
 
-
 export default App;
-

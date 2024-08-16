@@ -1,7 +1,6 @@
 // src/contexts/AuthContext.js
 import React, { useContext, useState, createContext, useEffect, } from "react";
 import { useNavigate } from "react-router-dom";
-//import datetime, {timedelta} from "datetime" ;
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -9,8 +8,9 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const [auth, setAuth] = useState({
-        isLoggedIn: false,    });
-    const [user, setUser] = useState({ user: null },);
+        isLoggedIn: false,
+        user: null });
+
     useEffect(() => {
         const checkAuthorization = async () => {
             const response = await fetch("/authorized");
@@ -18,19 +18,23 @@ export const AuthProvider = ({ children }) => {
                 const user = await response.json();
                 setAuth({
                     isLoggedIn: true,
+                    user: user,
                 });
-                setUser({ user: user },);
             }
         };
         checkAuthorization();
     }, []);
+    
+    const onEdit = (user) => {
+        setAuth({ isLoggedIn: true, user: user });
+        navigate('/home/profile/')
+    };
 
     const login = (user) => {
         setAuth({
             isLoggedIn: true,
             user: user,
         });
-        setUser(user);
         navigate('/home');
     };
 
@@ -41,14 +45,14 @@ export const AuthProvider = ({ children }) => {
         if (response.ok) {
             setAuth({
                 isLoggedIn: false,
+                user: null,
             });
-            setUser({ user: null },);
             navigate("/");
         }
     };
 
     return (
-        <AuthContext.Provider value={{ auth, isLoggedIn: auth.isLoggedIn, user: user, login, logout, setUser }}>
+        <AuthContext.Provider value={{ auth, isLoggedIn: auth.isLoggedIn, user: auth.user, login, logout, onEdit }}>
             {children}
         </AuthContext.Provider>
     );

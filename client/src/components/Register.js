@@ -15,8 +15,6 @@ function Register() {
             first_name: "",
             last_name: "",
             zipcode: "",
-            phone: "",
-            private: false,
         },
         validationSchema: yup.object().shape({
             email: yup

@@ -16,20 +16,17 @@ def index():
 
 @app.route("/login", methods=["POST"])
 def login():
-    user = User.query.filter(User.email == request.get_json()["email"]).first()   
+    user = User.query.filter(User.email == request.get_json()["email"]).first()  
     if user and user.authenticate(request.get_json()["password"]):
         session["user_id"] = user.id 
-        return make_response(user.to_dict(only=['id', 'first_name', 'last_name', 'email', 'zipcode','phone', 'password_hash', 'recommendations', 'image', 'private']), 200)
+        return make_response(user.to_dict(only=["id", "first_name", "last_name", "email", "phone", "password_hash", "zipcode", "image"]), 200)
     else:
         raise Unauthorized
-    # 'recommendations', 'phone', 'password_hash', 'zipcode', 'image', followers','private'
-
-
     
 @app.route("/authorized")
 def authorized():
     if user := User.query.filter(User.id == session.get("user_id")).first():
-        return make_response(user.to_dict(only=['id', 'followers', 'following', 'recommendations', 'first_name', 'last_name', 'email', 'phone', 'password_hash', 'zipcode', 'image', 'private']), 200)
+        return make_response(user.to_dict(only=["id", "first_name", "last_name", "email", "phone",  "password_hash", "zipcode", "image"]), 200)
     else:
         raise Unauthorized
 
@@ -48,6 +45,7 @@ class Users(Resource):
 
     def post(self):
         data = request.get_json()
+
         try:
             new_user = User(**data)
             
@@ -63,7 +61,7 @@ class Users(Resource):
 def search_users():
     name = request.args.get('name', '')
     users = User.query.filter(User.first_name.ilike(f'%{name}%') | User.last_name.ilike(f'%{name}%')).all()
-    users_dict = [user.to_dict(only=['id', 'email', 'first_name', 'last_name', 'phone', 'image', 'private']) for user in users] 
+    users_dict = [user.to_dict(only=['id', 'email', 'first_name', 'last_name', 'phone', 'image']) for user in users] 
     return make_response(jsonify(users_dict), 200)
 
 #**********************************  USERS BY ID
@@ -107,9 +105,9 @@ class Follows(Resource):
             new_follow = Follow(**data)
             
             db.session.add(new_follow)
-            db.session.commit()     
-            return make_response(new_follow.to_dict(), 201) 
-            #return make_response(new_follow.to_dict(only=('following_id', 'follower_id','status')), 201) 
+            db.session.commit()
+        
+            return make_response(new_follow.to_dict(only=('id','following_id', 'follower_id','status')), 201)
         except ValueError as e:
             abort(422, e.args[0])
             
@@ -137,21 +135,11 @@ class FollowsByUser(Resource):
         followings = Follow.query.filter(Follow.follower_id == id).all()
         if followings == []:
             return make_response(jsonify("No Followings found"), 404)
-        following = [follow.to_dict(only=('id','following_id', 'follower_id','status')) for follow in followings] 
+        following = [follow.to_dict(
+            #only=('id','following_id', 'follower_id','status')
+            ) for follow in followings] 
         return make_response(jsonify(following), 200)
 
-    def post(self, id):
-            data = request.get_json()
-            try:
-                new_follow = Follow(**data)
-                
-                db.session.add(new_follow)
-                db.session.commit()     
-                return make_response(new_follow.to_dict(), 201) 
-                #return make_response(new_follow.to_dict(only=('following_id', 'follower_id','status')), 201) 
-            except ValueError as e:
-                abort(422, e.args[0])
-            
 
 class FollowByUserIdFollowingId(Resource):
     def patch(self, friendUser_id, user_id):
@@ -181,7 +169,7 @@ class RecommendationsByUserId(Resource):
         recommendations = Recommendation.query.filter(Recommendation.user_id == id).all()
         if recommendations == []:
             raise NotFound
-        recommendations = [recommendation.to_dict(only=('id', 'movie_id', 'user.first_name', 'user.last_name','user.image','comment', 'movie.title', 'movie.poster', 'accepted', 'public')) for recommendation in recommendations]
+        recommendations = [recommendation.to_dict(only=('id', 'movie_id', 'user.first_name', 'user.last_name','user.image', 'movie.title', 'movie.poster', )) for recommendation in recommendations]
         return make_response(recommendations, 200)
 
 class RecommendationsById(Resource):  
@@ -195,7 +183,7 @@ class RecommendationsById(Resource):
 class Recommendations(Resource):
     def get(self):
         recommendations = Recommendation.query.all()
-        recs = [rec.to_dict(only=['id', 'movie_id', 'user.first_name', 'comment', 'movie.title', 'movie.poster', 'accepted', 'public']) for rec in recommendations]
+        recs = [rec.to_dict(only=['id', 'movie_id', 'user.first_name', 'user.last_name', 'movie.title', 'movie.poster']) for rec in recommendations]
         return make_response(recs, 200)
     
     def post(self):
@@ -237,7 +225,8 @@ class MovieById(Resource):
 class Movies(Resource):
     def get(self):
         movies = Movie.query.all()
-        movies = [movie.to_dict() for movie in movies]
+        movies = [movie.to_dict(only=('id', 'tmdb_id', 'title', 'overview', 'release_date', 'poster_path')) for movie in movies]
+        ipdb.set_trace()
         return make_response(movies, 200)
 
     def post(self):
@@ -251,6 +240,36 @@ class Movies(Resource):
         db.session.commit()
         return make_response(new_movie.to_dict(), 201)
     
+#@app.route('/movies/', methods=['GET'])  
+#def get_movies():
+#    page = request.args.get('page', 1, type=int)
+#    if not page:
+#        return make_response({'error': 'page parameter is required'}, 400)
+    
+#    load_dotenv()
+#    api_key = os.getenv('TMDB_API_KEY')
+#    base_url = "https://api.themoviedb.org/3/discover/movie"
+#    headers = {"Authorization": f"Bearer {TMDB_API_KEY}", "accept": "application/json"}
+#    params = {'api_key' : TMDB_API_KEY, 'language' : "en-US", 'page' : page}
+    
+#    response = requests.get(base_url, params=params)
+#    if response.status_code != 200:
+#        return make_response({'error': 'Unable to fetch movies from TMDB'}, response.status_code)
+    
+#    data = response.json()
+#    if 'results' not in data or not data['results']:
+#        return make_response({'error': 'No movies found'}, 404)
+    
+#    movies_dict = list(map(lambda movie: {
+#        'tmdb_id': movie['id'],
+#        'title': movie['title'],
+#        'overview': movie['overview'],
+#        'release_date': movie['release_date'],
+#        'poster_path': f"https://image.tmdb.org/t/p/w500{movie['poster_path']}"
+#    }, data['results']))
+    
+#    return make_response(jsonify(movies_dict), 200)   
+
 
 @app.route('/movies/searchMovies', methods=['GET'])
 def search_movies():
@@ -261,7 +280,6 @@ def search_movies():
     base_url = "https://api.themoviedb.org/3/search/movie"
     headers = {"Authorization": f"Bearer {TMDB_API_KEY}", "accept": "application/json"}
     params = {'query' : searchTerm, 'api_key' : TMDB_API_KEY, 'language' : "en-US", 'page' : 1}
-    
 
     response = requests.get(base_url, params=params)
     if response.status_code != 200:
@@ -289,13 +307,13 @@ def search_movies():
 
 api.add_resource(Users, '/users')
 api.add_resource(UserById, '/users/<int:id>')
-api.add_resource(Follows, '/follows')
+api.add_resource(Follows, '/follows/')
 api.add_resource(FollowsById, '/follows/<int:follows_id>')
 api.add_resource(FollowsByUser, '/follows/<int:id>')
 api.add_resource(FollowByUserIdFollowingId, '/follows/<int:user_id>/<int:friendUser_id>')
 api.add_resource(RecommendationsByUserId, '/recommendations/<int:id>')
 api.add_resource(RecommendationsById, '/recommendations/<int:id>')
-api.add_resource(Recommendations, '/recommendations')   
+api.add_resource(Recommendations, '/recommendations/<int:user_id>/<int:movie_id>')   
 api.add_resource(Movies, '/movies')
 api.add_resource(MovieById, '/movies/<int:id>')
 
