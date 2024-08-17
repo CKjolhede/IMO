@@ -18,7 +18,7 @@ export default function Movies() {
         catch (error) {
             console.error('Unable to fetch movies:', error);
         }   
-    }, [movies]);
+    }, []);
         return (
             <div>
                 <MovieSearch />

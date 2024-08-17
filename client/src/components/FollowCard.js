@@ -3,24 +3,32 @@ import React, {useEffect, useState} from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import avatar from "./userDefault.png";
 
-async function getFriendUser(following_id) {
-        await fetch("/users/" + following_id)
-        .then((response) =>
-                response.json()
-        );
-}
+
 function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendRequest, follow }) {
-    const { user } = useAuth();
-    const [friendUser, setFriendUser] = useState({null: null});
     
+    const { user } = useAuth();
+    const [friendUser, setFriendUser] = useState(null);
+    console.log('followcard follow prop', follow.following_id)
+    console.log('followcard friendUser', friendUser)
     useEffect(() => {
-        const fetchData = async () =>
-        {
-            const data = await getFriendUser(follow.following_id);
-            setFriendUser(data);
+        const fetchFriendUser = async () => {
+            const response = await fetch("/users/" + follow.following_id, { method: 'GET' });
+            console.log('fetchFriendUser', response)
+            if (response.ok) {
+                const friend = await response.json();
+                console.log(friend);
+                setFriendUser(friend);
+            }
         }
-        fetchData();
-    }, [follow.following_id]);
+        if (follow && follow.following_id) {
+            fetchFriendUser();
+        } else {
+            console.error('Following ID is not defined'); // Debug log
+        }
+    }, [follow]);
+    
+
+    
     
     if (follow.status === 'rejected') {
         return (null)
@@ -42,11 +50,10 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
     else if (follow.status === 'requested') {
         return (
             <div className="follow-card">
-                    className="follow-card-link"
                 
                     <img
                         className="follow-card-header-img"
-                        src={friendUser.image}
+                        src={avatar}
                         alt="profile pic"
                     ></img>
 
@@ -102,7 +109,7 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
             <div className="follow-card">
                 <img
                     className="follow-card-header-img"
-                    src={friendUser.image}
+                    src={avatar}
                     alt="profile pic"
                 />
                 <h2>

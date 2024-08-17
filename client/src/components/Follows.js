@@ -2,25 +2,31 @@ import React, { useState, useEffect } from 'react';
 import SearchUsers from './SearchUsers';
 import { useAuth } from '../contexts/AuthContext';
 import FollowsList from './FollowsList';
-import setUsers from './SearchUsers';
-
+//import setName from './SearchUsers';
+//import name from './SearchUsers';
 
 function Follows() {
     const { user } = useAuth();
     const [follows, setFollows] = useState([]);
 
     useEffect(() => {
-        try {
-            const response = async () => await fetch('/follows/' + user.id, { method: 'GET' });
-            if (response.ok) {
-                const data = response.json();
-                console.log(data)
-                setFollows(data);
+        const fetchFollows = async () => {
+            try {
+                const response = await fetch('/follows/' + user.id, { method: 'GET' });
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("fetched follows", data)
+                    setFollows(data);
+                    
+                } else {
+                    console.error('Failed to fetch follows:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching follows:', error);
             }
-        }
-        catch (error) {
-            console.error('Unable to fetch follows:', error);
-        }
+        };
+        
+        fetchFollows();
     }, [user.id]);
 
 
@@ -33,6 +39,7 @@ function Follows() {
     const onRemove = (id) => {
         setFollows(follows?.filter((follow) => follow.id !== id)
         );
+        //setName(name);
     }
 
     
@@ -57,6 +64,7 @@ function Follows() {
     
     const onAccept = (updatedFriend) => {
         setFollows(follows?.map((follow) => follow.following_id === updatedFriend.id ? updatedFriend : follow));
+        //setName(name);
     }
     
     const handleFriendRequest = async (friendUserId, user_id) => {
@@ -75,9 +83,9 @@ function Follows() {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            const data = response.json();
+            const data = await response.json();
             setFollows([data, ...follows]);
-            setUsers([]);
+            //setName(name);
         }
         catch (error) {
             console.error("Failed to send friend request", error);
