@@ -8,7 +8,7 @@ from config import app, db, api, bcrypt, TMDB_API_KEY
 import os
 from dotenv import load_dotenv
 import requests
-import ipdb
+
 
 @app.route('/')
 def index():
@@ -169,7 +169,7 @@ class RecommendationsByUserId(Resource):
         recommendations = Recommendation.query.filter(Recommendation.user_id == id).all()
         if recommendations == []:
             raise NotFound
-        recommendations = [recommendation.to_dict(only=('id', 'movie_id', 'user.first_name', 'user.last_name','user.image', 'movie.title', 'movie.poster', )) for recommendation in recommendations]
+        recommendations = [recommendation.to_dict(only=('id', 'movie.id', 'movie_id', 'user.id','user.first_name', 'user.last_name','user.image', 'movie.title', 'movie.overview', 'movie.release_date', 'movie.backdrop_path', 'movie.poster_path', )) for recommendation in recommendations]
         return make_response(recommendations, 200)
 
 class RecommendationsById(Resource):  
@@ -183,7 +183,7 @@ class RecommendationsById(Resource):
 class Recommendations(Resource):
     def get(self):
         recommendations = Recommendation.query.all()
-        recs = [rec.to_dict(only=['id', 'movie_id', 'user.first_name', 'user.last_name', 'movie.title', 'movie.poster']) for rec in recommendations]
+        recs = [rec.to_dict(only=['id', 'movie_id', 'user.id', 'user.first_name', 'user.last_name', 'movie.title', 'movie.overview', 'movie.release_date', 'movie.backdrop_path', 'movie.poster_path']) for rec in recommendations]
         return make_response(recs, 200)
     
     def post(self):
@@ -214,20 +214,30 @@ class MovieById(Resource):
             setattr(movie, key, value)
         db.session.add(movie)
         db.session.commit()
-        return make_response(movie.to_dict(), 202)    
-    
+        return make_response(movie.to_dict(), 202)
+
     def delete(self, id):
         movie = Movie.query.filter(Movie.id == id).first()
         db.session.delete(movie)
         db.session.commit()
         return make_response('', 204)
+    
+class MovieByTmdbId(Resource):
+    def get(self, tmdb_id):
+        movie = Movie.query.filter(Movie.tmdb_id == tmdb_id).first()
+        if movie == []:
+            return make_response(False, 200)
+        else: 
+            return make_response(movie.to_dict(), 200)  
+    
 
 class Movies(Resource):
     def get(self):
         movies = Movie.query.all()
-        movies = [movie.to_dict(only=('id', 'tmdb_id', 'title', 'overview', 'release_date', 'poster_path')) for movie in movies]
-        ipdb.set_trace()
-        return make_response(movies, 200)
+        fetched_movies = [movie.to_dict(
+            #only=('id', 'movie.tmdb_id', 'movie.title', 'movie.overview', 'movie.release_date', 'movie.poster_path', 'movie.backdrop_path')
+            ) for movie in movies]
+        return make_response(fetched_movies, 200)
 
     def post(self):
         data = request.get_json()
@@ -239,10 +249,59 @@ class Movies(Resource):
         db.session.add(new_movie)
         db.session.commit()
         return make_response(new_movie.to_dict(), 201)
+
+@app.route('/movies/searchMovies', methods=['GET'])
+def search_movies():
+    searchTerm = request.args.get('searchTerm')
+    if not searchTerm:
+        return make_response({'error': 'searchTerm parameter is required'}, 400)
+    load_dotenv()
+    base_url = "https://api.themoviedb.org/3/search/movie"
+    headers = {"Authorization": f"Bearer {TMDB_API_KEY}", "accept": "application/json"}
+    params = {'query' : searchTerm, 'api_key' : TMDB_API_KEY, 'language' : "en-US", 'page' : 1}
+
+    response = requests.get(base_url, params=params)
+    if response.status_code != 200:
+        return make_response({'error': 'Unable to fetch movies from TMDB'}, response.status_code)
     
+    data = response.json()
+    if 'results' not in data or not data['results']:
+        return make_response({'error': 'No movies found'}, 404)
+    
+    movies_dict = list(map(lambda movie: {        'tmdb_id': movie['id'],
+        'title': movie['title'],
+        'backdrop_path': movie['backdrop_path'],
+        'overview': movie['overview'],
+        'release_date': movie['release_date'],
+        'genre': movie['genre_ids'],
+        'poster_path': movie['poster_path'],
+        'rating': movie['vote_average']
+    }, data['results']))
+    
+    return make_response(jsonify(movies_dict), 200)    
+
+api.add_resource(Users, '/users')
+api.add_resource(UserById, '/users/<int:id>')
+api.add_resource(Follows, '/follows/')
+api.add_resource(FollowsById, '/follows/<int:follows_id>')
+api.add_resource(FollowsByUser, '/follows/<int:id>')
+api.add_resource(FollowByUserIdFollowingId, '/follows/<int:user_id>/<int:friendUser_id>')
+api.add_resource(RecommendationsByUserId, '/recommendations/<int:id>')
+api.add_resource(RecommendationsById, '/recommendations/<int:id>')
+api.add_resource(Recommendations, '/recommendations/')   
+api.add_resource(Movies, '/movies')
+api.add_resource(MovieById, '/movies/<int:id>')
+api.add_resource(MovieByTmdbId, '/movies/tmdb/<int:tmdb_id>')
+
+
+if __name__ == '__main__':
+    app.run(port=5555, debug=True)
+
+
+
 #@app.route('/movies/', methods=['GET'])  
 #def get_movies():
-#    page = request.args.get('page', 1, type=int)
+#    page = request.args.get('page', 2, type=int)
 #    if not page:
 #        return make_response({'error': 'page parameter is required'}, 400)
     
@@ -269,55 +328,3 @@ class Movies(Resource):
 #    }, data['results']))
     
 #    return make_response(jsonify(movies_dict), 200)   
-
-
-@app.route('/movies/searchMovies', methods=['GET'])
-def search_movies():
-    searchTerm = request.args.get('searchTerm')
-    if not searchTerm:
-        return make_response({'error': 'searchTerm parameter is required'}, 400)
-    load_dotenv()
-    base_url = "https://api.themoviedb.org/3/search/movie"
-    headers = {"Authorization": f"Bearer {TMDB_API_KEY}", "accept": "application/json"}
-    params = {'query' : searchTerm, 'api_key' : TMDB_API_KEY, 'language' : "en-US", 'page' : 1}
-
-    response = requests.get(base_url, params=params)
-    if response.status_code != 200:
-        return make_response({'error': 'Unable to fetch movies from TMDB'}, response.status_code)
-    
-    data = response.json()
-    if 'results' not in data or not data['results']:
-        return make_response({'error': 'No movies found'}, 404)
-    
-    movies_dict = list(map(lambda movie: {
-        'movie_id': movie['id'],
-        'title': movie['title'],
-        'backdrop_path': movie['backdrop_path'],
-        'overview': movie['overview'],
-        'release_date': movie['release_date'],
-        'genre': movie['genre_ids'],
-        'poster_path': movie['poster_path'],
-        'rating': movie['vote_average']
-    }, data['results']))
-    
-    return make_response(jsonify(movies_dict), 200)    
-
-
-
-
-api.add_resource(Users, '/users')
-api.add_resource(UserById, '/users/<int:id>')
-api.add_resource(Follows, '/follows/')
-api.add_resource(FollowsById, '/follows/<int:follows_id>')
-api.add_resource(FollowsByUser, '/follows/<int:id>')
-api.add_resource(FollowByUserIdFollowingId, '/follows/<int:user_id>/<int:friendUser_id>')
-api.add_resource(RecommendationsByUserId, '/recommendations/<int:id>')
-api.add_resource(RecommendationsById, '/recommendations/<int:id>')
-api.add_resource(Recommendations, '/recommendations/<int:user_id>/<int:movie_id>')   
-api.add_resource(Movies, '/movies')
-api.add_resource(MovieById, '/movies/<int:id>')
-
-
-if __name__ == '__main__':
-    app.run(port=5555, debug=True)
-

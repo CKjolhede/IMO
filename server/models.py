@@ -38,7 +38,7 @@ class User(db.Model, SerializerMixin):
         primaryjoin='follows.c.following_id == User.id', 
         secondaryjoin='follows.c.follower_id == User.id', back_populates='followers')
     
-    serializer_rules = (  '-followers', '-following.following', '-following.followers', '-follows', '-recommendations', '-following.recommendations', '-followers.recommendations', '-recommendations.followings') 
+    serializer_rules = (  '-followers', '-following.following', '-following.followers', '-recommendations.users') 
     
     @validates('password')
     def validate_password(self, key, password):
@@ -59,7 +59,7 @@ class User(db.Model, SerializerMixin):
         return bcrypt.check_password_hash(self._password_hash, password.encode("utf8"))
     
     def __repr__(self):
-        return f'<ID: {self.id} | Name {self.first_name} {self.last_name} | Email {self.email} | {self.following}>>'
+        return f'<ID: {self.id} | Name {self.first_name} {self.last_name} | Email {self.email} | Friends: {self.following}>>'
 
 #####################################################################
 
@@ -83,15 +83,17 @@ class Movie(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     tmdb_id = db.Column(db.String, nullable=True)
     title = db.Column(db.String, nullable=False)
-    overview = db.Column(db.Text, )
+    overview = db.Column(db.Text, nullable=True)
     release_date = db.Column(db.String, nullable=True)
     poster_path = db.Column(db.String, nullable=True, default='/images/heads.jpg')
     backdrop_path = db.Column(db.String, nullable=True)
+    rating = db.Column(db.Float, nullable=True)
+
     
     recommendations = db.relationship('Recommendation', back_populates='movie', cascade="all, delete-orphan")
     
 
-    serialize_rules = ('-recommendations.movie', '-recommendations.user')
+    serialize_rules = ( '-recommendations.user','-recommendations.movie')
     def __repr__(self):
         return f'<Poster: {self.poster_path} | ID: {self.id} | Title: {self.title} | Overview: {self.overview} | Release Date: {self.release_date} >'
     
@@ -109,10 +111,10 @@ class Recommendation(db.Model, SerializerMixin):
     user = db.relationship('User', back_populates='recommendations')
     movie = db.relationship('Movie', back_populates='recommendations')
     
-    serialize_rules = ('-user.recommendations', '-user.followers', '-user.user_id', '-movie.movie_id', ' -movie.followers', '-user.following', '-movie.following')
+    serialize_rules = ('-user.recommendations', '-user.followers', '-user.following','-movie.recommendations' )
     
     def __repr__(self):
-        return f'<ID: {self.id} | Movie: {self.movie_id} | User: {self.user_id}> | Comment: {self.comment}>'
+        return f'<ID: {self.id} | Movie: {self.tmdb_id} | Movie Title: {self.movie.title} | Movie Release Date: {self.movie.release_date} | Movie Poster: {self.movie.poster_path} | Movie Overview: {self.movie.overview} | User: {self.user_id}> '
 
 
 

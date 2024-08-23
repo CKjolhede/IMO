@@ -12,7 +12,7 @@ from models import db, User, Movie, Follow, Recommendation
 
 def create_users():
     users = []
-    for _ in range(50):
+    for _ in range(100):
         user = User(
             first_name=fake.first_name(),
             last_name=fake.last_name(),
@@ -47,18 +47,20 @@ def create_movies():
 
 def create_follows(users):
     follows = []
-    for _ in range(400):
+    for _ in range(1000):
         follow = Follow(
             following_id=rc(users).id,
             follower_id=rc(users).id,
             status=rc(['accepted', 'requested', 'pending']),
         )
+        if follow.following_id == follow.follower_id:
+            continue
         follows.append(follow)
     return follows
 
 def create_recommendations(users, movies):
     recommendations = []
-    for _ in range(300):
+    for _ in range(2000):
         recommendation = Recommendation(
             user_id=rc(users).id,
             movie_id=rc(movies).id
@@ -73,22 +75,22 @@ if __name__ == '__main__':
     with app.app_context():
         print("Starting seed...")
 
-        print("Clearing tables...")
-        User.query.delete()
-        Movie.query.delete()
-        Follow.query.delete()
-        Recommendation.query.delete()
-        print("Tables cleared.")
+        #print("Clearing tables...")
+        #User.query.delete()
+        #Movie.query.delete()
+        #Follow.query.delete()
+        #Recommendation.query.delete()
+        #print("Tables cleared.")
         
         print("Seeding Users")
         users = create_users()
         db.session.add_all(users)
         db.session.commit()
         
-        print("Seeding Movies")        
-        movies = create_movies()
-        db.session.add_all(movies)
-        db.session.commit()
+        #print("Seeding Movies")        
+        #movies = create_movies()
+        #db.session.add_all(movies)
+        #db.session.commit()
         
         print("Seeding Follows")
         follows = create_follows(users)
@@ -96,6 +98,7 @@ if __name__ == '__main__':
         db.session.commit()
         
         print("Seeding Recommendations")
+        movies = Movie.query.all()
         recommendations = create_recommendations(users, movies)
         db.session.add_all(recommendations)
         db.session.commit()
