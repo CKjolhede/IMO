@@ -25,12 +25,12 @@ function SideBar() {
                 >
                     Friends
                 </NavLink>
-                <NavLink
+                {/*<NavLink
                     to="/home/moviesearch"
                     className={({ isActive }) => (isActive ? "active" : "")}
                 >
                     Find Movies
-                </NavLink>
+                </NavLink>*/}
                 <NavLink
                     to="/home/userprofile/"
                     className={({ isActive }) => (isActive ? "active" : "")}

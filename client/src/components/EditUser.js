@@ -27,7 +27,6 @@ function EditUser() {
             phone: yup.string().required("Required").matches(/^\d{10}$/, "Phone number must be 10 digits long"),
         }),
         onSubmit: async (values) => {
-            console.log(values);
             try {
                 setErrors([]);
                 
@@ -63,6 +62,7 @@ function EditUser() {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.email}
+                        autoComplete="on"
                     />
                     {formik.errors.email && formik.touched.email ? (
                         <p className="error">{formik.errors.email}</p>
@@ -77,6 +77,7 @@ function EditUser() {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.first_name}
+                        autoComplete="on"
                     />
                     {formik.errors.first_name && formik.touched.first_name ? (
                         <p className="error">{formik.errors.first_name}</p>
@@ -91,6 +92,7 @@ function EditUser() {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.last_name}
+                        autoComplete="on"
                     />
                     {formik.errors.last_name && formik.touched.last_name ? (
                         <p className="error">{formik.errors.last_name}</p>
@@ -105,6 +107,7 @@ function EditUser() {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.phone}
+                        autoComplete="on"
                     />
                     {formik.errors.phone && formik.touched.phone ? (
                         <p className="error">{formik.errors.phone}</p>
@@ -119,6 +122,7 @@ function EditUser() {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.zipcode}
+                        autoComplete="on"
                     />
                     {formik.errors.zipcode && formik.touched.zipcode ? (
                         <p className="error">{formik.errors.zipcode}</p>

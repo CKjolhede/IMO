@@ -1,26 +1,21 @@
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
 
 
-function MovieCard({ movie, handleRecommendation }) {
-    console.log(movie);
-    const { user } = useAuth();
-    const { id, tmdb_id, title, overview, release_date, poster_path,} = movie;
-    const image_url = 'https://image.tmdb.org/t/p/original' + poster_path;
-    
-    
+function MovieCard({ movie, handleAddRecommendation }) {
+    console.log('moviecard movie', movie)
+    const image_url = 'https://image.tmdb.org/t/p/original' + movie.poster_path;
+
     return (
         <>
-            <div className="movie-card-header"><h1>{title}</h1></div>
+            <div className="movie-card-header"><h1>{movie.title}</h1></div>
             <div className="movie-card-poster">
                 <img src={image_url} alt={'poster'} />
+                <p>{movie.overview}</p>
+                <p>Release Date:{movie.release_date}</p>
+                <p>Rating: {movie.vote_average}</p>
+                <p>TMDB ID: {movie.tmdb_id}</p> 
+                <button onClick={() => handleAddRecommendation(movie)}>Recommend</button>
 
-                <p>{overview}</p>
-                <p>Release Date:{release_date}</p>
-                <p>Movie ID: {id}</p>
-                <p>TMDB ID: {tmdb_id}</p>
-              
-        
             </div>
         </>
     );

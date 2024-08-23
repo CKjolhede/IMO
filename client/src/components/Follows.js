@@ -1,9 +1,10 @@
+//components/Follows.js
 import React, { useState, useEffect } from 'react';
-import SearchUsers from './SearchUsers';
+import UserSearch from './UserSearch';
 import { useAuth } from '../contexts/AuthContext';
 import FollowsList from './FollowsList';
-//import setName from './SearchUsers';
-//import name from './SearchUsers';
+//import setName from './UserSearch';
+//import name from './UserSearch';
 
 function Follows() {
     const { user } = useAuth();
@@ -15,7 +16,6 @@ function Follows() {
                 const response = await fetch('/follows/' + user.id, { method: 'GET' });
                 if (response.ok) {
                     const data = await response.json();
-                    console.log("fetched follows", data)
                     setFollows(data);
                     
                 } else {
@@ -23,29 +23,25 @@ function Follows() {
                 }
             } catch (error) {
                 console.error('Error fetching follows:', error);
-            }
-        };
-        
+                }
+        };      
         fetchFollows();
     }, [user.id]);
 
 
     const handleRemoveFriend = async (follows_Id) => {
         const response = await fetch('/follows/' + follows_Id, { method: 'DELETE' });
-
         response.ok ? onRemove(follows_Id) : console.error("Failed to remove friend")
     }
         
     const onRemove = (id) => {
         setFollows(follows?.filter((follow) => follow.id !== id)
         );
-        //setName(name);
     }
 
     
     const handleAcceptFriend = async (follows_id) => {
         try {
-
             const response = await fetch(
                 "/follows/" + follows_id,
                 {
@@ -64,7 +60,6 @@ function Follows() {
     
     const onAccept = (updatedFriend) => {
         setFollows(follows?.map((follow) => follow.following_id === updatedFriend.id ? updatedFriend : follow));
-        //setName(name);
     }
     
     const handleFriendRequest = async (friendUserId, user_id) => {
@@ -96,7 +91,7 @@ function Follows() {
             <>
                 <div>
                     <h2>Search for Friends</h2>
-                    <SearchUsers
+                    <UserSearch
                         handleFriendRequest={handleFriendRequest}
                     />
                 </div>
@@ -106,7 +101,7 @@ function Follows() {
                         handleFriendRequest={handleFriendRequest}
                         handleRemoveFriend={handleRemoveFriend}
                         handleAcceptFriend={handleAcceptFriend}
-                        friends={follows}
+                        follows={follows}
                     />
                 </div>
             </>

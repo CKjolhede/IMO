@@ -9,7 +9,5 @@ function RegisterContainer () {
 
             </div >
             )
-
 }
-    
 export default RegisterContainer;

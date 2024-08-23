@@ -8,7 +8,10 @@
   --text: hsla(0, 0%, 100%, 0.88);
   --button: #b6070713;
   --aspect-ratio: auto 1 / 1;};
-
+img {
+  max-width: 300px;
+  height: auto;
+  display: block; }
 body {
   display: flex;
   margin: 0;
@@ -94,7 +97,7 @@ body {
   align-content: center;
   /*width: 15vw;*/
   height: auto;
-  /*background-image: url('./posterframe.png');*/
+  
   align-items: start;
   padding: 2rem;
   text-decoration: none;}
@@ -132,7 +135,6 @@ body {
   position: relative;
   width: 300px; /* Adjust the width as needed */
   height: 450px; /* Adjust the height as needed */
-  background-image: url("./components/poster-frame.png");
   background-size: cover;
   background-repeat: no-repeat;;
 }

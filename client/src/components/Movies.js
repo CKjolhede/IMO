@@ -1,35 +1,43 @@
-import React, {useState, useEffect  } from 'react';
+//components/Movies.js
+import React, { useState, useEffect } from 'react';
 import MovieCard from "./MovieCard";
 import MovieSearch from "./MovieSearch";
+import { useAuth } from '../contexts/AuthContext';
+import { useRec } from "../contexts/RecContext";
 
 
-export default function Movies() {
+export default function Movies({handleAddRecommendation}) {
     const [movies, setMovies] = useState([]);
-    
+    const { user } = useAuth();
+    const { noRecMovies } = useRec();
+
     useEffect(() => {
-        try {
-            const response = async () => await fetch('/movies/', { method: 'GET' });
-            if (response.ok) {
-                const data = response.json();
-                console.log(data);
-                setMovies(data);
+        const fetchMovies = async () => {
+            try {
+                const moviefetch = await fetch('/movies', { method: 'GET' });
+                if (moviefetch.ok) {
+                
+                    const data = await moviefetch.json();   
+                    console.log("fetched movies", data);
+                    const sortedMovies = noRecMovies(data);
+                    console.log("fetched movies, sorted",sortedMovies);                     
+                    setMovies(sortedMovies);                    
+                }
+            }
+            catch (error) {
+                console.error('Unable to fetch movies:', error);
             }
         }
-        catch (error) {
-            console.error('Unable to fetch movies:', error);
-        }   
-    }, []);
+        fetchMovies()
+    }, [user.id, noRecMovies]);
+    
         return (
             <div>
-                <MovieSearch />
+                <MovieSearch handleAddRecommendation={handleAddRecommendation}/>
                 <h1>Movies</h1>
-                <ul>
-                    {console.log(movies)
-                    && movies?.map((movie) => (
-                        <MovieCard key={movie.id} movie={movie} />
+                {movies?.map((movie) => (
+                    <MovieCard key={movie.tmdb_id} movie={movie} handleAddRecommendation={handleAddRecommendation}/>
                     ))}
-                </ul>
             </div>
         );
-
 }

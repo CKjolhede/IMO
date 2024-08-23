@@ -8,6 +8,7 @@ from config import app, db, api, bcrypt, TMDB_API_KEY
 import os
 from dotenv import load_dotenv
 import requests
+import ipdb
 
 
 @app.route('/')
@@ -235,7 +236,6 @@ class Movies(Resource):
     def get(self):
         movies = Movie.query.all()
         fetched_movies = [movie.to_dict(
-            #only=('id', 'movie.tmdb_id', 'movie.title', 'movie.overview', 'movie.release_date', 'movie.poster_path', 'movie.backdrop_path')
             ) for movie in movies]
         return make_response(fetched_movies, 200)
 
@@ -253,13 +253,14 @@ class Movies(Resource):
 @app.route('/movies/searchMovies', methods=['GET'])
 def search_movies():
     searchTerm = request.args.get('searchTerm')
+    print('searchTerm:', searchTerm)
     if not searchTerm:
         return make_response({'error': 'searchTerm parameter is required'}, 400)
     load_dotenv()
+    #api_key = os.getenv('TMDB_API_KEY')
     base_url = "https://api.themoviedb.org/3/search/movie"
     headers = {"Authorization": f"Bearer {TMDB_API_KEY}", "accept": "application/json"}
-    params = {'query' : searchTerm, 'api_key' : TMDB_API_KEY, 'language' : "en-US", 'page' : 1}
-
+    params = {'query' : searchTerm, 'api_key' : TMDB_API_KEY, 'language' : "en-US", 'page' : 1} 
     response = requests.get(base_url, params=params)
     if response.status_code != 200:
         return make_response({'error': 'Unable to fetch movies from TMDB'}, response.status_code)
@@ -268,7 +269,8 @@ def search_movies():
     if 'results' not in data or not data['results']:
         return make_response({'error': 'No movies found'}, 404)
     
-    movies_dict = list(map(lambda movie: {        'tmdb_id': movie['id'],
+    movies_dict = list(map(lambda movie: {       
+        'tmdb_id': movie['id'],
         'title': movie['title'],
         'backdrop_path': movie['backdrop_path'],
         'overview': movie['overview'],

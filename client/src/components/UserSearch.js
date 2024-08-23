@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import UserSearchCard from "./UserSearchCard";
 
-const SearchUsers = ({handleFriendRequest}) => {
+const UserSearch = ({handleFriendRequest}) => {
     const [name, setName] = useState("");
     const [users, setUsers] = useState([]);
     const [errors, setErrors] = useState([]);
@@ -36,4 +36,4 @@ const SearchUsers = ({handleFriendRequest}) => {
     );
     };
 
-export default SearchUsers;
+export default UserSearch;

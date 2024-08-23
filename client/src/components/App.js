@@ -24,6 +24,7 @@ function App() {
                 <>
                         <Routes>
                             
+                        {/*<Route path="/*" element={<NotFound />} />*/}
                         <Route
                             path="/loginformcontainer"
                             element={<LoginFormContainer />}
@@ -32,7 +33,6 @@ function App() {
                             path="/registercontainer"
                             element={<RegisterContainer />}
                         />
-                        <Route path="/*" element={<NotFound />} />
                     </Routes>
                 </>
             )}
