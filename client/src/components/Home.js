@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route} from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import SideBar from './SideBar';
 import Follows from "./Follows";
 import EditUser from "./EditUser";
@@ -12,11 +12,9 @@ import MovieSearch from "./MovieSearch";
 import { useAuth } from '../contexts/AuthContext';
 import { useRec } from '../contexts/RecContext';
 
-
 function Home() {
     const { user } = useAuth();
-    const { recommendations, createRecommendation, removeRecommendation } = useRec();
-    
+    const { createRecommendation, removeRecommendation } = useRec();
     
     const check_movie_in_db = async function (tmdb_id) {
         const response = await fetch("/movies/tmdb/" + tmdb_id, { method: 'GET' });
@@ -25,7 +23,8 @@ function Home() {
             console.log("check movie in db", data)
             return data;        
         } else { return false; }
-    }   
+    } 
+    
     const addMovieToDb = async (movie) => {
         try {
         const newmovie = await fetch("/movies", {
@@ -51,8 +50,7 @@ function Home() {
         if (movie_in_db && (movie_in_db.recommendations.length === (0 || movie_in_db.recommendations.filter((recommendation) => recommendation.user_id !== user.id).length)))
             {
                 createRecommendation(movie.id, user.id);
-            }
-        
+            }  
         else { 
             const new_movie = await addMovieToDb(movie);            
             createRecommendation(new_movie.id, user.id);

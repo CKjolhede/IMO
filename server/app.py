@@ -260,8 +260,9 @@ def search_movies():
     #api_key = os.getenv('TMDB_API_KEY')
     base_url = "https://api.themoviedb.org/3/search/movie"
     headers = {"Authorization": f"Bearer {TMDB_API_KEY}", "accept": "application/json"}
-    params = {'query' : searchTerm, 'api_key' : TMDB_API_KEY, 'language' : "en-US", 'page' : 1} 
+    params = {'query' : searchTerm, 'api_key' : TMDB_API_KEY, 'include_adult' : 'true', 'language' : "en-US", 'page' : 1} 
     response = requests.get(base_url, params=params)
+    #ipdb.set_trace()
     if response.status_code != 200:
         return make_response({'error': 'Unable to fetch movies from TMDB'}, response.status_code)
     

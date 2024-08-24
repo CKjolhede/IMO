@@ -14,5 +14,4 @@ function FollowsList({ handleRemoveFriend, handleAcceptFriend, handleFriendReque
     ) 
 }
 
-
 export default FollowsList;

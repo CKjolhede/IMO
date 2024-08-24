@@ -8,15 +8,13 @@ function MovieSearch({handleAddRecommendation}) {
     //const [errors, setErrors] = useState([]);
 
     const handleMovieSearch = async () => {
-        console.log("FE searchTerm:", searchTerm);
-        const response = await axios.get('/movies/searchMovies', { params: { searchTerm } });
-        if (response.ok) {
-            const data = await response.json();
-            console.log("search movie response from be",data)
-            setMovies(data)
-        } else {
-            console.error('Failed to fetch movies:', response.statusText);}
+        const response = await axios.get("/movies/searchMovies", {
+            params: { searchTerm },
+        });
+        //console.log("search movie response", response.data)
+        setMovies(response.data);
     };
+
     
     return (
         <div>
@@ -28,10 +26,20 @@ function MovieSearch({handleAddRecommendation}) {
                 {movies?.map((movie) => (
                     <MovieCard key={movie.tmdb_id} movie={movie} handleAddRecommendation={handleAddRecommendation}/>
                 ))}
-        </ul>
+            </ul>
         </div>
 );  
 
 };
 
 export default MovieSearch;
+
+    //const handleMovieSearch = async () => {
+    //    console.log("FE searchTerm:", searchTerm);
+    //    const response = await axios.get('/movies/searchMovies', { params: { searchTerm } });
+        //if (response.ok) {
+        //    const data = await response.json();
+        //    console.log("search movie response from be",data)
+        //    setMovies(data)
+        //} else {
+        //    console.error('Failed to fetch movies:', response.statusText);}

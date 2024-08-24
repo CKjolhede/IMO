@@ -11,7 +11,7 @@ function Header() {
         <div >
             { isLoggedIn ? (
                 <div className="header">
-                    <Link to={"/"}>
+                    <Link to={"/home"}>
                         {<img className="logo" src={logo} alt="logo" />}
                     </Link>
                     <Link className="button-header-logout" to="/home" onClick={logout}>
@@ -20,7 +20,7 @@ function Header() {
                 </div>
             ) : (
                 <div className="header">
-                    <Link to={"/"}>
+                    <Link to={"/home"}>
                         {<img className="logo" src={logo} alt="logo" />}
                         </Link>
                         <div className="button-header-login"   >

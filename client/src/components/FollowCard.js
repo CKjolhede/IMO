@@ -9,8 +9,6 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
     
     const { user } = useAuth();
     const [friendUser, setFriendUser] = useState("");
-    console.log('followcard follow prop', follow.following_id)
-    console.log('followcard friendUser', friendUser)
     
         useEffect(() => {
             
@@ -18,40 +16,16 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
         await axios.get("/users/" + id).then((response) => {    
             setFriendUser(response.data);
         }); 
-    }
-    
+    } 
     if (!friendUser) { once(follow.following_id) }
-    
         })
-    
-    
-    
-        //useEffect(() => {
-        //    const fetchFriendUser = async () => {
-        //        const response = await fetch("/users/" + follow.following_id, { method: 'GET' });
-        //        console.log('fetchFriendUser', response)
-        //        if (response.ok) {
-        //            const friendUser = await response.json();
-        //            return friendUser
-        //        }
-        //    }
-        //    if (follow && follow.following_id) {
-        //        fetchFriendUser();
-        //    } else {
-        //        console.error('Following ID is not defined'); // Debug log
-        //    }
-        //}, [follow]);
-    
 
-    
-    
         if (follow.status === 'rejected') {
             return (null)
         }
         else if (follow.status === 'accepted') {
             return (
-                <div className='follow-card' >
-            
+                <div className='follow-card' > 
                     <img
                         className="follow-card-profile-pic"
                         src={avatar}
@@ -148,3 +122,19 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
     }
 
 export default FollowCard;
+        //useEffect(() => {
+        //    const fetchFriendUser = async () => {
+        //        const response = await fetch("/users/" + follow.following_id, { method: 'GET' });
+        //        console.log('fetchFriendUser', response)
+        //        if (response.ok) {
+        //            const friendUser = await response.json();
+        //            return friendUser
+        //        }
+        //    }
+        //    if (follow && follow.following_id) {
+        //        fetchFriendUser();
+        //    } else {
+        //        console.error('Following ID is not defined'); // Debug log
+        //    }
+        //}, [follow]);
+    

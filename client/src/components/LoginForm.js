@@ -3,11 +3,9 @@ import { useFormik } from "formik";
 import { useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-
-//function LoginForm({ onSignUp}) {
 function LoginForm() {
     const [errors, setErrors] = useState([]);
-    const {  login } = useAuth();
+    const { login } = useAuth();
     const navigate = useNavigate();
 
     const formik = useFormik({
@@ -19,7 +17,6 @@ function LoginForm() {
             try {
                 setErrors([]);
                 const response = await fetch("/login", {
-                
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -29,7 +26,7 @@ function LoginForm() {
                 if (response.ok) {
                     const user = await response.json();
                     login(user);
-                    navigate("/home/");
+                    navigate("/home");
                 } else {
                     const errorData = await response.json();
                     setErrors(errorData);
@@ -67,7 +64,7 @@ function LoginForm() {
                         id="password"
                         name="password"
                         type="password"
-                        placeholder="Password"
+                        placeholder="password"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.password}

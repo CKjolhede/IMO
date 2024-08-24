@@ -18,13 +18,11 @@ function EditUser() {
             phone: user.phone,
         },
         validationSchema: yup.object().shape({
-            email: yup
-                .string().email("Email must be a valid email address")
-                .required("Required"),
+            email: yup.string().required("Required").matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, "Email must be a valid email address"),
             first_name: yup.string().required("Required"),
             last_name: yup.string().required("Required"),
             zipcode: yup.string().required("Required").matches(/^\d{5}$/, "Zip code must be 5 digits long"),
-            phone: yup.string().required("Required").matches(/^\d{10}$/, "Phone number must be 10 digits long"),
+            phone: yup.string().required("Required").matches(/^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,3})|(\(?\d{2,3}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/, "Phone number must be 10 digits long"),
         }),
         onSubmit: async (values) => {
             try {
@@ -45,7 +43,7 @@ function EditUser() {
                     setErrors(errorData);
                 }
             } catch (error) {
-                setErrors([{ message: "An error occurred while updating profile. Please try again later." }]);
+                setErrors([{ message: "Email already in use. Please use a different email." }]);
             }
         }
     });

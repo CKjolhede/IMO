@@ -12,9 +12,10 @@
     border: 0px;
     background-size: cover;
     justify-content: space-between;
+    gap: 2rem;
 }
 .logo {
-    width: 25vw;
+    width: auto;
     height: 100px;}
 
 .button-header-logout {
