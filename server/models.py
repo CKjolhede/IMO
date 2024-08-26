@@ -20,7 +20,7 @@ class User(db.Model, SerializerMixin):
     last_name = db.Column(db.String, nullable=False)
     phone = db.Column(db.String, nullable=True)
     zipcode = db.Column(db.String, nullable=False)
-    image = db.Column(db.String, nullable=True, default='./userDefault.png')
+    image = db.Column(db.String, nullable=True, default='userDefault.png')
 
     
     recommendations = db.relationship('Recommendation', back_populates='user')

@@ -41,48 +41,48 @@ function LoginForm() {
             }
         },
     });
-    return (<div>
-        <form onSubmit={formik.handleSubmit}>
-            <div>
-                <div className="input-container">
-                    <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="Email"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.email}
-                    />
-                    {formik.errors.email && formik.touched.email ? (
-                        <p className="error">{formik.errors.email}</p>
-                    ) : null}
-                </div>
+    return (
+        <div>
+            <form onSubmit={formik.handleSubmit}>
+                <div className="login-form">
+                    <div className="input-container-email">
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            placeholder="Email"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.email}
+                        />
+                        {formik.errors.email && formik.touched.email ? (
+                            <p className="error">{formik.errors.email}</p>
+                        ) : null}
+                    </div>
 
-                <div className="input-container">
-                    <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder="password"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.password}
-                    />
-                    {formik.errors.password && formik.touched.password ? (
-                        <p className="error">{formik.errors.password}</p>
-                    ) : null}
-                </div>
+                    <div className="input-container-password">
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="password"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.password}
+                        />
+                        {formik.errors.password && formik.touched.password ? (
+                            <p className="error">{formik.errors.password}</p>
+                        ) : null}
+                    </div>
 
-                <div className="input-container">
-                    <button type="submit">Submit</button>
+                    <div className="input-container-submit">
+                        <button type="submit">Submit</button>
+                    </div>
+                    <div id="errors">{errors.error}</div>
                 </div>
-                <div id="errors">{errors.error}</div>
-            </div>
-    
-        </form><button >
-        <NavLink to="../registercontainer">Create an Account</NavLink> 
-        </button>
-    </div> );
+            </form>
+                <NavLink className="input-container-registerlink" to="../registercontainer">Create an Account</NavLink>
+        </div>
+    );
 }
 export default LoginForm;

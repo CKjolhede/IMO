@@ -75,64 +75,65 @@ function Register() {
 
     return (
         <div className="form-container">
-        <form onSubmit={formik.handleSubmit}>
-            <div className="input-container">
-                <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.email}
-                />
-                {formik.errors.email && formik.touched.email ? (
-                    <p className="error">{formik.errors.email}</p>
-                ) : null}
-            </div>
-            <div className="input-container">
-                <input
-                    id="password_hash"
-                    name="password_hash"
-                    type="password"
-                    placeholder="Password"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.password}
-                />
-                {formik.errors.password_haah && formik.touched.password_hash ? (
-                    <p className="error">{formik.errors.password_hash}</p>
-                ) : null}
-            </div>
-            <div className="input-container">
-                <input
-                    id="first_name"
-                    name="first_name"
-                    type="text"
-                    placeholder="First Name"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.first_name}
-                />
-                {formik.errors.first_name && formik.touched.first_name ? (
-                    <p className="error">{formik.errors.first_name}</p>
-                ) : null}
-            </div>
-            <div className="input-container">
-                <input
-                    id="last_name"
-                    name="last_name"
-                    type="text"
-                    placeholder="Last Name"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.last_name}
-                />
-                {formik.errors.last_name && formik.touched.last_name ? (
-                    <p className="error">{formik.errors.last_name}</p>
-                ) : null}
-            </div>
-            <div className="input-container">
+            <form onSubmit={formik.handleSubmit}>
+                <div className="input-container-reg-email">
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="Email"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.email}
+                    />
+                    {formik.errors.email && formik.touched.email ? (
+                        <p className="error">{formik.errors.email}</p>
+                    ) : null}
+                </div>
+                <div className="input-container-reg-password">
+                    <input
+                        id="password_hash"
+                        name="password_hash"
+                        type="password"
+                        placeholder="Password"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.password}
+                    />
+                    {formik.errors.password_haah &&
+                    formik.touched.password_hash ? (
+                        <p className="error">{formik.errors.password_hash}</p>
+                    ) : null}
+                </div>
+                <div className=".input-container-reg-named">
+                    <input
+                        id="first_name"
+                        name="first_name"
+                        type="text"
+                        placeholder="First Name"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.first_name}
+                    />
+                    {formik.errors.first_name && formik.touched.first_name ? (
+                        <p className="error">{formik.errors.first_name}</p>
+                    ) : null}
+                </div>
+                <div className=".input-container-reg-name">
+                    <input
+                        id="last_name"
+                        name="last_name"
+                        type="text"
+                        placeholder="Last Name"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.last_name}
+                    />
+                    {formik.errors.last_name && formik.touched.last_name ? (
+                        <p className="error">{formik.errors.last_name}</p>
+                    ) : null}
+                </div>
+                <div className="input-container">
                 <input
                     id="phone"
                     name="phone"
@@ -146,7 +147,7 @@ function Register() {
                     <p className="error">{formik.errors.phone}</p>
                 ) : null}
             </div>
-            <div className="input-container">
+               <div className="input-container">
                 <input
                     id="zipcode"
                     name="zipcode"
@@ -160,19 +161,23 @@ function Register() {
                     <p className="error">{formik.errors.zipcode}</p>
                 ) : null}
             </div>
-            <div id="submit-button">
-                <button type="submit">Register</button>
-            </div>
-            <div id="errors">
-                {errors.map((error, index) => (
-                    <p key={index} className="error">{error.message}</p>
-                ))}
-            </div>
-        </form>
-        <button className="button-register" >
-            <NavLink to="../loginformcontainer">Already have an Account</NavLink>
+                <div id="submit-button">
+                    <button type="submit">Register</button>
+                </div>
+                <div id="errors">
+                    {errors.map((error, index) => (
+                        <p key={index} className="error">
+                            {error.message}
+                        </p>
+                    ))}
+                </div>
+            </form>
+            <button className="button-register">
+                <NavLink to="../loginformcontainer">
+                    Already have an Account
+                </NavLink>
             </button>
-    </div>
+        </div>
     );
 }
 

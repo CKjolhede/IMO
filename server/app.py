@@ -41,7 +41,7 @@ def logout():
 
 class Users(Resource):
     def get(self):
-        users = [u.to_dict(only=['id', 'first_name', 'last_name', 'email', 'zipcode']) for u in User.query.all()]
+        users = [u.to_dict(only=['id','image', 'first_name', 'last_name', 'email', 'zipcode', 'phone']) for u in User.query.all()]
         return make_response(users, 200)
 
     def post(self):
@@ -56,13 +56,24 @@ class Users(Resource):
             return make_response(new_user.to_dict(), 201) 
         except ValueError as e:
             abort(422, e.args[0])
+            
+@app.route("/update-profile-picture", methods=['PATCH'])
+def update_profile_picture():
+    data = request.json()
+    user_id = data.get('user_id')
+    new_image_url = data.get('image')
+
+    if user := User.query.get(user_id):
+        user.image = new_image_url
+        db.session.commit()
+        return jsonify({'message': 'Profile picture updated successfully'}, 200)
 
 
 @app.route('/users/search', methods=['GET'])
 def search_users():
     name = request.args.get('name', '')
     users = User.query.filter(User.first_name.ilike(f'%{name}%') | User.last_name.ilike(f'%{name}%')).all()
-    users_dict = [user.to_dict(only=['id', 'email', 'first_name', 'last_name', 'phone', 'image']) for user in users] 
+    users_dict = [user.to_dict(only=['id', 'image', 'email', 'first_name', 'last_name', 'phone']) for user in users] 
     return make_response(jsonify(users_dict), 200)
 
 #**********************************  USERS BY ID
@@ -85,7 +96,7 @@ class UserById(Resource):
             setattr(user, key, value)
         db.session.add(user)
         db.session.commit()
-        return make_response(user.to_dict(only=['id', 'first_name', 'last_name', 'email', 'phone', 'zipcode']), 202)    
+        return make_response(user.to_dict(only=['id', 'image','first_name', 'last_name', 'email', 'phone', 'zipcode']), 202)    
     
     
     def delete(self, id):
@@ -260,7 +271,7 @@ def search_movies():
     #api_key = os.getenv('TMDB_API_KEY')
     base_url = "https://api.themoviedb.org/3/search/movie"
     headers = {"Authorization": f"Bearer {TMDB_API_KEY}", "accept": "application/json"}
-    params = {'query' : searchTerm, 'api_key' : TMDB_API_KEY, 'include_adult' : 'true', 'language' : "en-US", 'page' : 1} 
+    params = {'query' : searchTerm, 'api_key' : TMDB_API_KEY, 'include_adult' : 'false', 'language' : "en-US", 'page' : 1} 
     response = requests.get(base_url, params=params)
     #ipdb.set_trace()
     if response.status_code != 200:

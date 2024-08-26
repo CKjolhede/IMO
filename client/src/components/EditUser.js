@@ -1,12 +1,15 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
+import Modal from "./Modal";
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
 
-function EditUser() {
+function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
     const { user, onEdit } = useAuth();
     const [errors, setErrors] = useState([]);
+    const baseUrl = process.env.REACT_APP_BASE_URL;
+    const imageUrl = baseUrl + user.image;
     
     const formik = useFormik({
         initialValues: {
@@ -50,6 +53,17 @@ function EditUser() {
 
     return (
         <>
+            <div>
+            <img
+                    className="profilePic"
+                    src={imageUrl}
+                    name="profilePic"
+                    alt="ProfileImage"
+                    onClick={handleImageClick}
+                    style={{ cursor: "pointer" }}
+                />
+                {isModalOpen && <Modal onSelectImage={handleImageSelect} />}
+            </div>
             <form onSubmit={formik.handleSubmit}>
                 <div className="input-container">
                     <input

@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import avatar from "./userDefault.png";
-//import { useFriendUserRef } from "./useFriendUserRef";
-
-
+import imo_emu from "./images/imo_emu.png";
 function UserSearchCard({
     handleFriendRequest,
     friendUser
@@ -12,16 +9,15 @@ function UserSearchCard({
     const friendUserId = friendUser.id;
     const user_Id = user.id;
     const [searchState, setSearchState] = useState("");
-    
     const handleRequest = () => {
         handleFriendRequest(friendUserId, user_Id);
         setSearchState("pending");
     };
         return (
-            <div className="user-card">
+            <div className="card">
                 <img
                     className="follow-card-header-img"
-                    src={avatar}
+                    src={imo_emu}
                     alt="profile pic"
                 ></img>
                 <div className="follow-card-header">
@@ -29,7 +25,7 @@ function UserSearchCard({
                     <p>Friend Request:{searchState}</p>
                 </div>
                 <button
-                    className="follow-card-header-btn"
+                    className="card button"
                     onClick={handleRequest}                  >
                     Friend Request
                 </button>

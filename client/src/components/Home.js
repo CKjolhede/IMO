@@ -1,21 +1,32 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import SideBar from './SideBar';
+import Footer from './Footer';
 import Follows from "./Follows";
 import EditUser from "./EditUser";
 import Movies from "./Movies";
 import About from "./About";
 import UserProfile from "./UserProfile";
 import Contact from "./Contact";
+import Modal from "./Modal";
 import Recommendations from "./Recommendations";
 import MovieSearch from "./MovieSearch";
 import { useAuth } from '../contexts/AuthContext';
 import { useRec } from '../contexts/RecContext';
+import axios from 'axios';
 
 function Home() {
     const { user } = useAuth();
     const { createRecommendation, removeRecommendation } = useRec();
     
+    const updateUserImage = async (imageUrl) => {
+        try {
+            const response = await axios.patch('/users/' + user.id, { image: imageUrl });
+            console.log('User image updated:', response.data);
+        } catch (error) {
+            console.error('Failed to update user image:', error);
+        }
+    };
+
     const check_movie_in_db = async function (tmdb_id) {
         const response = await fetch("/movies/tmdb/" + tmdb_id, { method: 'GET' });
         if (response.ok) {
@@ -59,22 +70,21 @@ function Home() {
     
         return (
             <div className="home">
-                <div className="home-sidebar">
-                    <SideBar />
-                </div>
                 <div className="home-content">
                     <Routes>
                         <Route path="follows" element={<Follows />} />
-                        <Route path="edituser" element={<EditUser />} />
+                        <Route path="edituser" element={<EditUser updateUserImage={updateUserImage} />} />
                         <Route path="moviesearch" element={<MovieSearch handleAddRecommendation={handleAddRecommendation} removeRecommendation={removeRecommendation} />} />
                         <Route path="movies" element={<Movies handleAddRecommendation={handleAddRecommendation} removeRecommendation={removeRecommendation} />} />
                         <Route path="about" element={<About />} />
                         <Route path="contact" element={<Contact />} />
-                        <Route path="userprofile" element={<UserProfile />} />
+                        <Route path="userprofile" element={<UserProfile updateUserImage={updateUserImage} />} />
+                            <Route path="userprofile/modal" element={<Modal />} />
                         <Route path="recommendations" element={<Recommendations  />} />
                     </Routes>
                 </div>
-            </div>
+                <Footer className="footer" />
+                </div>
         );
     };
 

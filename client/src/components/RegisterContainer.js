@@ -3,8 +3,7 @@ import Register from './Register';
 
 function RegisterContainer () { 
     
-    return (
-            <div>
+    return (<div className="registration-form-container">
             <Register />
 
             </div >

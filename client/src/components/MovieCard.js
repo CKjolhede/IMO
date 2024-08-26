@@ -7,14 +7,14 @@ function MovieCard({ movie, handleAddRecommendation }) {
 
     return (
         <>
-            <div className="movie-card-header"><h1>{movie.title}</h1></div>
+            <div className="card"><h1>{movie.title}</h1></div>
             <div className="movie-card-poster">
                 <img src={image_url} alt={'poster'} />
                 <p>{movie.overview}</p>
                 <p>Release Date:{movie.release_date}</p>
                 <p>Rating: {movie.rating}</p>
                 <p>TMDB ID: {movie.tmdb_id}</p> 
-                <button onClick={() => handleAddRecommendation(movie)}>Recommend</button>
+                <button className=".card button" onClick={() => handleAddRecommendation(movie)}>Recommend</button>
 
             </div>
         </>

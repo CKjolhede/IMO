@@ -3,18 +3,25 @@
     display: flex;
     font: 'Trayan';
     width: 100vw; 
-    height: 100px;       
+    height: 100px;  
+    position: top; 
+    flex-direction: row;
+    float: top;    
     align-items: center;
-    background-image: url("./redcurtains.jpg");
+    background-image: url("./images/redcurtainsL.jpg");
     background-repeat: no-repeat;
-    padding: 0px 100px 0px 0px;
-    margin: 0px;
+    padding: 0px 0px 0px 0px;
+    margin: 0px -25px;
     border: 0px;
+    box-shadow: 0px 3px 3px #101010;  
     background-size: cover;
     justify-content: space-between;
-    gap: 2rem;
 }
 .logo {
+    display: flex;
+    position: fixed top;
+    padding: 20px px 0px 0px;
+    float: left;
     width: auto;
     height: 100px;}
 
@@ -33,7 +40,7 @@
     display: flex;
     font-size: 25px;
     gap: 30px;
-    padding: 50px 0px px 150px;
+    padding: 50px 0px px px;
     align-content: space-between;
     font-family: 'Trayan';
     text-decoration: none;

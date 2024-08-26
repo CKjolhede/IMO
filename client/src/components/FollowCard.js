@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-
 import { useAuth } from '../contexts/AuthContext';
-import avatar from "./userDefault.png";
+import imo_emu from "./images/imo_emu.png";
 
 
 function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendRequest, follow }) {
-    
     const { user } = useAuth();
+    const profilePic = { imo_emu }
     const [friendUser, setFriendUser] = useState("");
     
         useEffect(() => {
@@ -25,24 +24,35 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
         }
         else if (follow.status === 'accepted') {
             return (
-                <div className='follow-card' > 
-                    <img
-                        className="follow-card-profile-pic"
-                        src={avatar}
-                        alt="profile pic"></img>
+                <div className="follow-card">
+                    <img className="card-user-img"
+                        src={profilePic}
+                        alt="profile pic"
+                    ></img>
                     <div className="follow-card-header">
-                        {friendUser.first_name} {friendUser.last_name}
+                        <h2>
+                            {friendUser.first_name} {friendUser.last_name}
+                        </h2>
+                        <h3>{friendUser.email}</h3>
+                        <h3>{friendUser.phone}</h3>
                     </div>
-                    <button className="follow-card-header-btn" onClick={() => { handleRemoveFriend(follow.id) }}>Unfriend</button>
-                </div>)
+                    <button
+                        className="follow-card-header-btn"
+                        onClick={() => {
+                            handleRemoveFriend(follow.id);
+                        }}
+                    >
+                        Unfriend
+                    </button>
+                </div>
+            );
         }
         else if (follow.status === 'requested') {
             return (
                 <div className="follow-card">
-                
                     <img
                         className="follow-card-profile-pic"
-                        src={avatar}
+                        src={profilePic}
                         alt="profile pic"
                     ></img>
 
@@ -73,8 +83,8 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
             return (
                 <div className="follow-card">
                     <img
-                        className="follow-card-profile-pic"
-                        src={avatar}
+                        className="card-profile-pic"
+                        src={profilePic}
                         alt="profile pic"
                     ></img>
                     <h2>
@@ -100,8 +110,8 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
             return (
                 <div className="follow-card">
                     <img
-                        className="follow-card-profile-pic"
-                        src={avatar}
+                        className="card"
+                        src={profilePic}
                         alt="profile pic"
                     />
                     <h2>
@@ -109,12 +119,12 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
                     </h2>
                     <h3>{friendUser.email}</h3>
                     <button
-                        className="follow-card-header-btn"
+                        className="card button"
                         onClick={() => {
                             handleFriendRequest(friendUser.id, user.id);
                         }}
                     >
-                        Friend Request
+                        Request Friendship
                     </button>
                 </div>
             );
@@ -122,19 +132,5 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
     }
 
 export default FollowCard;
-        //useEffect(() => {
-        //    const fetchFriendUser = async () => {
-        //        const response = await fetch("/users/" + follow.following_id, { method: 'GET' });
-        //        console.log('fetchFriendUser', response)
-        //        if (response.ok) {
-        //            const friendUser = await response.json();
-        //            return friendUser
-        //        }
-        //    }
-        //    if (follow && follow.following_id) {
-        //        fetchFriendUser();
-        //    } else {
-        //        console.error('Following ID is not defined'); // Debug log
-        //    }
-        //}, [follow]);
+    
     
