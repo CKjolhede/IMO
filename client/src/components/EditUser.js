@@ -1,61 +1,69 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
-import React, { useState, } from "react";
-//import ContentContainer from "./ContentContainer";
-//import {  useNavigate} from "react-router-dom";
-//import { Routes, Route } from "react-router-dom";
-//import { useAuth } from "../contexts/AuthContext";
+import Modal from "./Modal";
+import React, { useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
-function EditUser({ user: { id, first_name, last_name, email, zipcode, phone}, onEdit }) {
+
+function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
+    const { user, onEdit } = useAuth();
     const [errors, setErrors] = useState([]);
+    const baseUrl = process.env.REACT_APP_BASE_URL;
+    const imageUrl = baseUrl + user.image;
+    
     const formik = useFormik({
         initialValues: {
-            id: id,
-            first_name: first_name,
-            last_name: last_name,
-            email: email,
-            zipcode: zipcode,
-            phone: phone,
-            public: false,
+            id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            zipcode: user.zipcode,
+            phone: user.phone,
         },
         validationSchema: yup.object().shape({
-            email: yup
-                .string().email("Email must be a valid email address")
-                .required("Required"),
+            email: yup.string().required("Required").matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, "Email must be a valid email address"),
             first_name: yup.string().required("Required"),
             last_name: yup.string().required("Required"),
             zipcode: yup.string().required("Required").matches(/^\d{5}$/, "Zip code must be 5 digits long"),
-            phone: yup.string().required("Required").matches(/^\d{10}$/, "Phone number must be 10 digits long"),
-            public: yup.boolean().required("Required")
+            phone: yup.string().required("Required").matches(/^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,3})|(\(?\d{2,3}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/, "Phone number must be 10 digits long"),
         }),
         onSubmit: async (values) => {
-            console.log(values);
             try {
                 setErrors([]);
                 
-                const response = await fetch("/users/" + id, {
+                const response = await fetch("/users/" + user.id, {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(values),
                 });
-            
                 if (response.ok) {
                     const user = await response.json();
-                    onEdit(user); fetch("/profile/");
+                    onEdit(user);
                 } else {
                     const errorData = await response.json();
                     setErrors(errorData);
                 }
             } catch (error) {
-                console.error("Error updating:", error);
-                setErrors([{ message: "An error occurred while updating profilee. Please try again later." }]);
+                setErrors([{ message: "Email already in use. Please use a different email." }]);
             }
         }
     });
+
     return (
         <>
+            <div>
+            <img
+                    className="profilePic"
+                    src={imageUrl}
+                    name="profilePic"
+                    alt="ProfileImage"
+                    onClick={handleImageClick}
+                    style={{ cursor: "pointer" }}
+                />
+                {isModalOpen && <Modal onSelectImage={handleImageSelect} />}
+            </div>
             <form onSubmit={formik.handleSubmit}>
                 <div className="input-container">
                     <input
@@ -65,7 +73,9 @@ function EditUser({ user: { id, first_name, last_name, email, zipcode, phone}, o
                         placeholder="Email"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.email} />
+                        value={formik.values.email}
+                        autoComplete="on"
+                    />
                     {formik.errors.email && formik.touched.email ? (
                         <p className="error">{formik.errors.email}</p>
                     ) : null}
@@ -79,6 +89,7 @@ function EditUser({ user: { id, first_name, last_name, email, zipcode, phone}, o
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.first_name}
+                        autoComplete="on"
                     />
                     {formik.errors.first_name && formik.touched.first_name ? (
                         <p className="error">{formik.errors.first_name}</p>
@@ -93,11 +104,12 @@ function EditUser({ user: { id, first_name, last_name, email, zipcode, phone}, o
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.last_name}
+                        autoComplete="on"
                     />
+                    {formik.errors.last_name && formik.touched.last_name ? (
+                        <p className="error">{formik.errors.last_name}</p>
+                    ) : null}
                 </div>
-                {formik.errors.last_name && formik.touched.last_name ? (
-                    <p className="error">{formik.errors.last_name}</p>
-                ) : null}
                 <div className="input-container">
                     <input
                         id="phone"
@@ -107,32 +119,45 @@ function EditUser({ user: { id, first_name, last_name, email, zipcode, phone}, o
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.phone}
+                        autoComplete="on"
                     />
                     {formik.errors.phone && formik.touched.phone ? (
                         <p className="error">{formik.errors.phone}</p>
                     ) : null}
                 </div>
                 <div className="input-container">
-                <input
-                    id="zipcode"
-                    name="zipcode"
-                    type="text"
-                    placeholder="ZipCode"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.zipcode}
+                    <input
+                        id="zipcode"
+                        name="zipcode"
+                        type="text"
+                        placeholder="ZipCode"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.zipcode}
+                        autoComplete="on"
                     />
-                
                     {formik.errors.zipcode && formik.touched.zipcode ? (
                         <p className="error">{formik.errors.zipcode}</p>
                     ) : null}
                 </div>
+                
                 <div id="submit-button">
-                    <button type="submit">
+                    <button type="submit" className="submit-button">
                         Update
                     </button>
                 </div>
-                <div id="errors">{errors.error}</div>
-            </form></>)
+                {errors.length > 0 && (
+                    <div id="errors">
+                        {errors.map((error, index) => (
+                            <p key={index} className="error">
+                                {error.message}
+                            </p>
+                        ))}
+                    </div>
+                )}
+            </form>
+        </>
+    );
 }
-export default EditUser
+
+export default EditUser;

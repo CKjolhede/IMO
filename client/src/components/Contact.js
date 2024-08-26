@@ -1,6 +1,4 @@
 import React from "react";
-import { NavLink, Link } from "react-router-dom";
-import {Router, Route } from "react-router-dom";
 
 
 function Contact() {
@@ -10,5 +8,6 @@ function Contact() {
         </div>
     );
 }
+
 
 export default Contact;

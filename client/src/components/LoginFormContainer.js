@@ -1,23 +1,13 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import LoginForm from './LoginForm';
+import logincurtain from '../components/images/logincurtain.png';
 
-function LoginFormContainer( {setReg} ) { 
-    const navigate = useNavigate();
+function LoginFormContainer() { 
     return (
-            <div>
+        <div className="login-form-container">
             <LoginForm />
-            <button
-                className="login-btn"
-                onClick={() => {
-                    setReg();
-                    navigate("/home");
-                }}
-            >
-                Create an Account
-            </button>   
-            </div >
-            )
+        </div>
+    );
 }
-    
+
 export default LoginFormContainer;

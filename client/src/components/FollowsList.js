@@ -1,22 +1,17 @@
-import React from 'react';
-import FollowCard from './FollowCard';
+import React from "react";
+import FollowCard from "./FollowCard";
+// TODO: Add frame of suggested friends. Algo simply users 2 or 3 degrees of separation through current friends
 
-import { useNavigate } from 'react-router-dom';
-
-function FollowsList({ follows }){
-    
+function FollowsList({ handleRemoveFriend, handleAcceptFriend, handleFriendRequest, follows }) {
     return (
-        <>
-        <h2>Current Followers</h2>
-        <div><ul className="FollowsList">
-                <li className="FollowsCard">
-                    {follows.map((follow) =>
-                        (<FollowCard key={follow.id} follow={follow} />)
-                    )}</li>
-            </ul>
+
+        <div className="FriendList">
+            {follows?.map((friend) => (
+                <FollowCard key={friend.id} handleRemoveFriend={handleRemoveFriend} handleAcceptFriend={handleAcceptFriend} handleFriendRequest={handleFriendRequest} follow={friend} />
+            ))
+            }
         </div>
-        </>
-    );
-}   
+    ) 
+}
 
 export default FollowsList;

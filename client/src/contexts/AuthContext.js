@@ -1,8 +1,6 @@
 // src/contexts/AuthContext.js
 import React, { useContext, useState, createContext, useEffect, } from "react";
-import { useNavigate } from
-    "react-router-dom";
-//import datetime, {timedelta} from "datetime" ;
+import { useNavigate } from "react-router-dom";
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -11,25 +9,7 @@ export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const [auth, setAuth] = useState({
         isLoggedIn: false,
-        user: null
-    });
-    
-    
-    //const [recFeed, setRecFeed] = useState ([]);
-    //const recFeedHistory = ({ user_input }) => {
-    //        let "user_id" = useAuth.user.id;
-    //        let "delta" = ((datetime.now() - timedelta({ user_input })));
-        
-    //    useEffect(() => {
-    //        res: fetch("/recommendations/:userid:delta", { method: 'GET' })
-    //            .then(res => res.json().to_dict())
-    //            .then(data => setRecFeed(data))
-    //    }, [{ user_input }])
-    //    )
-
-    //};
-
-
+        user: null });
 
     useEffect(() => {
         const checkAuthorization = async () => {
@@ -38,19 +18,24 @@ export const AuthProvider = ({ children }) => {
                 const user = await response.json();
                 setAuth({
                     isLoggedIn: true,
-                    user: user
+                    user: user,
                 });
             }
         };
         checkAuthorization();
     }, []);
+    
+    const onEdit = (user) => {
+        setAuth({ isLoggedIn: true, user: user });
+        navigate('/home/profile/')
+    };
 
     const login = (user) => {
         setAuth({
             isLoggedIn: true,
-            user: user
+            user: user,
         });
-        navigate('/home/');
+        navigate('/home');
     };
 
     const logout = async () => {
@@ -60,14 +45,14 @@ export const AuthProvider = ({ children }) => {
         if (response.ok) {
             setAuth({
                 isLoggedIn: false,
-                user: null
+                user: null,
             });
-            navigate("/app");
+            navigate("/");
         }
     };
 
     return (
-        <AuthContext.Provider value={{ auth, isLoggedIn: auth.isLoggedIn, user: auth.user, login, logout }}>
+        <AuthContext.Provider value={{ auth, isLoggedIn: auth.isLoggedIn, user: auth.user, login, logout, onEdit }}>
             {children}
         </AuthContext.Provider>
     );

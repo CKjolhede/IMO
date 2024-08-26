@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import RecCard from '../contexts/RecCard';
+import RecCard from './RecCard';
+
 
 
 function RecFeed() {
@@ -14,9 +15,7 @@ function RecFeed() {
             setRecFeed(data);
         }
     }, [user.id]);
-
-
-
+    
     return (
         <div>
             <ul>
@@ -26,6 +25,6 @@ function RecFeed() {
                 />)</li>)}</ul>   
         </div>
     );
-}
+}  
 
 export default RecFeed;

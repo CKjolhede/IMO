@@ -1,11 +1,12 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, Column, Integer, String, UniqueConstraint
 from sqlalchemy.orm import validates
-from config import bcrypt, db
+from config import bcrypt, db, TMDB_API_KEY
 from sqlalchemy.ext.hybrid import hybrid_property
 import tmdbsimple as tmdb
+
 
 
 
@@ -19,8 +20,8 @@ class User(db.Model, SerializerMixin):
     last_name = db.Column(db.String, nullable=False)
     phone = db.Column(db.String, nullable=True)
     zipcode = db.Column(db.String, nullable=False)
-    image = db.Column(db.String, nullable=True, default='/images/user_default.jpg')
-    private = db.Column(db.Boolean, default=False)
+    image = db.Column(db.String, nullable=True, default='userDefault.png')
+
     
     recommendations = db.relationship('Recommendation', back_populates='user')
     
@@ -37,7 +38,7 @@ class User(db.Model, SerializerMixin):
         primaryjoin='follows.c.following_id == User.id', 
         secondaryjoin='follows.c.follower_id == User.id', back_populates='followers')
     
-    serializer_rules = ( '-following', '-followers', '-recommendations', '-recommendations', '-follows' ) 
+    serializer_rules = (  '-followers', '-following.following', '-following.followers', '-recommendations.users') 
     
     @validates('password')
     def validate_password(self, key, password):
@@ -48,7 +49,7 @@ class User(db.Model, SerializerMixin):
     @hybrid_property
     def password_hash(self):
         return self._password_hash
-    0
+    
     @password_hash.setter
     def password_hash(self, password):
         password_hash = bcrypt.generate_password_hash(password.encode("utf8"))
@@ -58,7 +59,7 @@ class User(db.Model, SerializerMixin):
         return bcrypt.check_password_hash(self._password_hash, password.encode("utf8"))
     
     def __repr__(self):
-        return f'<ID: {self.id} | Name {self.first_name} {self.last_name} | Email {self.email}>'
+        return f'<ID: {self.id} | Name {self.first_name} {self.last_name} | Email {self.email} | Friends: {self.following}>>'
 
 #####################################################################
 
@@ -69,9 +70,10 @@ class Follow(db.Model, SerializerMixin):
     following_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     follower_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     status = db.Column(db.String, nullable=True)
-
+    
+    serializer_rules = ( '-following.following', '-following.follower', )
     def __repr__(self):
-        return f'<Following ID: {self.following.first_name} {self.following.last_name} | Follower ID: {self.follower.first_name} {self.follower.last_id} | Status: {self.status}>'
+        return f'<Follow ID: {self.id} |Following ID: {self.following_id} | Follower ID: {self.follower_id} {self.follower.last_name} | Status: {self.status}>'
 
 #####################################################################
 
@@ -79,21 +81,21 @@ class Movie(db.Model, SerializerMixin):
     __tablename__ = 'movies'
     
     id = db.Column(db.Integer, primary_key=True)
-    tmdb_id = db.Column(db.String, nullable=True, unique=True)
+    tmdb_id = db.Column(db.String, nullable=True)
     title = db.Column(db.String, nullable=False)
-    overview = db.Column(db.Text, nullable=False)
+    overview = db.Column(db.Text, nullable=True)
     release_date = db.Column(db.String, nullable=True)
-    poster= db.Column(db.String, nullable=True, default='/images/heads.jpg')
-    genre = db.Column(db.String, nullable=True)
-    director = db.Column(db.String, nullable=True)
-    rating = db.Column(db.Integer, nullable=True)
+    poster_path = db.Column(db.String, nullable=True, default='/images/heads.jpg')
+    backdrop_path = db.Column(db.String, nullable=True)
+    rating = db.Column(db.Float, nullable=True)
+
     
     recommendations = db.relationship('Recommendation', back_populates='movie', cascade="all, delete-orphan")
     
-    serialize_rules = ('-recommendations.movie', '-recommendations.user', '-recommendations.media_type', '-recommendations.accepted', '-recommendations.public', '-recommendations.comment')
 
+    serialize_rules = ( '-recommendations.user','-recommendations.movie')
     def __repr__(self):
-        return f'<Poster: {self.poster} | ID: {self.id} | Title: {self.title} | Director: {self.director} | Overview: {self.overview} | Release Date: {self.release_date} | Genre: {self.genre} | Rating: {self.rating}>'
+        return f'<Poster: {self.poster_path} | ID: {self.id} | Title: {self.title} | Overview: {self.overview} | Release Date: {self.release_date} >'
     
 #####################################################################
 
@@ -105,15 +107,29 @@ class Recommendation(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
-    accepted = db.Column(db.Boolean, default=False)
-    public = db.Column(db.Boolean, default=True)
-    comment = db.Column(db.Text, nullable=True)
-    media_type = db.Column(db.String, nullable=False, default='movie')
     
     user = db.relationship('User', back_populates='recommendations')
     movie = db.relationship('Movie', back_populates='recommendations')
     
-    serialize_rules = ('-user.recommendations', '-movie.recommendations', '-user.followers', '-movie.followers', '-user.following', '-movie.following')
+    serialize_rules = ('-user.recommendations', '-user.followers', '-user.following','-movie.recommendations' )
     
     def __repr__(self):
-        return f'<ID: {self.id} | Movie: {self.movie_id} | User: {self.user_id}> | Comment: {self.comment}>'
+        return f'<ID: {self.id} | Movie: {self.tmdb_id} | Movie Title: {self.movie.title} | Movie Release Date: {self.movie.release_date} | Movie Poster: {self.movie.poster_path} | Movie Overview: {self.movie.overview} | User: {self.user_id}> '
+
+
+
+
+
+
+    #private = db.Column(db.Boolean, nullable=True)
+
+    #comment = db.Column(db.Text, nullable=True)
+    ##//media_type = db.Column(db.String, nullable=False, default='movie')
+
+
+
+    #'-recommendations.followers', '-recommendations.following', '-recommendations.user.followers', '-recommendations.user.following', '-recommendations.user.recommendations', '-recommendations.user.follows', '-recommendations.user.follows'
+
+    #__table_args__ = (UniqueConstraint('following_id', 'follower_id', name='unique_user_pair'),)
+
+    #following = db.relationship('User', foreign_keys=[following_id, follower_id], back_populates='follows')

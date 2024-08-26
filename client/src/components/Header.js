@@ -1,40 +1,49 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import logo from './imo_logo.gif';
-
-
+import logo from './imo_logo.gif'
+import './Header.css';
 
 function Header() {
-    const { user, logout } = useAuth();
-    //const [ newuser, setNewUser] = useState(false);
-    //const navigate = useNavigate();
+    const { isLoggedIn, logout } = useAuth();
     
     return (
-        <div className="Header">
-            {user ? (
-                <div className="logged-in-header">
-                    <img className="logo" src={logo} alt="logo" />
-
-                    <Link to="/home" onClick={logout}>
+        <div>
+            {isLoggedIn ? (
+                <div className="header">
+                    <Link to={"/home"}>
+                        {<img className="logo" src={logo} alt="logo" />}
+                    </Link>
+                    <NavLink
+                        to="/home/userprofile/"
+                        className={({ isActive }) => (isActive ? "active" : "")}
+                    >
+                        Profile
+                    </NavLink>
+                    <Link
+                        className="button-header-logout"
+                        to="/home"
+                        onClick={logout}
+                    >
                         Logout
                     </Link>
                 </div>
             ) : (
-                <div className="no-session-header">
-                    <img className="logo" src={logo} alt="logo" />
-                    <p className="header-text">IMO is the greatest</p>
-                    <div className="login-links">
-                        {<Link to="/home">Log In</Link>}
-                        {/*<button className="button-login"
-                                onClick={setNewUser(false)}></button>*/}
-                    </div>
-                    <div className="login-links">
-                        <Link to="/home">Sign Up</Link>
-                        {/*<button
-                            className="button-login"
-                            onClick={setNewUser(true)}
-                        ></button>*/}
+                <div className="header">
+                    <Link to={"/home"}>
+                        {<img className="logo" src={logo} alt="logo" />}
+                    </Link>
+                    <div className="button-header-login">
+                        <Link
+                            className="button-header"
+                            to="/loginformcontainer"
+                        >
+                            Log In
+                        </Link>
+
+                        <Link className="button-header" to="registercontainer">
+                            Sign Up
+                        </Link>
                     </div>
                 </div>
             )}
