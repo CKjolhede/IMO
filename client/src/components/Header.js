@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import logo from './imo_logo.gif'
 import './Header.css';
@@ -14,12 +14,12 @@ function Header() {
                     <Link to={"/home"}>
                         {<img className="logo" src={logo} alt="logo" />}
                     </Link>
-                    <NavLink
+                    {/*<NavLink
                         to="/home/userprofile/"
                         className={({ isActive }) => (isActive ? "active" : "")}
                     >
                         Profile
-                    </NavLink>
+                    </NavLink>*/}
                     <Link
                         className="button-header-logout"
                         to="/home"
@@ -33,7 +33,7 @@ function Header() {
                     <Link to={"/home"}>
                         {<img className="logo" src={logo} alt="logo" />}
                     </Link>
-                    <div className="button-header-login">
+                    {/*<div className="button-header-login">
                         <Link
                             className="button-header"
                             to="/loginformcontainer"
@@ -44,7 +44,7 @@ function Header() {
                         <Link className="button-header" to="registercontainer">
                             Sign Up
                         </Link>
-                    </div>
+                    </div>*/}
                 </div>
             )}
         </div>

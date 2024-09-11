@@ -27,15 +27,15 @@ export const AuthProvider = ({ children }) => {
     
     const onEdit = (user) => {
         setAuth({ isLoggedIn: true, user: user });
-        navigate('/home/profile/')
+        navigate('/home/userprofile/')
     };
 
     const login = (user) => {
         setAuth({
             isLoggedIn: true,
-            user: user,
+            user: user
         });
-        navigate('/home');
+        navigate('/home/userprofile/');
     };
 
     const logout = async () => {

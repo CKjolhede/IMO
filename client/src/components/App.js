@@ -6,7 +6,7 @@ import Header from "./Header";
 import LoginFormContainer from "./LoginFormContainer";
 import RegisterContainer from "./RegisterContainer";
 import NotFound from "./NotFound";
-
+import UserProfile from "./UserProfile";
 
 function App() {
     const { isLoggedIn } = useAuth();
@@ -19,10 +19,11 @@ function App() {
                         <Route path="/home/*" element={<Home />} />
                         <Route path="/*" element={<NotFound /> } />
                     </Routes>
+                    <UserProfile />
                 </>
             ) : (
                 <>
-                        <Routes>
+                    <Routes>
                             
                         {/*<Route path="/*" element={<NotFound />} />*/}
                         <Route
@@ -33,7 +34,8 @@ function App() {
                             path="/registercontainer"
                             element={<RegisterContainer />}
                         />
-                    </Routes>
+                        </Routes>
+                    <LoginFormContainer />
                 </>
             )}
         </>
