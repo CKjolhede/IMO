@@ -7,7 +7,6 @@ function LoginForm() {
     const [errors, setErrors] = useState([]);
     const { login } = useAuth();
     const navigate = useNavigate();
-
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -43,45 +42,49 @@ function LoginForm() {
     });
     return (
         <div className="login-form-container" >
-            <div className="login-form">
-                <h2 className="login-header">Box Office</h2>
-                <form onSubmit={formik.handleSubmit}>
+            {/*<div className="login-form"*/}
+            <div>
+                <form className="login-form" onSubmit={formik.handleSubmit}>
+                        <h2 className="login-header">Box Office</h2>
                     
-                <div className="input-email">E-mail
-                    <input className="email-input"
-                        id="email"
-                        name="email"
-                        type="email"
-                        //placeholder="Email"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.email}
-                    />
-                    {formik.errors.email && formik.touched.email ? (
-                        <p className="error">{formik.errors.email}</p>
-                    ) : null}
-                <div>
-                    <div className="input-container-password">Password
+                    <div className="input-email">E-mail
+                    {/*<div>E-mail*/}
                         <input className="email-input"
-                        id="password"
-                        name="password"
-                        type="password"
-                        //placeholder="Password"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.password}
-                    />
-                    {formik.errors.password && formik.touched.password ? (
-                        <p className="error">{formik.errors.password}</p>
-                    ) : null}
-                </div>
-                <div className="input-container-submit" >   
-                <button className="submit-button" type="submit">Admit One</button></div>
-                <div id="errors">{errors.error}</div>
-                        </div>
-                        </div>
+                            id="email"
+                            name="email"
+                            type="email"
+                            //placeholder="Email"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.email}
+                        />
+                        {formik.errors.email && formik.touched.email ? (
+                            <p className="error">{formik.errors.email}</p>
+                        ) : null}
+                    </div>
+                    <div className="input-container-password">Password
+                    {/*<div>Password*/}
+                        <input className="email-input"
+                            id="password"
+                            name="password"
+                            type="password"
+                            //placeholder="Password"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.password}
+                        />
+                        {formik.errors.password && formik.touched.password ? (
+                            <p className="error">{formik.errors.password}</p>
+                        ) : null}
+                    </div>
+                    <div className="input-container-submit">                 
+                        <button className="submit-button" type="submit">Admit One</button>
+                    </div>
+                    <div id="errors">{errors.error}
+                    </div>
+                    <div><NavLink className="input-container-registerlink" to="../registercontainer">Create an Account</NavLink></div>
                 </form>
-                <NavLink className="input-container-registerlink" to="../registercontainer">Create an Account</NavLink>
+                
             </div>
         </div>
     );

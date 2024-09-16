@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import logo from './imo_logo.gif'
-import './Header.css';
+
 
 function Header() {
     const { isLoggedIn, logout } = useAuth();

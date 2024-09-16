@@ -22,33 +22,22 @@ body {
     background-image: url("components/images/theater_dark_shadow.png"),
         url("./components/images/redcurtainsL.jpg"),
         url("./components/images/redcurtainsR.jpg");
-    /*z-index: 15, 2, 1;*/
-    background-repeat: no-repeat, no-repeat, no-repeat;
+    z-index: -1, -1, -2;
+    background-repeat: repeat-x, no-repeat, no-repeat;
     background-position: center bottom, center left, center right;
-    margin: 0, 0, 0;
-    padding: 0, 0, 0;
+    margin: 0, 0;
+    padding: 0, 0;
     overflow: hidden, hidden, hidden;
     background-attachment: fixed, fixed, fixed;
-    background-size: 100% 100%, 50% 100%, 50% 100%;
+    background-size: 50% 600px, 50% 100%, 50% 100%;
     font-family: -apple-system, BlinkMacSystemFont, "Trajan", "Trajan Pro",
         "Trayan", "Segoe UI", "Showtime", "Roboto", "Oxygen", "Ubuntu",
         "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-    width: 100%, 50%, 50%;
+    width: 50%, 50%, 50%;
     height: 100%, 100%, 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
-.login-header {
-    display: flex;
-    font-size: 50px;
-    padding: 90px 0px 0px 0px;
-    /*border: 0px;*/
-    margin: 0;
-    font-family: "Helvetica", arial, helvetica, sans-serif;
-    color: darkred;
-}
-
 ul {
   position: fixed;
   bottom: 0;
@@ -88,120 +77,6 @@ li:first-child {
     width: 100%;
 }
 
-
-
-.login-form-container {
-    display: inline-flex;
-    position: fixed;
-    align-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
-    flex-direction: column;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: 500px 400px;
-    background-size: 1000px 500px, auto;
-    font-family: "Trayan";
-    z-index: -1;}
-
-.login-form {
-    display: flex;
-    background-image: url("components/images/loginmarquee.png");
-    background-repeat:  no-repeat;
-    background-position: center;
-    background-attachment: fixed;
-    background-size: 1000px, 600px;
-    align-content: center;
-    align-items: center;
-    width: 50%;
-    height: 100vh;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    color: var(--text);
-    font-family: "Helvetica";
-}
-
-/*.img-login-gif {
-    display: flex;
-    object-fit: cover;
-    align-content: center;
-    position: relative fixed center;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding:0px 0px 0px 0px;
-    color: var(--text);
-    font-family: "Trayan";
-    z-index: 20;}*/
-    
-
-.input-email {
-    display: flex;
-    padding: 0px 0px 0px 0px;
-    flex-direction: column;
-    font-size: 18px;
-    align-content: center;
-    align-items: left;
-    flex-direction: column;
-    column-count: 1;
-    color: var(--bg);
-    font-family: "Trayan";
-    z-index: 24; }
-
-.input-container-password {
-    display: inline-flex;
-    align-content: center;
-    padding: 0px 0px 0px 0px;
-    position: relative;
-    align-items: left;
-    background-position: center;
-    font-size: 18px;
-    background-repeat: no-repeat;
-    flex-direction: column;
-    column-count: 1;
-    color: var(--bg);
-    font-family: "Trayan";
-    z-index: 24; }
-
-.email-input {
-    font-size: 20px;
-    height: 25px;
-    width: 300px;
-    padding: 5px;
-}
-.submit-button {
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--bg);
-    background-color: light;
-    height: 30px;
-    flex-wrap: nowrap;
-    width: 150px;
-    padding: 5px;
-    border-radius: 5px;}
-
-.input-container-submit {
-  position: flex;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 10px;
-  font-size: 20px;
-}
-.input-container-registerlink {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    flex-direction: column;
-    column-count: 1;
-    font-size: 20px;
-    z-index: 24;
-    font-family: "Trayan";
-    color: var(--bg);
-}
 .input-container-reg-email {
     align-content: center;
     padding: 0px 0px 0px 0px;
@@ -230,6 +105,16 @@ li:first-child {
     z-index: 24;
 }
 
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr;
+  grid-template-rows: 1fr;
+}
+
+.grid-item {
+  display: 
+  }
+
 
 
 
@@ -245,7 +130,7 @@ li:first-child {
     column-count: 1;
     accent-color: var(--button);
     font-family: "Trayan";
-    z-index: 24; }
+}
 
 .input-container-reg-names {
     display: inline-flex;
@@ -257,8 +142,8 @@ li:first-child {
     flex-direction: column;
     accent-color: var(--button);
     font-family: "Trayan";
-    z-index: 24; }
-
+    /*z-index: 24; }*/
+}
 .input-container-reg-password {
     display: inline-flex;
     align-content: center;
@@ -271,7 +156,8 @@ li:first-child {
     column-count: 1;
     accent-color: var(--button);
     font-family: "Trayan";
-    z-index: 24; }
+    /*z-index: 24;*/
+    }
 
 .input-container-registerlink {
     display: inline-flex;
@@ -285,7 +171,8 @@ li:first-child {
     column-count: 1;
     accent-color: var(--button);
     font-family: "Trayan";
-    z-index: 24; }
+    /*z-index: 24;*/
+  }
 
 .footer li:active {
     background-color: darkgray;
@@ -425,6 +312,8 @@ li.dropdown {
 .card-user-img {
   width: 100%;
   height: auto;
+  color: white;
+  cursor: pointer;
   object-fit: cover;
   position: absolute;
   top: 50%;
@@ -436,7 +325,6 @@ li.dropdown {
   padding: 12px;
   background-color: darkred;
   color: white;
-  background-color: #000;
   text-align: center;
   cursor: pointer;
   width: 100%;

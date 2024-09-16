@@ -74,7 +74,8 @@ function Register() {
     });
 
     return (
-        <div className="form-container">
+        <div className="reg-form-container">
+            <div> 
             <form onSubmit={formik.handleSubmit}>
                 <div className="input-container-reg-email">
                     <input
@@ -147,7 +148,7 @@ function Register() {
                     <p className="error">{formik.errors.phone}</p>
                 ) : null}
             </div>
-               <div className="input-container">
+            <div className="input-container">
                 <input
                     id="zipcode"
                     name="zipcode"
@@ -176,7 +177,8 @@ function Register() {
                 <NavLink to="../loginformcontainer">
                     Already have an Account
                 </NavLink>
-            </button>
+                </button>
+            </div>
         </div>
     );
 }

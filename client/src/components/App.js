@@ -14,13 +14,13 @@ function App() {
         <>
             <Header />
             {isLoggedIn ? (
-                <>
-                    <Routes>
+            <>    
+                <Routes>
                         <Route path="/home/*" element={<Home />} />
                         <Route path="/*" element={<NotFound /> } />
-                    </Routes>
-                    <UserProfile />
-                </>
+                </Routes>
+                <Home />
+            </>
             ) : (
                 <>
                     <Routes>

@@ -1,7 +1,7 @@
 import { useAuth } from "../contexts/AuthContext";
 import React, { useState } from "react";
 //import Modal from "./Modal";
-import defaultProfilePic from "./userDefault.png";
+import defaultProfilePic from "./images/userDefault.png";
 
 const UserProfile = () => {
     const { user } = useAuth();
@@ -9,20 +9,17 @@ const UserProfile = () => {
 
     return (
         <>
-            <div className="Profile">
-                <img
-                    className="profilePic"
+            <div className="userprofile-container">
+                <div className="userprofile">
+                    <img className="card-user-image"
                     src={defaultProfilePic}
                     name="profilePic"
-                    alt="ProfileImage"
-                    style={{ cursor: "pointer" }}
-                />
-                <h1>
-                    {user.first_name} {user.last_name}
-                </h1>
-                <h2>{user.email}</h2>
-                <h2>{user.phone}</h2>
-                <h2>{user.zipcode}</h2>
+                    alt="ProfileImage"                />
+                    <h1>{user.first_name} {user.last_name}</h1>
+                    <h2>{user.email}</h2>
+                    <h2>{user.phone}</h2>
+                    <h2>{user.zipcode}</h2>
+                </div>
             </div>
         </>
     );

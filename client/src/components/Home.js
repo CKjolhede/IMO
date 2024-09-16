@@ -12,11 +12,10 @@ import Recommendations from "./Recommendations";
 import MovieSearch from "./MovieSearch";
 import { useAuth } from '../contexts/AuthContext';
 import { useRec } from '../contexts/RecContext';
-import LoginFormContainer from './LoginFormContainer';
 import axios from 'axios';
 
 function Home() {
-    const { user, isLoggedIn } = useAuth();
+    const { user} = useAuth();
     const { createRecommendation, removeRecommendation } = useRec();
     
     const updateUserImage = async (imageUrl) => {
@@ -82,8 +81,9 @@ function Home() {
                             <Route path="userprofile" element={<UserProfile updateUserImage={updateUserImage} />} />
                                 <Route path="userprofile/modal" element={<Modal />} />
                             <Route path="recommendations" element={<Recommendations  />} />
-                        </Routes>
+                    </Routes>    
                 </div>
+                <UserProfile />
                 <Footer className="footer" />
                 </div>
         );
