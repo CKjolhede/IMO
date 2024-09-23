@@ -1,0 +1,28 @@
+.footer li .isactive {
+    background-color: rgb(139, 27, 102);
+}
+
+.footer li:hover {
+    background-color: var(--bg);
+    color: var(--text);
+    transition: background-color 0.3s ease;
+}
+
+.footer {
+    display: flex;
+    /*flex-direction: row;*/
+    overflow: hidden;
+    background-color: #000000;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    justify-content: center;
+    text-decoration: none;    
+    gap: 8rem;
+    width: 100%;
+    z-index: 20;
+}
+
+
+
+

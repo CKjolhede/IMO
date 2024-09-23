@@ -18,12 +18,14 @@
 
 
 
+
+
 body {
     display: block;
     background-color: rgba(0, 0, 0, 0.902);
-    background-image: url("components/images/theater_dark_shadow.png"),
-        url("./components/images/redcurtainsL.jpg"),
-        url("./components/images/redcurtainsR.jpg");
+    background-image: url("../components/images/theater_dark_shadow.png"),
+        url("../components/images/redcurtainsL.jpg"),
+        url("../components/images/redcurtainsR.jpg");
     background-repeat: repeat-x, no-repeat, no-repeat;
     background-position: center bottom, center left, center right;
     margin: 0, 0;
@@ -67,35 +69,6 @@ li a {
 li:first-child {
     border-left: none;
 }
-
-.footer {
-    display: flex;
-    /*flex-direction: row;*/
-    overflow: hidden;
-    background-color: #000000;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    justify-content: center;
-    text-decoration: none;    
-    gap: 8rem;
-    width: 100%;
-    z-index: 20;
-}
-
-
-
-.footer li .isactive {
-    background-color: rgb(139, 27, 102);
-}
-
-.footer li:hover {
-    background-color: var(--bg);
-    color: var(--text);
-    transition: background-color 0.3s ease;
-}
-
-
 
 
 .follow-card-header-img {
