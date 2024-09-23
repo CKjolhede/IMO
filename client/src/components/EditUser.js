@@ -1,8 +1,9 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
-import Modal from "./Modal";
+import Modal from "./ProfileModal";
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import defaultProfilePic from "./images/imo_emu.png";
 
 
 function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
@@ -56,7 +57,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
             <div>
             <img
                     className="profilePic"
-                    src={imageUrl}
+                    src={defaultProfilePic}
                     name="profilePic"
                     alt="ProfileImage"
                     onClick={handleImageClick}

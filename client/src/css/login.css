@@ -4,11 +4,15 @@
     align-content: center;
     align-items: center;
     flex-direction: column;
-    column-count: 1;
     font-size: 20px;
-    z-index: 24;
     font-family: "Trayan";
     color: var(--bg);
+    text-decoration: none;
+}
+
+.input-container-registerlink:hover {
+    color: blue !important;
+    transition: background-color 0.2s ease;
 }
 
 .login-header {
@@ -79,6 +83,12 @@
     border-radius: 5px;
     cursor: pointer;}
 
+.submit-button:hover {
+    background-color: var(--bg);
+    color: var(--text);
+    transition: background-color 0.2s ease;}
+
+
 .input-container-submit {
     position: flex;
     display: flex;
@@ -91,7 +101,7 @@
     display: flex;
     align-items: center;
     align-content: center;
-    background-image: url("./components/images/loginmarquee.png");
+    background-image: url("../components/images/loginmarquee.png");
     background-repeat:  no-repeat;
     background-position: center;
     background-attachment: relative;
@@ -118,6 +128,7 @@
     font-family: "Trayan";
     z-index: 0;
     justify-content: center;}
+
 
 @media (max-width: 600px) {
     .login-form {

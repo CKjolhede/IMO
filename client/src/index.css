@@ -4,178 +4,89 @@
 
 :root {
     --bg: #282c34;
+    --bg-accent: #b6070713;
     --header: hsla(0, 0%, 100%, 0.88);
     --link: #050505;
     --text: hsla(0, 0%, 100%, 0.88);
     --button: #b6070713;
     --aspect-ratio: auto 1 / 1;
+    --speed: 500ms;
+    --delay: calc(var(--speed) * -1);
+    --border-radius: 8px;
+    --nav-size: 60px;
 }
 
-img {
-    max-width: 500px;
-    display: flex;
-}
+
 
 body {
     display: block;
-
+    background-color: rgba(0, 0, 0, 0.902);
     background-image: url("components/images/theater_dark_shadow.png"),
         url("./components/images/redcurtainsL.jpg"),
         url("./components/images/redcurtainsR.jpg");
-    z-index: -1, -1, -2;
     background-repeat: repeat-x, no-repeat, no-repeat;
     background-position: center bottom, center left, center right;
     margin: 0, 0;
     padding: 0, 0;
     overflow: hidden, hidden, hidden;
     background-attachment: fixed, fixed, fixed;
-    background-size: 50% 600px, 50% 100%, 50% 100%;
-    font-family: -apple-system, BlinkMacSystemFont, "Trajan", "Trajan Pro",
+    z-index: 20, -1, -1;
+    background-size: 63% 700px, 50% 100%, 50% 100%;
+    font-family:
+        -apple-system, BlinkMacSystemFont, 
+        "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Trajan", "Trajan Pro",
         "Trayan", "Segoe UI", "Showtime", "Roboto", "Oxygen", "Ubuntu",
         "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-    width: 50%, 50%, 50%;
-    height: 100%, 100%, 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -ms-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
-ul {
+/*ul {
   position: fixed;
   bottom: 0;
   width: 100%;
   border: 1px solid #0b0909;
   border-radius: 10px;
   list-style-type: none;
-}
-
-li a {
-  color: var(--text);
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 28px;
-  border-right: 1px solid #bbb;}*/
-
-li:first-child {
-  border-left: none;
-}
-
-.footer{
+}*/
+ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    }
+
+li a {
+    color: var(--text);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 28px;
+    border-right: 1px solid #bbb;}*/
+
+li:first-child {
+    border-left: none;
+}
+
+.footer {
+    display: flex;
+    /*flex-direction: row;*/
     overflow: hidden;
     background-color: #000000;
-    position: bottom center;
-    z-index: 22;
-    background-attachment: fixed;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    position: fixed;
+    bottom: 0;
+    right: 0;
     justify-content: center;
     text-decoration: none;    
     gap: 8rem;
     width: 100%;
+    z-index: 20;
 }
 
-.input-container-reg-email {
-    align-content: center;
-    padding: 0px 0px 0px 0px;
-    position: relative;
-    align-items: center;
-    flex-direction: column;
-    column-count: 1;
-    accent-color: var(--button);
-    font-family: "Trayan";
-    z-index: 24; }
-
-.registration-form-container {
-    background-image: url("./components/images/ticket2.png");
-    align-content: center;
-    align-items: center;
-    padding: 200px 900px 200px 200px;
-    flex-direction: column;
-    position: relative;
-    display: flex;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: 500px 400px;
-    background-size: 1000px 500px, auto;
-    accent-color: var(--button);
-    font-family: "Trayan";
-    z-index: 24;
-}
-
-.grid-container {
-  display: grid;
-  grid-template-columns: 1fr 2fr 2fr;
-  grid-template-rows: 1fr;
-}
-
-.grid-item {
-  display: 
-  }
 
 
-
-
-.input-container-reg-named {
-    display: inline-flex;
-    align-content: center;
-    padding: 00px 0px;
-    position: relative;
-    align-items: center;
-    background-position: center;
-    background-repeat: no-repeat;
-    flex-direction: column;
-    column-count: 1;
-    accent-color: var(--button);
-    font-family: "Trayan";
-}
-
-.input-container-reg-names {
-    display: inline-flex;
-    align-content: center;
-    padding: 0px 0px 0px 0px;
-    position: relative;
-    background-position: center;
-    background-repeat: no-repeat;
-    flex-direction: column;
-    accent-color: var(--button);
-    font-family: "Trayan";
-    /*z-index: 24; }*/
-}
-.input-container-reg-password {
-    display: inline-flex;
-    align-content: center;
-    padding: 50px 0px 150px 500px;
-    position: relative;
-    align-items: center;
-    background-position: center;
-    background-repeat: no-repeat;
-    flex-direction: column;
-    column-count: 1;
-    accent-color: var(--button);
-    font-family: "Trayan";
-    /*z-index: 24;*/
-    }
-
-.input-container-registerlink {
-    display: inline-flex;
-    align-content: center;
-    padding: 0px 00px 0px 0px;
-    position: relative;
-    align-items: center;
-    background-position: center;
-    background-repeat: no-repeat;
-    flex-direction: column;
-    column-count: 1;
-    accent-color: var(--button);
-    font-family: "Trayan";
-    /*z-index: 24;*/
-  }
-
-.footer li:active {
-    background-color: darkgray;
+.footer li .isactive {
+    background-color: rgb(139, 27, 102);
 }
 
 .footer li:hover {
@@ -184,22 +95,7 @@ li:first-child {
     transition: background-color 0.3s ease;
 }
 
-.movie-card {
-    position: relative;
-    width: 300px; /* Adjust the width as needed */
-    height: 450px; /* Adjust the height as needed */
-    background-size: cover;
-    background-repeat: no-repeat;
-}
 
-.movie-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
 
 
 .follow-card-header-img {
@@ -214,11 +110,6 @@ li:first-child {
     margin-right: 20px;
 }
 
-.profilePic {
-    width: 20vw;
-    height: auto;
-    margin-right: 20px;
-}
 
 .isActive {
     background-color: var(--link);
@@ -287,7 +178,7 @@ li.dropdown {
   </li>
 </ul>}*/
 
-.follow-card {
+/*.follow-card {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -298,7 +189,7 @@ li.dropdown {
     object-fit: cover;
     margin-right: 20px;
 
-    background-color: var(--bg);}
+    background-color: var(--bg);}*/
 
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);

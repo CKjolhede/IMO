@@ -9,18 +9,15 @@ import { useRec } from "../contexts/RecContext";
 export default function Movies({handleAddRecommendation}) {
     const [movies, setMovies] = useState([]);
     const { user } = useAuth();
-    const { noRecMovies } = useRec();
+    const { removeRecMovies } = useRec();
 
     useEffect(() => {
         const fetchMovies = async () => {
             try {
                 const moviefetch = await fetch('/movies', { method: 'GET' });
                 if (moviefetch.ok) {
-                
                     const data = await moviefetch.json();   
-                    console.log("fetched movies", data);
-                    const sortedMovies = noRecMovies(data);
-                    console.log("fetched movies, sorted",sortedMovies);                     
+                    const sortedMovies = removeRecMovies(data);                
                     setMovies(sortedMovies);                    
                 }
             }
@@ -29,7 +26,7 @@ export default function Movies({handleAddRecommendation}) {
             }
         }
         fetchMovies()
-    }, [user.id, noRecMovies]);
+    }, [user.id, removeRecMovies]);
     
         return (
             <div>

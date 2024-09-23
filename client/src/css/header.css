@@ -1,18 +1,18 @@
 
 .header {
     display: flex;
+    top: 0;
+    left: 0;
     font: 'Trayan';
     width: 100vw; 
     height: 100px;  
-    position: top; 
     flex-direction: row;
-    float: top;    
+    /*float: top;    */
     align-items: center;
-    background-image: url("./components/images/redcurtainsL.jpg");
+    background-image: url("../components/images/redcurtainsL.jpg");
     background-repeat: no-repeat;
-    padding: 0px 20px 0px 10px;
-    margin: -10px 00px 10px 0px ;
-    border: 0px;
+    padding: 0px 100px 0px 0px;
+    margin: -10px 0px 0px 0px ;
     box-shadow: 0px 3px 3px #101010;  
     background-size: cover;
     justify-content: space-between;
@@ -35,23 +35,4 @@
     font-family: 'Trayan';
     text-decoration: none;
 }
-.button-header-login {
-    color: white;
-    display: flex;
-    font-size: 25px;
-    gap: 30px;
-    padding: 50px 0px px px;
-    align-content: space-between;
-    font-family: 'Trayan';
-    text-decoration: none;
-}
-.button-header{
-    color: white;
-    display: flex;
-    font-size: 25px;
-    gap: 30px;
-    padding: 50px 0px px 150px;
-    align-content: space-between;
-    font-family: 'Trayan';
-    text-decoration: none;
-}
+

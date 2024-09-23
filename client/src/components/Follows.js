@@ -77,7 +77,8 @@ function Follows() {
         }
         catch (error) {
             console.error("Failed to send friend request", error);
-        }};
+        }
+    };
         
         return (
             <>

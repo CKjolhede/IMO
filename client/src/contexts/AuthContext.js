@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
     
     const onEdit = (user) => {
         setAuth({ isLoggedIn: true, user: user });
-        navigate('/home/userprofile/')
+        navigate('/userprofile/')
     };
 
     const login = (user) => {

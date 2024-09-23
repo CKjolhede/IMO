@@ -7,15 +7,20 @@ import Movies from "./Movies";
 import About from "./About";
 import UserProfile from "./UserProfile";
 import Contact from "./Contact";
-import Modal from "./Modal";
+import Header from "./Header";
+import RegisterContainer from "./RegisterContainer";
+//import Modal from "./ProfileModal";
+import LoginFormContainer from "./LoginFormContainer";
+//import RecFeed from "./RecFeed";
 import Recommendations from "./Recommendations";
+import NotFound from "./NotFound";
 import MovieSearch from "./MovieSearch";
 import { useAuth } from '../contexts/AuthContext';
 import { useRec } from '../contexts/RecContext';
 import axios from 'axios';
 
 function Home() {
-    const { user} = useAuth();
+    const { user, isLoggedIn} = useAuth();
     const { createRecommendation, removeRecommendation } = useRec();
     
     const updateUserImage = async (imageUrl) => {
@@ -68,25 +73,48 @@ function Home() {
         }
         };
     
-        return (
+    return (
+            <>
+            <Header />
+            {isLoggedIn ? (
+
             <div className="home">
                 <div className="home-content">
                         <Routes>
+                            {/*<Route path="/" />*/}
+                            <Route path="home/*" element={<UserProfile updateUserImage={updateUserImage}/>} />
                             <Route path="follows" element={<Follows />} />
                             <Route path="edituser" element={<EditUser updateUserImage={updateUserImage} />} />
                             <Route path="moviesearch" element={<MovieSearch handleAddRecommendation={handleAddRecommendation} removeRecommendation={removeRecommendation} />} />
                             <Route path="movies" element={<Movies handleAddRecommendation={handleAddRecommendation} removeRecommendation={removeRecommendation} />} />
                             <Route path="about" element={<About />} />
                             <Route path="contact" element={<Contact />} />
-                            <Route path="userprofile" element={<UserProfile updateUserImage={updateUserImage} />} />
-                                <Route path="userprofile/modal" element={<Modal />} />
-                            <Route path="recommendations" element={<Recommendations  />} />
+                            <Route path="userprofile/*" element={<UserProfile updateUserImage={updateUserImage} />} />
+                            <Route path="/Recommendations" element={<Recommendations />} />
+                            {<Route path="*" element={<NotFound />} />}
                     </Routes>    
                 </div>
-                <UserProfile />
                 <Footer className="footer" />
                 </div>
-        );
+            ) : (
+                    <>
+                    <Routes>
+                            
+                        {/*<Route path="/*" element={<NotFound />} />*/}
+                        <Route
+                            exact path="/loginformcontainer"
+                            element={<LoginFormContainer />}
+                        />
+                        <Route
+                            path="/registercontainer"
+                            element={<RegisterContainer />}
+                        />
+                        </Routes>
+                        <LoginFormContainer />
+                </>
+            )}
+            </>
+    );
     };
 
 export default Home;

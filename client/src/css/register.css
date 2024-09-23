@@ -1,0 +1,141 @@
+.loginlink {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 25px;
+    font-family: "Trayan";
+    text-decoration: none;
+    color: var(--bg);
+}
+
+h6 .login-form-container {
+    display: none;
+}
+.loginlink:hover {
+    color: var(--text);
+    transition: background-color 0.2s ease;
+}
+
+.reg-header {
+    display: flex;
+    font-size: 30px;
+    padding: 0px 0px 20px 0px;
+    color: white;
+    margin: 0;
+    font-family: "Helvetica", arial, helvetica, sans-serif;
+
+}
+.reg-input {
+    font-size: 20px;
+    height: 30px;
+    width: 300px;
+    padding: 5px;
+}
+.input-container-reg-named {
+    display: inline-flex;
+    align-content: center;
+    padding: 00px 0px;
+    position: relative;
+    align-items: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    flex-direction: column;
+    column-count: 1;
+    accent-color: var(--button);
+    font-family: "Trayan";
+}
+
+.input-container-reg-names {
+    display: inline-flex;
+    align-content: center;
+    padding: 0px 0px 0px 0px;
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+    flex-direction: column;
+    accent-color: var(--button);
+    font-family: "Trayan";
+    /*z-index: 24; }*/
+}
+
+.reg-form-container form {
+    display: flex;
+
+    align-items: center;
+    align-content: center;
+    background-image: url("../components/images/ticket2.png");
+    background-repeat:  no-repeat;
+    background-position: center;
+    background-attachment: relative;
+    background-size: 1300px auto, auto;
+    flex-direction: column;
+    justify-content: center;
+    width: 80em;
+    height: auto;
+    min-height: 500px;
+    padding: 0px 0px 0px 100px;
+    margin: 0 auto;
+    position: relative; }
+
+.reg-form-container {
+    align-content: center;
+    align-items: center;
+    padding: 100px 200px 200px 200px;
+    flex-direction: column;
+    position: relative;
+    display: flex;
+    position: 500px 400px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 1400px 700px, auto;
+    accent-color: var(--button);
+    font-family: "Trayan";}
+
+body.register-container .login-form-container {
+    display: none;
+}
+
+:has(/registercontainer) .login-form-container {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .reg-form {
+        width: 100%;
+        transform: scale(1);
+    }
+}
+
+@media (min-width: 601px) {
+    .reg-form {
+        width: 400px;
+    }
+    }
+
+@media (max-height: 400px) {
+    .reg-form {
+        height: 100%;
+        transform: scale(1);
+    }
+}
+
+
+
+
+
+
+
+/*.input-container-reg-password {
+    display: inline-flex;
+    align-content: center;
+    padding: 50px 0px 150px 500px;
+    position: relative;
+    align-items: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    flex-direction: column;
+    column-count: 1;
+    accent-color: var(--button);
+    font-family: "Trayan";
+    /*z-index: 24;}*/

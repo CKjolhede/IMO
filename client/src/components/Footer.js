@@ -6,13 +6,13 @@ function Footer() {
         <div>
             <ul className="footer">
                 <li>
-                    <NavLink to="/home/about">
+                    <NavLink to="about">
                             About Us
                     </NavLink>
                 </li>
 
                 <li>
-                    <NavLink to="/home/contact">
+                    <NavLink to="contact">
                             Contact
 
                     </NavLink>
@@ -20,7 +20,7 @@ function Footer() {
                 
                 <li>
                     <NavLink
-                        to="/home/follows" >
+                        to="follows" >
                     Friends
                     </NavLink>
                 </li>
@@ -33,18 +33,18 @@ function Footer() {
 
                 <li>
                 <NavLink
-                    to="/home/movies"
+                    to="movies"
                 >
                     Browse Movies
                 </NavLink>
                 </li>
-                <li>
+                {/*<li>
                 <NavLink
-                    to="/home/recommendations"
+                    to="recommendations"
                 >
                     Recommendations
                     </NavLink>
-                </li>
+                </li>*/}
                 {/*<NavLink
                     to="/home/edituser"
                     className={({ isActive }) => (isActive ? "active" : "")}

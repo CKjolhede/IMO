@@ -11,7 +11,7 @@ function Header() {
         <div>
             {isLoggedIn ? (
                 <div className="header">
-                    <Link to={"/home"}>
+                    <Link to={"/userprofile"}>
                         {<img className="logo" src={logo} alt="logo" />}
                     </Link>
                     {/*<NavLink

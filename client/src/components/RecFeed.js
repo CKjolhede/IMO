@@ -1,30 +1,19 @@
-import React, { useState,useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import React from 'react';
 import RecCard from './RecCard';
 
-
-
-function RecFeed() {
-    const { user } = useAuth();
-    const [recFeed, setRecFeed] = useState([]);
-    
-    useEffect(() => {
-        const response = (fetch('/recommendations/' + user.id, { method: 'GET' }));
-        if (response.ok) {
-            const data = response.json();
-            setRecFeed(data);
-        }
-    }, [user.id]);
-    
+function RecFeed({ recommendations }) {
+    const recs = recommendations.flat();
     return (
-        <div>
-            <ul>
-                {recFeed.map((rec) => <li>(<RecCard
-                    key={rec.id}
-                    rec={rec}
-                />)</li>)}</ul>   
-        </div>
+            <>
+            <div className="Reclist">
+                {recs?.map((recommendation) => <div >
+                    <RecCard recommendation={recommendation} />
+                </div>)
+                }
+            </div>
+            </>
     );
-}  
+}
+
 
 export default RecFeed;

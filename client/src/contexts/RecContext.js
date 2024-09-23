@@ -7,7 +7,7 @@ export const useRec = () => useContext(RecContext);
 
 export const RecProvider = ({ children }) => {
     const { user } = useAuth();
-    const [recommendations, setRecs] = useState({});
+    const [recommendations, setRecs] = useState([]);
     useEffect(() => {
         if (user) {
 
@@ -18,7 +18,6 @@ export const RecProvider = ({ children }) => {
                     });
                     if (response.ok) {
                         const data = await response.json();
-                        console.log("fetched recommendations", data);
                         setRecs(data);
                     }
                 } catch (error) {
@@ -58,16 +57,13 @@ export const RecProvider = ({ children }) => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             } else {
                 const data = await response.json();
-                console.log("created recommendation", data);
                 setRecs([data, ...recommendations]);
             }
     } catch (error) {
         console.error("Failed to create recommendation", error);
     }
 }
-    
-    const noRecMovies = (movieList) => {
-        console.log("movieList in noRecMovie fxn", movieList)
+    const removeRecMovies = (movieList) => {
         return movieList.filter(
             (movie) =>
                 !movie.recommendations.some(
@@ -78,7 +74,7 @@ export const RecProvider = ({ children }) => {
     };
 
     return (
-        <RecContext.Provider value={{ recommendations, removeRecommendation, createRecommendation, setRecs, noRecMovies }}>
+        <RecContext.Provider value={{ recommendations, removeRecommendation, createRecommendation, setRecs, removeRecMovies }}>
             {children}
         </RecContext.Provider>
         )

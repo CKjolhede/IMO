@@ -2,7 +2,6 @@ import React from 'react';
 
 
 function MovieCard({ movie, handleAddRecommendation }) {
-    console.log('moviecard movie', movie)
     const image_url = 'https://image.tmdb.org/t/p/w500' + movie.poster_path;
 
     return (

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
 import { useFormik } from "formik";
+import * as yup from "yup";
+import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -10,8 +11,21 @@ function LoginForm() {
     const formik = useFormik({
         initialValues: {
             email: "",
-            password: ""
+            password: "",
         },
+        validationSchema: yup.object().shape({
+            email: yup
+                .string()
+                .email("Email must be a valid email address")
+                .required("Required"),
+            password: yup
+                .string()
+                .min(8, "Password must be at least 8 characters long")
+                .required("Required"),
+            //.matches(
+            //    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+            //    "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+        }),
         onSubmit: async (values) => {
             try {
                 setErrors([]);
@@ -21,14 +35,14 @@ function LoginForm() {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(values),
-                }); 
+                });
                 if (response.ok) {
                     const user = await response.json();
                     login(user);
-                    navigate("/home");
+                    navigate("/userprofile");
                 } else {
                     const errorData = await response.json();
-                    setErrors(errorData);
+                    setErrors(errorData.errors);
                 }
             } catch (error) {
                 setErrors([
@@ -41,19 +55,18 @@ function LoginForm() {
         },
     });
     return (
-        <div className="login-form-container" >
-            {/*<div className="login-form"*/}
+        <div className="login-form-container">
             <div>
                 <form className="login-form" onSubmit={formik.handleSubmit}>
-                        <h2 className="login-header">Box Office</h2>
-                    
-                    <div className="input-email">E-mail
-                    {/*<div>E-mail*/}
-                        <input className="email-input"
+                    <h3 className="login-header">Box Office</h3>
+                    <div className="input-email">
+                        E-mail
+                        <input
+                            className="email-input"
                             id="email"
                             name="email"
                             type="email"
-                            //placeholder="Email"
+                            autoComplete="current-email"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.email}
@@ -62,29 +75,44 @@ function LoginForm() {
                             <p className="error">{formik.errors.email}</p>
                         ) : null}
                     </div>
-                    <div className="input-container-password">Password
-                    {/*<div>Password*/}
-                        <input className="email-input"
+                    <div className="input-container-password">
+                        Password
+                        <input
+                            className="email-input"
                             id="password"
                             name="password"
                             type="password"
+                            value={formik.values.password}
+                            autoComplete="current-password"
                             //placeholder="Password"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.password}
                         />
                         {formik.errors.password && formik.touched.password ? (
                             <p className="error">{formik.errors.password}</p>
                         ) : null}
                     </div>
-                    <div className="input-container-submit">                 
-                        <button className="submit-button" type="submit">Admit One</button>
+                    <div className="input-container-submit">
+                        <button className="submit-button" type="submit">
+                            Admit One
+                        </button>
                     </div>
-                    <div id="errors">{errors.error}
+                    <div id="errors">
+                        {errors.error}
+                        {errors.map((error, index) => (
+                            <p key={index} className="error">
+                                {error.message}
+                            </p>
+                        ))}
                     </div>
-                    <div><NavLink className="input-container-registerlink" to="../registercontainer">Create an Account</NavLink></div>
+                    <div>
+                        <NavLink
+                            className="input-container-registerlink"
+                            to="../registercontainer">
+                            Create an Account
+                        </NavLink>
+                    </div>
                 </form>
-                
             </div>
         </div>
     );

@@ -9,37 +9,36 @@ import NotFound from "./NotFound";
 import UserProfile from "./UserProfile";
 
 function App() {
-    const { isLoggedIn } = useAuth();
-    return (
-        <>
-            <Header />
-            {isLoggedIn ? (
-            <>    
-                <Routes>
-                        <Route path="/home/*" element={<Home />} />
-                        <Route path="/*" element={<NotFound /> } />
-                </Routes>
-                <Home />
-            </>
-            ) : (
-                <>
-                    <Routes>
+    //    const { isLoggedIn } = useAuth();
+    //    return (
+    //        <>
+    //            <Header />
+    //            {isLoggedIn ? (
+    //            <>    
+    //                <Routes>
+    //                        <Route path="/home/*" element={<Home />} />
+    //                        <Route path="/*" element={<NotFound /> } />
+    //                </Routes>
+    //            </>
+    //            ) : (
+    //                <>
+    //                    <Routes>
                             
-                        {/*<Route path="/*" element={<NotFound />} />*/}
-                        <Route
-                            path="/loginformcontainer"
-                            element={<LoginFormContainer />}
-                        />
-                        <Route
-                            path="/registercontainer"
-                            element={<RegisterContainer />}
-                        />
-                        </Routes>
-                    <LoginFormContainer />
-                </>
-            )}
-        </>
-    );
+    //                        {/*<Route path="/*" element={<NotFound />} />*/}
+    //                        <Route
+    //                            exact path="/loginformcontainer"
+    //                            element={<LoginFormContainer />}
+    //                        />
+    //                        <Route
+    //                            path="/registercontainer"
+    //                            element={<RegisterContainer />}
+    //                        />
+    //                        </Routes>
+    //                        <LoginFormContainer />
+    //                </>
+    //            )}
+    //        </>
+    //    );
 }
 
 export default App;

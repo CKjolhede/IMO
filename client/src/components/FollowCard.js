@@ -11,7 +11,7 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
     
         useEffect(() => {
             
-    const once = async (id) => {
+        const once = async (id) => {
         await axios.get("/users/" + id).then((response) => {    
             setFriendUser(response.data);
         }); 
@@ -110,6 +110,7 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
             return (
                 <div className="follow-card">
                     <img
+                        style={{ width: "100px", height: "100px" }}
                         className="card"
                         src={profilePic}
                         alt="profile pic"
