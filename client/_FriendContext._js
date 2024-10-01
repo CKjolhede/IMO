@@ -1,12 +1,14 @@
 // src/contexts/RecContext.js
 import React, { useContext, useState, createContext, useEffect, } from "react";
 import { useAuth } from '../contexts/AuthContext';
+import { useRec } from "../contexts/RecContext";
 const FriendContext = createContext();
 
 export const useFriend= () => useContext(FriendContext);
 
 export const FriendProvider = ({ children }) => {
     const { user } = useAuth();
+    const { recommendations } = useRec();
     const [friends, setFriends] = useState([]);
     console.log("user in Friendprovider", user)
     console.log("Friends in FriendProvider", friends);
@@ -18,6 +20,7 @@ export const FriendProvider = ({ children }) => {
                     if (response.ok) {
                         const data = await response.json();
                         setFriends(data);
+                        console.log(friends)
                     } else {
                         console.error('Failed to fetch friends:', response.statusText);
                     }

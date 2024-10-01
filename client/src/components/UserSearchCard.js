@@ -8,25 +8,22 @@ function UserSearchCard({
     const { user } = useAuth();
     const friendUserId = friendUser.id;
     const user_Id = user.id;
-    const [searchState, setSearchState] = useState("");
+    //const [searchState, setSearchState] = useState("");
     const handleRequest = () => {
         handleFriendRequest(friendUserId, user_Id);
-        setSearchState("pending");
+        //setSearchState("pending");
     };
         return (
             <div className="card">
                 <img
-                    className="follow-card-header-img"
                     src={imo_emu}
                     alt="profile pic"
                 ></img>
                 <div className="follow-card-header">
                     {friendUser.first_name} {friendUser.last_name}
-                    <p>Friend Request:{searchState}</p>
                 </div>
                 <button
-                    className="card button"
-                    onClick={handleRequest}                  >
+                    onClick = {handleRequest}>
                     Friend Request
                 </button>
             </div>

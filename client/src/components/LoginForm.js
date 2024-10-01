@@ -57,7 +57,15 @@ function LoginForm() {
     return (
         <div className="login-form-container">
             <div>
-                <form className="login-form" onSubmit={formik.handleSubmit}>
+                <form
+                    className="login-form"
+                    onSubmit={formik.handleSubmit}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            formik.handleSubmit();
+                        }
+                    }}
+                >
                     <h3 className="login-header">Box Office</h3>
                     <div className="input-email">
                         E-mail
@@ -108,7 +116,8 @@ function LoginForm() {
                     <div>
                         <NavLink
                             className="input-container-registerlink"
-                            to="../registercontainer">
+                            to="../registercontainer"
+                        >
                             Create an Account
                         </NavLink>
                     </div>

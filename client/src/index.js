@@ -1,6 +1,4 @@
 import React from "react";
-
-import App from "./components/App";
 import Home from "./components/Home";
 import NotFound from "./components/NotFound";
 import "./css/index.css";
@@ -11,7 +9,7 @@ import "./css/header.css";
 import "./css/register.css"
 import "./css/userProfile.css";
 import "./css/header.css";
-import "./css/friends.css";
+import "./css/follow.css";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";

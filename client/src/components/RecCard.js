@@ -11,7 +11,7 @@ function RecCard({ recommendation }) {
     const rounded_rating = Math.round(rec.movie.rating * 10) / 10;
     return (
         <>
-            <div className="userprofile-friendRecs">
+            <div >
                 
                 <div className="moviecard-body">
                     <div className="moviecard-backdrop">

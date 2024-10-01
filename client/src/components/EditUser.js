@@ -55,7 +55,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
     return (
         <>
             <div>
-            <img
+                <img
                     className="profilePic"
                     src={defaultProfilePic}
                     name="profilePic"
@@ -68,6 +68,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
             <form onSubmit={formik.handleSubmit}>
                 <div className="input-container">
                     <input
+                        className="input-email"
                         id="email"
                         name="email"
                         type="email"
@@ -83,6 +84,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
                 </div>
                 <div className="input-container">
                     <input
+                        className="input-email"
                         id="first_name"
                         name="first_name"
                         type="text"
@@ -98,6 +100,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
                 </div>
                 <div className="input-container">
                     <input
+                        className="input-email"
                         id="last_name"
                         name="last_name"
                         type="text"
@@ -113,6 +116,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
                 </div>
                 <div className="input-container">
                     <input
+                        className="input-email"
                         id="phone"
                         name="phone"
                         type="text"
@@ -128,6 +132,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
                 </div>
                 <div className="input-container">
                     <input
+                        className="input-email"
                         id="zipcode"
                         name="zipcode"
                         type="text"
@@ -141,7 +146,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
                         <p className="error">{formik.errors.zipcode}</p>
                     ) : null}
                 </div>
-                
+
                 <div id="submit-button">
                     <button type="submit" className="submit-button">
                         Update

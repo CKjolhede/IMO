@@ -72,6 +72,9 @@ function Home() {
             createRecommendation(new_movie.id, user.id);
         }
         };
+    // fetching friends of User
+    
+    
     
     return (
             <>

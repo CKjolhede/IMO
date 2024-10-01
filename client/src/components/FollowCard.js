@@ -4,10 +4,23 @@ import { useAuth } from '../contexts/AuthContext';
 import imo_emu from "./images/imo_emu.png";
 
 
-function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendRequest, follow }) {
+function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendRequest, follow, friends }) {
     const { user } = useAuth();
     const profilePic = { imo_emu }
     const [friendUser, setFriendUser] = useState("");
+    //const [pendingFriends, setPendingFriends] = useState([]);
+    //const [acceptedFriends, setAcceptedFriends] = useState([]);
+    //const [requestedFriends, setRequestedFriends] = useState([]);
+
+        //setPendingFriends(
+        //    friends?.filter((friend) => friend.status === "pending")
+        //);
+        //setAcceptedFriends(
+        //    friends?.filter((friend) => friend.status === "accepted")
+        //);
+        //setRequestedFriends(
+        //    friends?.filter((friend) => friend.status === "requested")
+        //);
     
         useEffect(() => {
             
@@ -25,19 +38,17 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
         else if (follow.status === 'accepted') {
             return (
                 <div className="follow-card">
-                    <img className="card-user-img"
+                    <img className="follow-picture"
                         src={profilePic}
                         alt="profile pic"
                     ></img>
-                    <div className="follow-card-header">
+                    <div className="follow-header">
                         <h2>
                             {friendUser.first_name} {friendUser.last_name}
                         </h2>
-                        <h3>{friendUser.email}</h3>
-                        <h3>{friendUser.phone}</h3>
                     </div>
                     <button
-                        className="follow-card-header-btn"
+                        className="follow-button"
                         onClick={() => {
                             handleRemoveFriend(follow.id);
                         }}
@@ -90,8 +101,6 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
                     <h2>
                         {friendUser.first_name} {friendUser.last_name}
                     </h2>
-                    <h3>{friendUser.email}</h3>
-                    <h3>{friendUser.phone}</h3>
                     <h3>
                         Friend Request Pending
                         <button
@@ -118,7 +127,6 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
                     <h2>
                         {friendUser.first_name} {friendUser.last_name}
                     </h2>
-                    <h3>{friendUser.email}</h3>
                     <button
                         className="card button"
                         onClick={() => {

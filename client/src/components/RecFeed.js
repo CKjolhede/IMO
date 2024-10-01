@@ -5,8 +5,8 @@ function RecFeed({ recommendations }) {
     const recs = recommendations.flat();
     return (
             <>
-            <div className="Reclist">
-                {recs?.map((recommendation) => <div >
+            <div >
+                {recs?.map((recommendation) => <div key={recommendation.id}>
                     <RecCard recommendation={recommendation} />
                 </div>)
                 }

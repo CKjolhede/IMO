@@ -1,0 +1,1467 @@
+IMOkjolhede@Chris-Macbook IMO % git diff
+diff --git a/client/public/index.html b/client/public/index.html
+index 2d08363..ed5cbd4 100644
+--- a/client/public/index.html
++++ b/client/public/index.html
+@@ -45,6 +45,8 @@
+       To create a production bundle, use `npm run build` or `yarn build`.
+     -->
+ <script>
++//document.body.classList.add('logged-in');
++//document.body.classList.add('logged-out');
+ document.addEventListener("DOMContentLoaded", function() {
+     var registerContainer = document.querySelector(".reg-form-container");
+     var loginContainer = document.querySelector(".login-form-container");
+diff --git a/client/src/components/EditUser.js b/client/src/components/EditUser.js
+index 7b5c5bf..82917a8 100644
+--- a/client/src/components/EditUser.js
++++ b/client/src/components/EditUser.js
+@@ -55,7 +55,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
+     return (
+         <>
+             <div>
+-            <img
++                <img
+                     className="profilePic"
+                     src={defaultProfilePic}
+                     name="profilePic"
+@@ -68,6 +68,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
+             <form onSubmit={formik.handleSubmit}>
+                 <div className="input-container">
+                     <input
++                        className="input-email"
+                         id="email"
+                         name="email"
+                         type="email"
+@@ -83,6 +84,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
+                 </div>
+                 <div className="input-container">
+                     <input
++                        className="input-email"
+                         id="first_name"
+                         name="first_name"
+                         type="text"
+@@ -98,6 +100,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
+                 </div>
+                 <div className="input-container">
+                     <input
++                        className="input-email"
+                         id="last_name"
+                         name="last_name"
+                         type="text"
+@@ -113,6 +116,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
+                 </div>
+                 <div className="input-container">
+                     <input
++                        className="input-email"
+                         id="phone"
+                         name="phone"
+                         type="text"
+@@ -128,6 +132,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
+                 </div>
+                 <div className="input-container">
+                     <input
++                        className="input-email"
+                         id="zipcode"
+                         name="zipcode"
+                         type="text"
+@@ -141,7 +146,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
+                         <p className="error">{formik.errors.zipcode}</p>
+                     ) : null}
+                 </div>
+-                
++
+                 <div id="submit-button">
+                     <button type="submit" className="submit-button">
+                         Update
+diff --git a/client/src/components/FollowCard.js b/client/src/components/FollowCard.js
+index 7e3d221..8a3de76 100644
+--- a/client/src/components/FollowCard.js
++++ b/client/src/components/FollowCard.js
+@@ -25,11 +25,11 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
+         else if (follow.status === 'accepted') {
+             return (
+                 <div className="follow-card">
+-                    <img className="card-user-img"
++                    <img className="follow-picture"
+                         src={profilePic}
+                         alt="profile pic"
+                     ></img>
+-                    <div className="follow-card-header">
++                    <div className="follow-header">
+                         <h2>
+                             {friendUser.first_name} {friendUser.last_name}
+                         </h2>
+@@ -37,7 +37,7 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
+                         <h3>{friendUser.phone}</h3>
+                     </div>
+                     <button
+-                        className="follow-card-header-btn"
++                        className="follow-button"
+                         onClick={() => {
+                             handleRemoveFriend(follow.id);
+                         }}
+diff --git a/client/src/components/Follows.js b/client/src/components/Follows.js
+index 79e5621..a45c79e 100644
+--- a/client/src/components/Follows.js
++++ b/client/src/components/Follows.js
+@@ -82,14 +82,15 @@ function Follows() {
+         
+         return (
+             <>
+-                <div>
+-                    <h2>Search for Friends</h2>
++            <div className="follow-container">
++                <div className="follow-search">
++                    <h2>Search for Friends
+                     <UserSearch       
+                         handleFriendRequest={handleFriendRequest}
+-                    />
++                    /></h2>
+                 </div>
+-                <div>
+-                <h1>Friends</h1>
++                <div className="follow-list">
++                    <h1>Friends</h1>
+                     <FollowsList
+                         handleFriendRequest={handleFriendRequest}
+                         handleRemoveFriend={handleRemoveFriend}
+@@ -97,6 +98,7 @@ function Follows() {
+                         follows={follows}
+                     />
+                 </div>
++            </div >
+             </>
+         );
+     
+diff --git a/client/src/components/FollowsList.js b/client/src/components/FollowsList.js
+index ecd9cd1..5a84b7b 100644
+--- a/client/src/components/FollowsList.js
++++ b/client/src/components/FollowsList.js
+@@ -1,17 +1,56 @@
+-import React from "react";
++import React, { useState, useEffect } from "react";
+ import FollowCard from "./FollowCard";
+ // TODO: Add frame of suggested friends. Algo simply users 2 or 3 degrees of separation through current friends
+ 
+ function FollowsList({ handleRemoveFriend, handleAcceptFriend, handleFriendRequest, follows }) {
++    const [acceptedFollows, setAcceptedFollows] = useState([]);
++    const [pendingFollows, setPendingFollows] = useState([]);
++    const [requestedFollows, setRequestedFollows] = useState([]);
++    
++    useEffect(() => {
++        setAcceptedFollows(follows?.filter((follow) => follow.status === 'accepted'));
++        setPendingFollows(follows?.filter((follow) => follow.status === 'pending'));
++        setRequestedFollows(follows?.filter((follow) => follow.status === 'requested'));
++    }, [follows]);
++    
++    
+     return (
+-
+-        <div className="FriendList">
+-            {follows?.map((friend) => (
+quest} follow={friend} />
+-            ))
+-            }
++        <div className="followcards-container">
++            <div className="followcard-accepted-container">
++                {acceptedFollows?.map((friend) => (
++                    <FollowCard
++                        key={friend.id}
++                        handleRemoveFriend={handleRemoveFriend}
++                        handleAcceptFriend={handleAcceptFriend}
++                        handleFriendRequest={handleFriendRequest}
++                        follow={friend}
++                    />
++                ))}
++            </div>
++            <div className="followcard-pending-container">
++                {pendingFollows?.map((friend) => (
++                    <FollowCard
++                        key={friend.id}
++                        handleRemoveFriend={handleRemoveFriend}
++                        handleAcceptFriend={handleAcceptFriend}
++                        handleFriendRequest={handleFriendRequest}
++                        follow={friend}
++                    />
++                ))}
++            </div>
++            <div className="followcard-requested-container">
++                {requestedFollows?.map((friend) => (
++                    <FollowCard
++                        key={friend.id}
++                        handleRemoveFriend={handleRemoveFriend}
++                        handleAcceptFriend={handleAcceptFriend}
++                        handleFriendRequest={handleFriendRequest}
++                        follow={friend}
++                    />
++                ))}
++            </div>
+         </div>
+-    ) 
++    ); 
+ }
+ 
+ export default FollowsList;
+diff --git a/client/src/components/Footer.js b/client/src/components/Footer.js
+index c61ef43..b1f1445 100644
+--- a/client/src/components/Footer.js
++++ b/client/src/components/Footer.js
+@@ -1,28 +1,21 @@
+ import React from "react";
+ import { NavLink } from "react-router-dom";
++import audience from "./images/audience.png"
+ function Footer() {
+ 
+     return (
+-        <div>
++        <div className="footer">
+             <ul className="footer">
+-                <li>
+-                    <NavLink to="about">
+-                            About Us
+-                    </NavLink>
++                <li className="footer-about">
++                    <NavLink to="about">About</NavLink>
+                 </li>
+ 
+-                <li>
+-                    <NavLink to="contact">
+-                            Contact
+-
+-                    </NavLink>
++                <li className="footer-contact">
++                    <NavLink to="contact">Contact</NavLink>
+                 </li>
+-                
+-                <li>
+-                    <NavLink
+-                        to="follows" >
+-                    Friends
+-                    </NavLink>
++
++                <li className="footer-follows">
++                    <NavLink to="follows">Friends</NavLink>
+                 </li>
+                 {/*<NavLink
+                     to="/home/moviesearch"
+@@ -31,12 +24,8 @@ function Footer() {
+                     Find Movies
+                 </NavLink>*/}
+ 
+-                <li>
+-                <NavLink
+-                    to="movies"
+-                >
+-                    Browse Movies
+-                </NavLink>
++                <li className="footer-movies">
++                    <NavLink to="movies">Browse Movies</NavLink>
+                 </li>
+                 {/*<li>
+                 <NavLink
+@@ -52,6 +41,7 @@ function Footer() {
+                     Edit User
+                 </NavLink>*/}
+             </ul>
++            <img className="audience" src={audience} alt="audience" />
+         </div>
+     );
+ }
+diff --git a/client/src/components/LoginForm.js b/client/src/components/LoginForm.js
+index 23370ec..5a50c1c 100644
+--- a/client/src/components/LoginForm.js
++++ b/client/src/components/LoginForm.js
+@@ -57,7 +57,15 @@ function LoginForm() {
+     return (
+         <div className="login-form-container">
+             <div>
+-                <form className="login-form" onSubmit={formik.handleSubmit}>
++                <form
++                    className="login-form"
++                    onSubmit={formik.handleSubmit}
++                    onKeyDown={(e) => {
++                        if (e.key === "Enter") {
++                            formik.handleSubmit();
++                        }
++                    }}
++                >
+                     <h3 className="login-header">Box Office</h3>
+                     <div className="input-email">
+                         E-mail
+@@ -108,7 +116,8 @@ function LoginForm() {
+                     <div>
+                         <NavLink
+                             className="input-container-registerlink"
+-                            to="../registercontainer">
++                            to="../registercontainer"
++                        >
+                             Create an Account
+                         </NavLink>
+                     </div>
+diff --git a/client/src/components/MovieSearch.js b/client/src/components/MovieSearch.js
+index df6d3c9..b9224a1 100644
+--- a/client/src/components/MovieSearch.js
++++ b/client/src/components/MovieSearch.js
+@@ -18,17 +18,32 @@ function MovieSearch({handleAddRecommendation}) {
+     
+     return (
+         <div>
+-            <h1>Search Movies</h1> 
+-            <input type="text" name="searchMovieTerm" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+-            placeholder="Search for a movie"/>
+-            <button onClick={handleMovieSearch}>Search Movies</button>
++            <h1>Search Movies</h1>
++            <input
++                type="text"
++                name="searchMovieTerm"
++                value={searchTerm}
++                onChange={(e) => setSearchTerm(e.target.value)}
++                onKeyDown={(e) => {
++                    if (e.key === "Enter") {
++                        handleMovieSearch();
++                    }
++                }}
++                placeholder="Search for a movie"/>
++            <button onClick={handleMovieSearch}>
++                Search Movies
++            </button>
+             <ul>
+                 {movies?.map((movie) => (
+-                    <MovieCard key={movie.tmdb_id} movie={movie} handleAddRecommendation={handleAddRecommendation}/>
++                    <MovieCard
++                        key={movie.tmdb_id}
++                        movie={movie}
++                        handleAddRecommendation={handleAddRecommendation}
++                    />
+                 ))}
+             </ul>
+         </div>
+-);  
++    );  
+ 
+ };
+ 
+diff --git a/client/src/components/RecCard.js b/client/src/components/RecCard.js
+index 1c44dd5..f8edac6 100644
+--- a/client/src/components/RecCard.js
++++ b/client/src/components/RecCard.js
+@@ -11,7 +11,7 @@ function RecCard({ recommendation }) {
+     const rounded_rating = Math.round(rec.movie.rating * 10) / 10;
+     return (
+         <>
+-            <div className="userprofile-friendRecs">
++            <div >
+                 
+                 <div className="moviecard-body">
+                     <div className="moviecard-backdrop">
+diff --git a/client/src/components/RecFeed.js b/client/src/components/RecFeed.js
+index 6aa8192..0291d54 100644
+--- a/client/src/components/RecFeed.js
++++ b/client/src/components/RecFeed.js
+@@ -5,7 +5,7 @@ function RecFeed({ recommendations }) {
+     const recs = recommendations.flat();
+     return (
+             <>
+-            <div className="Reclist">
++            <div >
+                 {recs?.map((recommendation) => <div >
+                     <RecCard recommendation={recommendation} />
+                 </div>)
+diff --git a/client/src/components/Recommendations.js b/client/src/components/Recommendations.js
+index 90c834c..0291467 100644
+--- a/client/src/components/Recommendations.js
++++ b/client/src/components/Recommendations.js
+@@ -1,14 +1,16 @@
+ import React from "react";   
+ import RecCard from "./RecCard";
++import { useAuth } from "../contexts/AuthContext";
+ import { useRec } from "../contexts/RecContext";   
+         
+ function Recommendations() {
++        const { user } = useAuth();
+         const { recommendations } = useRec();
+         return (
+                 <>
+                 <div>     
+-                        {recommendations?.map((recommendation) => <div >
+-                                <RecCard  recommendation = {recommendation} />
+.id}>
++                                <RecCard recommendation = {recommendation} />
+                                 </div>)
+                         }       
+                 </div>
+diff --git a/client/src/components/UserProfile.js b/client/src/components/UserProfile.js
+index be6e3d2..88164ea 100644
+--- a/client/src/components/UserProfile.js
++++ b/client/src/components/UserProfile.js
+@@ -11,45 +11,83 @@ import { Link } from "react-router-dom";
+ //import Modal from "./Modal";
+ import defaultProfilePic from "./images/imo_emu.png";
+ 
+-const UserProfile = ({updateUserImage}) => {
++const UserProfile = ({ updateUserImage }) => {
+     const { user } = useAuth();
+     const [friendRecommendations, setFriendRecommendations] = useState([]);
+-
+-useEffect(() => {
++    const formatPhone = (phone) => {
++        return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
++    }
++    const [friends, setFriends] = useState([]);
++    const [follows, setFollows] = useState([]);
++    useEffect(() => {
+     
+-    const fetchFriendRecommendations = async () => {
+-        try {
+-            const response = await fetch("/follows/" + user.id, {
+-                method: "GET",
+-            });
+-            if (response.ok) {
+-                const friends = await response.json();
+-                const friendRecommendations = await Promise.all(
+-                    friends.map(async (friend) => {
+-                        try {
+-                            const response = await fetch("/recommendations/" + friend.following_id, {
+-                                method: "GET",
+-                            });
+-                            return await response.json();
+-                        } catch (error) {
+-                            return console.error(
+-                                "Error fetching recommendations for friend:",
+-                                error
+-                            );
+-                        }
+-                    })
+-                );
+-                setFriendRecommendations(friendRecommendations);
+-            } else {
+-                console.error("Failed to fetch friends:", response.statusText);
++        const fetchFriendRecommendations = async () => {//+
++            try {//+
++                const response = await fetch("/follows/" + user.id, {//+
++                    method: "GET",//+
++                });//+
++                debugger;
++                if (response.ok) {//+
++                    const friends = await response.json();//+
++                    setFollows(friends);//+
++                    console.log("userprofile friendfetchresults:", friends);//+
++                    const friendRecommendations = await Promise.all(//+
++                        friends?.map(async (friend) => {//+
++                            try {//+
++                                const response = await fetch("/recommendations/" + friend.following_id, {//+
++                                    method: "GET",//+
++                                });//+
++                                return await response.json();//+
++                            } catch (error) {//+
++                                return console.error(//+
++                                    "Error fetching recommendations for friend:",//+
++                                    error//+
++                                );//+
++                            }//+
++                        })//+
++                    );//+
++                    setFriendRecommendations(friendRecommendations);//+
++                } else {//+
++                    console.error("Failed to fetch friends:", response.statusText);//+
++                }//+
++            } catch (error) {//+
++                console.error("Error fetching friend recommendations:", error);//+
+             }
+-        } catch (error) {
+-            console.error("Error fetching friend recommendations:", error);
++            console.error("Error fetching friend recommendations:")
++            fetchFriendRecommendations();//+
++        }
++    }, [user.id]);//+
++    
++        async function fetchFriends() {
++        if (follows) { //+
++            const friendPromises = follows.map(async (friend) => {
++                const response = await fetch("/users/" + friend.following_id, { method: 'GET' }); //+
++                if (response.ok) { //+
++                    return await response.json(); //+
++                } //+
++            }); //+
++            const friendsData = await Promise.all(friendPromises); //+
++            setFriends(friendsData); //+
+         }
+-    };
+-    fetchFriendRecommendations();
+-}, [user.id]);    
+ 
++    }//+
++    fetchFriends();//+
++
++    useEffect(() => {
++
++        // Loop through the follows and fetch the user data for each one
++        const settingFriends = async () => follows?.map(async (friend) => {
++            const response = await fetch("/users/" + friend.following_id, { method: 'GET' });
++            if (response.ok) {
++                console.log(response)
++                debugger;
++                const data = await response.json();
++                console.log('friend data:', data);
++                setFriends(data);
++            }
++        });
++        settingFriends();
++    }, [follows]);
+     return (
+         <>
+             <Routes>
+@@ -62,26 +100,41 @@ useEffect(() => {
+                 <Route path="/recfeed" element={<RecCard />} />
+             </Routes>
+             <div className="userprofile-container">
+-                <div className="userprofile-card">
+-                    <img
+-                        className="profilePic"
+-                        src={defaultProfilePic}
+-                        name="profilePic"
+-                        alt="ProfileImage"
+-                    />
+-                    <h1>
+-                        {user.first_name} {user.last_name}
+-                    </h1>
+-                    <h2>{user.email}</h2>
+-                    <h2>{user.phone}</h2>
+-                    <h2>{user.zipcode}</h2>
+-                    <div>
+-                        <Link to="/edituser">
+-                            <button className="editProfileLink">
+-                                Edit Profile
+-                            </button>
+-                        </Link>
++                <div className="userprofile-section">
++                    <div className="userprofile-card">
++                        <img
++                            className="profilePic"
++                            src={defaultProfilePic}
++                            name="profilePic"
++                            alt="ProfileImage"
++                        />
++                        <h1>
++                            {user.first_name} {user.last_name}
++                        </h1>
++                        <h2>{user.email}</h2>
++                        <h2>{formatPhone(user.phone)}</h2>
++                        <h2>zipcode: {user.zipcode}</h2>
++                        <div>
++                            <Link to="/edituser">
++                                <button className="editProfileLink">
++                                    Edit Profile
++                                </button>
++                            </Link>
++                        </div>
+                     </div>
++
++                    {/*<div className="userprofile-friends">
++                        <h2>Pending Friend Requests</h2>
++                        <ul className="userfriends-list">
++                            {friends?.map((friend) => (
++                                <li className="userprofile-friend" >
++                                    <img src={defaultProfilePic} alt={"ProfileImage"}></img>
++                                    <h2>{friend.first_name} {friend.last_name}</h2>
++                                </li>
++                                
++                            ))}
++                        </ul>
++                    </div>*/}
+                 </div>
+                 <div className="userprofile-friendRecs">
+                     {friendRecommendations.length > 0 && (
+@@ -102,8 +155,7 @@ useEffect(() => {
+             </div>
+         </>
+     );
+-};
+-
++}
+ export default UserProfile;
+ 
+ //import { useAuth } from "../contexts/AuthContext";//+
+diff --git a/client/src/components/UserSearch.js b/client/src/components/UserSearch.js
+index 8b7c261..2eb3b3d 100644
+--- a/client/src/components/UserSearch.js
++++ b/client/src/components/UserSearch.js
+@@ -20,16 +20,27 @@ const UserSearch = ({handleFriendRequest}) => {
+     return (
+         <div>
+             <input
++                className="reg-input"
+                 type="text"
+                 value={name}
+                 onChange={(e) => setName(e.target.value)}
++                onKeyDown={(e) => {
++                    if (e.key === "Enter") {
++                        handleSearch();
++                    }
++                }}
+                 placeholder="Search by name"
+             />
+-            <button onClick={handleSearch}>Search</button>
++            <button className="input-button" onClick={handleSearch}>
++                Search
++            </button>
+             <ul>
+                 {users?.map((user) => (
+-                    <UserSearchCard key={user.id}
+-                        handleFriendRequest={handleFriendRequest} friendUser={user} />
++                    <UserSearchCard
++                        key={user.id}
++                        handleFriendRequest={handleFriendRequest}
++                        friendUser={user}
++                    />
+                 ))}
+             </ul>
+         </div>
+diff --git a/client/src/components/UserSearchCard.js b/client/src/components/UserSearchCard.js
+index cdbf068..2af1552 100644
+--- a/client/src/components/UserSearchCard.js
++++ b/client/src/components/UserSearchCard.js
+@@ -8,25 +8,22 @@ function UserSearchCard({
+     const { user } = useAuth();
+     const friendUserId = friendUser.id;
+     const user_Id = user.id;
+-    const [searchState, setSearchState] = useState("");
++    //const [searchState, setSearchState] = useState("");
+     const handleRequest = () => {
+         handleFriendRequest(friendUserId, user_Id);
+-        setSearchState("pending");
++        //setSearchState("pending");
+     };
+         return (
+             <div className="card">
+                 <img
+-                    className="follow-card-header-img"
+                     src={imo_emu}
+                     alt="profile pic"
+                 ></img>
+                 <div className="follow-card-header">
+                     {friendUser.first_name} {friendUser.last_name}
+-                    <p>Friend Request:{searchState}</p>
+                 </div>
+                 <button
+-                    className="card button"
+-                    onClick={handleRequest}                  >
++                    onClick = {handleRequest}>
+                     Friend Request
+                 </button>
+             </div>
+diff --git a/client/src/components/_FriendContext.js b/client/src/components/_FriendContext.js
+index 7628bcb..7524b6f 100644
+--- a/client/src/components/_FriendContext.js
++++ b/client/src/components/_FriendContext.js
+@@ -1,12 +1,14 @@
+ // src/contexts/RecContext.js
+ import React, { useContext, useState, createContext, useEffect, } from "react";
+ import { useAuth } from '../contexts/AuthContext';
++import { useRec } from "../contexts/RecContext";
+ const FriendContext = createContext();
+ 
+ export const useFriend= () => useContext(FriendContext);
+ 
+ export const FriendProvider = ({ children }) => {
+     const { user } = useAuth();
++    const { recommendations } = useRec();
+     const [friends, setFriends] = useState([]);
+     console.log("user in Friendprovider", user)
+     console.log("Friends in FriendProvider", friends);
+@@ -18,6 +20,7 @@ export const FriendProvider = ({ children }) => {
+                     if (response.ok) {
+                         const data = await response.json();
+                         setFriends(data);
++                        console.log(friends)
+                     } else {
+                         console.error('Failed to fetch friends:', response.statusText);
+                     }
+diff --git a/client/src/components/images/theater_dark_shadow.png b/client/src/components/images/theater_dark_shadow.png
+deleted file mode 100644
+index 30cdffd..0000000
+Binary files a/client/src/components/images/theater_dark_shadow.png and /dev/null differ
+diff --git a/client/src/contexts/AuthContext.js b/client/src/contexts/AuthContext.js
+index 35ddc6f..ffc01be 100644
+--- a/client/src/contexts/AuthContext.js
++++ b/client/src/contexts/AuthContext.js
+@@ -1,5 +1,7 @@
+ // src/contexts/AuthContext.js
+ import React, { useContext, useState, createContext, useEffect, } from "react";
++
++
+ import { useNavigate } from "react-router-dom";
+ const AuthContext = createContext();
+ 
+@@ -35,8 +37,10 @@ export const AuthProvider = ({ children }) => {
+             isLoggedIn: true,
+             user: user
+         });
+-        navigate('/home/userprofile/');
++        document.body.classList.add("logged-in");
++        navigate("/");
+     };
++            
+ 
+     const logout = async () => {
+         const response = await fetch("/logout", {
+@@ -47,12 +51,13 @@ export const AuthProvider = ({ children }) => {
+                 isLoggedIn: false,
+                 user: null,
+             });
++            document.body.classList.remove('logged-in');
+             navigate("/");
+         }
+     };
+-
++    
+     return (
+-        <AuthContext.Provider value={{ auth, isLoggedIn: auth.isLoggedIn, user: auth.user, login, logout, onEdit }}>
++        <AuthContext.Provider value={{ auth, isLoggedIn: auth.isLoggedIn, user: auth.user, login, logout, onEdit, }}>
+             {children}
+         </AuthContext.Provider>
+     );
+diff --git a/client/src/css/chris.css b/client/src/css/chris.css
+deleted file mode 100644
+index 7bdc217..0000000
+--- a/client/src/css/chris.css
++++ /dev/null
+@@ -1,87 +0,0 @@
+-* { box-sizing: border-box; }
+-
+-body { 
+-margin: 0;}
+-
+-.header{
+-    display: flex;
+-    flex-direction: row;
+-    flex-wrap: nowrap;
+-    justify-content: space-between;
+-    align-items: center;
+-    background-image: url("./redcurtains.jpg");
+-    background-repeat: no-repeat;
+-    background-position: center;
+-    background-size: cover;
+-    color: white;
+-    font-family: 'Trayan';
+-    padding: 0px 20px 0px 20px;
+-    gap: 2rem;
+-
+-
+-}
+-
+-/*.header .header-in .button-login {
+-    display: absolute;  
+-    justify-content: right;
+-    color: green;
+-    font-family: 'Trayan';
+-    font-size: 25px;
+-    align-items: flex-start;
+-    text-decoration: none;
+-    padding: 0px 0px 0px 0px;
+-}*/
+-/*
+-.banner{
+-    position: relative;}
+-.banner img{
+-    max-width: 100%;}
+-.banner .welcome {
+-    color: white;
+-    position: absolute;
+-    left: 0;
+-    top: 0;
+-    padding: 0px 0px 0px 0px;}*/
+-
+-.logo {
+-    display: flex;
+-    width: 30%;
+-    height: 100px;
+-    font-family: 'Trayan';
+-    padding: 0px 0px 0px 0px;}
+-
+-
+-/*.home {
+-    display: relative;
+-    width: 100%;
+-    height: 100vh;
+-    background-image: url("./redcurtains.jpg");
+-    background-repeat: no-repeat;
+-    background-position: center;
+-    background-size: cover;
+-    padding: 0px;
+-    flex-direction: row;
+-    justify-content: space-between;
+-    align-items: middle;
+-    font-family: 'Trayan';}*/
+-
+-/*.aside {
+-    display: relative;
+-    width: 100%;
+-    height: 100vh;
+-    background-image: url("./redcurtains.jpg");
+-    background-repeat: no-repeat;
+-    background-position: center;
+-    background-size: cover;
+-    padding: 0px;
+-    justify-content: space-between;
+-    font-family: 'Trayan';
+-    background-color: #6db607;
+-    padding: 20px;
+-    position: fixed;
+-    text-align: left;
+-    font-family: 'Trayan';
+-    color:white;
+-    }
+-
+-.bannar: {}*/
+diff --git a/client/src/css/footer.css b/client/src/css/footer.css
+index da76eec..cee9037 100644
+--- a/client/src/css/footer.css
++++ b/client/src/css/footer.css
+@@ -7,12 +7,16 @@
+     color: var(--text);
+     transition: background-color 0.3s ease;
+ }
+-
+ .footer {
+-    display: flex;
++    display: grid;
+     /*flex-direction: row;*/
+-    overflow: hidden;
+-    background-color: #000000;
++    background-image: url("../components/images/audience.png");
++    background-repeat: repeat-x;
++    grid-template-columns: repeat (4, 1fr);
++    grid-template-rows: 1fr;
++    background-position: center bottom;
++    background-size: 63% 700px;
++    background-attachment: fixed;
+     position: fixed;
+     bottom: 0;
+     right: 0;
+@@ -20,9 +24,45 @@
+     text-decoration: none;    
+     gap: 8rem;
+     width: 100%;
+-    z-index: 20;
++    z-index: 3;
++}
++
++.audience {
++    width: 63%;
++    height: 200px;
++    z-index: 2;
++}
++.footer-about {
++    grid-column: 1;
++    grid-row: 1;
++    display: flex;
++    flex-direction: row;
++    flex-wrap: nowrap;
++    justify-content: center;
++    align-items: center;
++    z-index: 4;
+ }
+ 
++.footer-movies {
++    grid-column: 2;
++    grid-row: 1;
++    display: flex;
++    z-index: 4;}
++
++.footer-contact {
++    grid-column: 3;
++    grid-row: 1;
++    display: flex;}
+ 
++.footer-follows {
++    grid-column: 4;
++    grid-row: 1;
++    z-index: 4;
++    display: flex;
++    flex-direction: row;
++    flex-wrap: nowrap;
++    justify-content: center;
++    align-items: center;
++}
+ 
+ 
+diff --git a/client/src/css/friends.css b/client/src/css/friends.css
+deleted file mode 100644
+index e69de29..0000000
+diff --git a/client/src/css/index.css b/client/src/css/index.css
+index da1966a..8f7d5d6 100644
+--- a/client/src/css/index.css
++++ b/client/src/css/index.css
+@@ -1,5 +1,7 @@
+ * {
+     box-sizing: border-box;
++    text-decoration: none;
++    font-family: 'Trayan', sans-serif;
+ }
+ 
+ :root {
+@@ -15,12 +17,7 @@
+     --border-radius: 8px;
+     --nav-size: 60px;
+ }
+-
+-
+-
+-
+-
+-body {
++/*body {
+     display: block;
+     background-color: rgba(0, 0, 0, 0.902);
+     background-image: url("../components/images/theater_dark_shadow.png"),
+@@ -42,16 +39,41 @@ body {
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+     -ms-font-smoothing: antialiased;
+-    text-rendering: optimizeLegibility;
+-}
+-/*ul {
+-  position: fixed;
+-  bottom: 0;
+-  width: 100%;
+-  border: 1px solid #0b0909;
+-  border-radius: 10px;
+-  list-style-type: none;
++    text-rendering: optimizeLegibility;    
+ }*/
++
++body {
++    display: block;
++    background-color: rgba(0, 0, 0, 0.902);
++    background-image: 
++        url("../components/images/redcurtainsL.jpg"),
++        url("../components/images/redcurtainsR.jpg");
++    background-repeat: no-repeat, no-repeat;
++    background-position: center left, center right;
++    margin: 0, 0;
++    padding: 0, 0;
++    overflow: hidden, hidden;
++    background-attachment: fixed, fixed;
++    z-index: 0, 0;
++    background-size: 50% 100%, 50% 100%;
++    font-family:
++        -apple-system, BlinkMacSystemFont, 
++        "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Trajan", "Trajan Pro",
++        "Trayan", "Segoe UI", "Showtime", "Roboto", "Oxygen", "Ubuntu",
++        "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
++    -webkit-font-smoothing: antialiased;
++    -moz-osx-font-smoothing: grayscale;
++    -ms-font-smoothing: antialiased;
++    text-rendering: optimizeLegibility;    
++}
++
++body.logged-in {
++    transition: background-position 1.5s ease;
++    background-position:  -95% 100%, 195% 100%;
++    background-size: 50% 100%, 50% 100%;
++
++}
++
+ ul {
+     list-style-type: none;
+     margin: 0;
+@@ -70,25 +92,42 @@ li:first-child {
+     border-left: none;
+ }
+ 
+-
+-.follow-card-header-img {
+-    display: flex;
+-    flex-direction: column;
+-    flex-wrap: nowrap;
+-    justify-content: left;
+-    align-items: center;
+-    width: 100px;
+-    height: 150px;
+-    object-fit: cover;
+-    margin-right: 20px;
+-}
+-
+-
+ .isActive {
+     background-color: var(--link);
+     color: var(--text);
+     transition: background-color 0.3s ease;
+ }
++
++.card {
++  background-color: var(--bg);
++  text-align: center;
++  z-index: 50;
++}
++
++.card img {
++  width: 50%;
++  height: auto;
++  position: relative;}
++
++
++.card button {
++  display: inline-block;
++  padding: 12px;
++  background-color: darkred;
++  color: white;
++  text-align: center;
++  cursor: pointer;
++  width: 100%;
++  font-size: 18px;
++  overflow: hidden;
++  position: relative;
++  cursor: pointer;
++}
++
++.card button:hover {
++  opacity: 0.7;
++}
++
+ /*
+ ul {
+   list-style-type: none;
+@@ -164,39 +203,3 @@ li.dropdown {
+ 
+     background-color: var(--bg);}*/
+ 
+-.card {
+-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+-  max-width: 300px;
+-  margin: auto;
+-  background-color: var(--bg);
+-  text-align: center;
+-  font-family: arial;
+-}
+-
+-.card-user-img {
+-  width: 100%;
+-  height: auto;
+-  color: white;
+-  cursor: pointer;
+-  object-fit: cover;
+-  position: absolute;
+-  top: 50%;
+-  left: 25%;}
+-
+-.card button {
+-  border: none;
+-  outline: 0;
+-  padding: 12px;
+-  background-color: darkred;
+-  color: white;
+-  text-align: center;
+-  cursor: pointer;
+-  width: 100%;
+-  font-size: 18px;
+-  overflow: hidden;
+-}
+-
+-.card button:hover {
+-  opacity: 0.7;
+-}
+-
+diff --git a/client/src/css/login.css b/client/src/css/login.css
+index 2f69b4f..19319d6 100644
+--- a/client/src/css/login.css
++++ b/client/src/css/login.css
+@@ -5,7 +5,7 @@
+     align-items: center;
+     flex-direction: column;
+     font-size: 20px;
+-    font-family: "Trayan";
++    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     color: var(--bg);
+     text-decoration: none;
+ }
+@@ -39,13 +39,13 @@
+     display: flex;
+     padding: 0px 0px 0px 0px;
+     flex-direction: column;
+-    font-size: 18px;
++    font-size: 20px;
+     align-content: center;
+     align-items: left;
+     flex-direction: column;
+     column-count: 1;
+     color: var(--bg);
+-    font-family: "Trayan";
++    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     }
+ 
+ .input-container-password {
+@@ -60,7 +60,8 @@
+     flex-direction: column;
+     column-count: 1;
+     color: var(--bg);
+-    font-family: "Trayan";
++    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
++
+ }
+ .email-input {
+     font-size: 20px;
+@@ -102,6 +103,7 @@
+     align-items: center;
+     align-content: center;
+     background-image: url("../components/images/loginmarquee.png");
++    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     background-repeat:  no-repeat;
+     background-position: center;
+     background-attachment: relative;
+@@ -125,7 +127,7 @@
+     background-repeat: no-repeat;
+     /*position: 400px 200px;*/
+     background-size: cover;
+-    font-family: "Trayan";
++    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     z-index: 0;
+     justify-content: center;}
+ 
+@@ -150,6 +152,10 @@
+     }
+ }
+ 
++.input-container{
++    display: block;
++    width: 100%;
++}
+ /*.login-form {
+     display: flex;
+     position: relative;
+diff --git a/client/src/css/movie.css b/client/src/css/movie.css
+index 25a4cae..c1576d2 100644
+--- a/client/src/css/movie.css
++++ b/client/src/css/movie.css
+@@ -1,7 +1,7 @@
+ .moviecard-name {
+     display: block;
+     position: relative;
+-    grid-column: 2;
++    grid-column: 3;
+     grid-row: 1;
+     top: 0px;
+     font-size: 2em;
+@@ -31,27 +31,39 @@
+     grid-template-columns: 150px 500px;
+     color: var(--text);
+     overflow: hidden;
+-    border: 2px solid black;
+-    border-radius: 10%;
+-    margin: 0px 05px;
++    border: 1px solid black;
++    border-radius: 5%;
++    margin: 20px 5px;
+     box-shadow: 0px 5px 5px 0px #101010;
+     background-color: var(--bg);
+     --bg: #00000030;
++    
+ }
+ .moviecard-body:hover {
+     grid-template-columns: 150px 500px;
+     color: var(--text);
+     overflow: hidden;
+     border: 2px solid black;
+-    border-radius: 10%;
+-    margin: 0px 05px;
+-    transition: background-color 0.5s ease;
++    border-radius: 5%;
++    margin: 20px 5px;
++    transition: background-color 1.5s ease;
+     display: grid;
+     position: relative;
+     box-shadow: 5px 5px 5px 1px #101010;
+     background-color: var(--bg);
+     --bg: #000000;
+ }
++.moviecard-details-container {
++    display: grid;
++    position: absolute;
++    /*background-color: var(--bg);*/
++    grid-template-columns: 1fr 1fr 1fr;
++    grid-template-rows: 1fr .5fr 1fr;
++    grid-column: 2;
++    grid-row: 3;
++    width: 100%;
++    height: 100%;
++    z-index: 1;}
+ 
+ .moviecard-body img {
+     max-width: 800px;}
+@@ -68,6 +80,7 @@
+ 
+ .moviecard-header {
+     position: relative;
++    align-content: center;
+     /*background-color: var(--bg);*/
+     border-radius: 10px 0px;
+     grid-column: 2;
+@@ -82,11 +95,10 @@
+     grid-column: 1;
+     grid-row: 2;
+     width: 100%;
++    padding-left: .75em;
+     z-index: 1;
+     /*background-color: var(--bg);*/
+-
+ }
+-
+ .moviecard-overview {
+     grid-column: 2;
+     grid-row: 2;
+@@ -116,17 +128,6 @@
+     height: 100%;
+     z-index: 1;}
+ 
+-.moviecard-details-container {
+-    display: grid;
+-    position: absolute;
+-    /*background-color: var(--bg);*/
+-    grid-template-columns: 1fr 1fr 1fr;
+-    grid-template-rows: 1fr .5fr 1fr;
+-    grid-column: 2;
+-    grid-row: 3;
+-    width: 100%;
+-    height: 100%;
+-    z-index: 1;}
+ 
+ .moviecard-rating {
+     position: relative;
+@@ -160,7 +161,6 @@
+     z-index: 2;}
+     
+ .moviecard-removerec-button button:hover {
+-    cursor: not-allowed;
+     box-shadow: 1px 1px 1px 0px inset ;
+     z-index: 2;
+     background-color: darkred;
+diff --git a/client/src/css/register.css b/client/src/css/register.css
+index c14306c..dcb7e30 100644
+--- a/client/src/css/register.css
++++ b/client/src/css/register.css
+@@ -35,7 +35,7 @@ h6 .login-form-container {
+ .input-container-reg-named {
+     display: inline-flex;
+     align-content: center;
+-    padding: 00px 0px;
++    padding: 0px 0px;
+     position: relative;
+     align-items: center;
+     background-position: center;
+diff --git a/client/src/css/userProfile.css b/client/src/css/userProfile.css
+index 66ead3d..779ffb1 100644
+--- a/client/src/css/userProfile.css
++++ b/client/src/css/userProfile.css
+@@ -1,45 +1,61 @@
+ 
+ .userprofile-container {
++    position: block;
+     display: grid;
+     border: 5px 5px 2px 0px solid #000;
+     height: 650px;
+-    background-color: var(--background-color);
+-    grid-template-rows: 1fr 1fr 1fr;
+-    grid-template-columns: 1fr 2fr .25fr 2fr;}
++    z-index: 3;
++    overflow-y: auto;
++    background-color: transparent;
++    grid-template-rows: .5fr, 1fr;
++    grid-template-columns: 1fr 2fr .1fr 2fr;}
+ 
+ .userprofile-friendRecs {
+     grid-column: 2;
+     grid-row: auto;
+     display: flex;
+     height: 650px;
++    z-index: 4;
+     flex-direction: column;
+     align-items: center;
+     align-content: center;
+-    overflow: auto;
++    overflow-y: auto;
+     color: var(--text);
++    margin: 0px 0px 0px 0px;
++    padding: 20px 0px 0 0;
++}
++.userprofile-friendRecs h1 {
++    grid-column: 2;
++    grid-row: 1;
+     margin: 0 0 0 0;
+-    padding: 50px 0px 0 0;
++    position: sticky;
++    mix-blend-mode: darken;
++    z-index: 3;
++    
+ }
+ 
+-/*.userprofile-friendRecs::-webkit-scrollbar {
+-    display: none;*/
+-/*}*/
+-/*.userprofile-recfeed::-webkit-scrollbar {
+-    display: none;
+-}*/
+-
+ .userprofile-recfeed {
+     grid-column: 4;
+-    grid-row: auto;
+-    display: flex;
++    grid-row: 1;
++    display: block;
++    z-index: 4;
++    /*height: 650px;*/
+     height: 650px;
+     flex-direction: column;
+     align-items: center;
++    align-content: center;
+     overflow-y: auto;
+     color: var(--text);
+     margin: 0 0 0 0;
+-    padding: 50px 100px 0 0px;}
++    padding: 20px 150px 50px 0px;}
+ 
++.userprofile-recfeed h1 {
++    margin: 0 0 0 0;
++    position: sticky;
++    mix-blend-mode: darken;
++    z-index: 3;
++    
++}
+ .userprofile-recfeed::-webkit-scrollbar {
+     display: flex;
+     width: 10px;
+@@ -80,39 +96,95 @@
+     width: 1px;
+     z-index: 3;} 
+ 
++.userprofile-section {
++    display: grid;
++    grid-template-columns: 1fr;
++    grid-template-rows: 1fr 1fr;
++}
++
+ .userprofile-card {
+     top: 0;
+     left: 0;
+     grid-column: 1;
+     grid-row: 1;
++    z-index: 4;
+     display: grid;
++    background-color: transparent;
+     position: relative;
+     grid-template-columns: 1fr;
+-    grid-template-rows: 300px 2.5em 2.5em 2.5em 2.5em 2.5em;
++    grid-template-rows: 150px 2.0em 2em 2em 2em 2.5em ;
+     align-items: center;
+     flex-direction: column;
+     justify-content: left;
+     overflow: hidden;
++    text-decoration: none;
+     color: var(--text);
+     margin: 0 0 0 0;
+-    padding: 50px 0px 0 50px ;
+-    overflow-y: overlay;}
+-
+-
+-.editProfileLink {
++    padding: 50px 0px 0px 50px;
++    overflow-y: overlay;
++    overflow-x: hidden;
++}
++.editProfileLink { 
++    font-size: 16px;
+     display: block;
+-    flex-direction: column;
++    position: relative;
+     align-items: center;
+     justify-content: center;
++    height: 30px;
++    width: 250px;
++    z-index: 3;
++    cursor: pointer;
++    text-decoration: none;
++    box-shadow: 5px 5px 5px 0px #101010;
+     color: var(--text);
+-    background-color: var(--button);
+-    border-radius: 10px;
++    background-color: darkred;;
++    border-radius: 25px;
+     margin: 0 0 0 0;
+     padding: 0 0 0 0;
+-    width: 100px;}
++    }
++
++.editProfileLink:hover {
++    background-color: rgb(100, 30, 30);
++    text-decoration: none;
++    color: var(--text);
++    transition: background-color 0.2s ease;
++    box-shadow: 5px 5px 5px 0px #101010;
++    z-index: 3}
++
++.editProfileLink:active{
++    top: 5px;
++    left: 5px;
++    z-index: 3;
++    text-decoration: none;
++    box-shadow: 0px 0px 0px 0px #101010;
++    transition: active 0.2s ease;
++}
+ 
+ .profilePic {
+-    position: center;
+-    width: 250px;
++    grid-column: 1;
++    grid-row: 1;
++    margin: 0px;
++    position: relative;
++    width: 150px;
+     height: auto;
+-}
+\ No newline at end of file
++}
++
++.userprofile-friend {
++    grid-column: 1;
++    grid-row: 2;
++    display: grid;
++    grid-template-columns: 1fr;
++    grid-template-rows: 1fr .25fr;
++    grid-row-gap: 1em;
++    z-index: 4;
++    overflow-y: auto;
++    flex-direction: column;
++}
++
++.userprofile-friend img {
++    grid-column: 1;
++    grid-row: 1;
++    width: 200px;
++    height: auto;
++    z-index: 4;
++}
+diff --git a/client/src/index.js b/client/src/index.js
+index 18c32b3..f11f2b1 100644
+--- a/client/src/index.js
++++ b/client/src/index.js
+@@ -1,6 +1,4 @@
+ import React from "react";
+-
+-import App from "./components/App";
+ import Home from "./components/Home";
+ import NotFound from "./components/NotFound";
+ import "./css/index.css";
+@@ -11,7 +9,7 @@ import "./css/header.css";
+ import "./css/register.css"
+ import "./css/userProfile.css";
+ import "./css/header.css";
+-import "./css/friends.css";
++import "./css/follow.css";
+ import { createRoot } from "react-dom/client";
+ import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+ import { AuthProvider } from "./contexts/AuthContext";
+diff --git a/server/images/heads.jpg b/server/images/heads.jpg
+index 37e3e42..5e661f9 100644
+Binary files a/server/images/heads.jpg and b/server/images/heads.jpg differ
+(END)

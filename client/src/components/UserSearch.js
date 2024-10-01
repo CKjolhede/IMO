@@ -20,16 +20,27 @@ const UserSearch = ({handleFriendRequest}) => {
     return (
         <div>
             <input
+                className="reg-input"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        handleSearch();
+                    }
+                }}
                 placeholder="Search by name"
             />
-            <button onClick={handleSearch}>Search</button>
+            <button className="input-button" onClick={handleSearch}>
+                Search
+            </button>
             <ul>
                 {users?.map((user) => (
-                    <UserSearchCard key={user.id}
-                        handleFriendRequest={handleFriendRequest} friendUser={user} />
+                    <UserSearchCard
+                        key={user.id}
+                        handleFriendRequest={handleFriendRequest}
+                        friendUser={user}
+                    />
                 ))}
             </ul>
         </div>

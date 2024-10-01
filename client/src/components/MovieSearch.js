@@ -18,17 +18,32 @@ function MovieSearch({handleAddRecommendation}) {
     
     return (
         <div>
-            <h1>Search Movies</h1> 
-            <input type="text" name="searchMovieTerm" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search for a movie"/>
-            <button onClick={handleMovieSearch}>Search Movies</button>
+            <h1>Search Movies</h1>
+            <input
+                type="text"
+                name="searchMovieTerm"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        handleMovieSearch();
+                    }
+                }}
+                placeholder="Search for a movie"/>
+            <button onClick={handleMovieSearch}>
+                Search Movies
+            </button>
             <ul>
                 {movies?.map((movie) => (
-                    <MovieCard key={movie.tmdb_id} movie={movie} handleAddRecommendation={handleAddRecommendation}/>
+                    <MovieCard
+                        key={movie.tmdb_id}
+                        movie={movie}
+                        handleAddRecommendation={handleAddRecommendation}
+                    />
                 ))}
             </ul>
         </div>
-);  
+    );  
 
 };
 
