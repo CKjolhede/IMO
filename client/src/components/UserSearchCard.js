@@ -7,10 +7,10 @@ function UserSearchCard({
 }) {
     const { user } = useAuth();
     const friendUserId = friendUser.id;
-    const user_Id = user.id;
+    const userId = user.id;
     //const [searchState, setSearchState] = useState("");
     const handleRequest = () => {
-        handleFriendRequest(friendUserId, user_Id);
+        handleFriendRequest(friendUserId, userId);
         //setSearchState("pending");
     };
         return (

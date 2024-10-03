@@ -4,23 +4,10 @@ import { useAuth } from '../contexts/AuthContext';
 import imo_emu from "./images/imo_emu.png";
 
 
-function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendRequest, follow, friends }) {
+function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendRequest, follow, pendingFollows, acceptedFollows, requestedFollows }) {
     const { user } = useAuth();
     const profilePic = { imo_emu }
     const [friendUser, setFriendUser] = useState("");
-    //const [pendingFriends, setPendingFriends] = useState([]);
-    //const [acceptedFriends, setAcceptedFriends] = useState([]);
-    //const [requestedFriends, setRequestedFriends] = useState([]);
-
-        //setPendingFriends(
-        //    friends?.filter((friend) => friend.status === "pending")
-        //);
-        //setAcceptedFriends(
-        //    friends?.filter((friend) => friend.status === "accepted")
-        //);
-        //setRequestedFriends(
-        //    friends?.filter((friend) => friend.status === "requested")
-        //);
     
         useEffect(() => {
             
@@ -37,105 +24,84 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
         }
         else if (follow.status === 'accepted') {
             return (
-                <div className="follow-card">
+                <li >
                     <img className="follow-picture"
-                        src={profilePic}
-                        alt="profile pic"
-                    ></img>
+                        src={imo_emu}
+                        alt="profile pic"/>
+                    
                     <div className="follow-header">
-                        <h2>
-                            {friendUser.first_name} {friendUser.last_name}
-                        </h2>
+                        {friendUser.first_name} {friendUser.last_name}
                     </div>
+                    
                     <button
                         className="follow-button"
-                        onClick={() => {
-                            handleRemoveFriend(follow.id);
-                        }}
-                    >
+                        onClick={() => {handleRemoveFriend(follow.id);}}> 
                         Unfriend
                     </button>
-                </div>
+                </li>
             );
         }
         else if (follow.status === 'requested') {
             return (
-                <div className="follow-card">
-                    <img
-                        className="follow-card-profile-pic"
+                <li >
+                    <img className="follow-picture"
                         src={profilePic}
-                        alt="profile pic"
-                    ></img>
+                        alt="profile pic"/>
 
-                    <div className="follow-card-header">
+                    <div className="follow-header">
                         {friendUser.first_name} {friendUser.last_name}
                     </div>
-                    <button
-                        className="follow-card-header-btn"
+                    
+                    <button className="follow-button"
                         onClick={() => {
-                            handleAcceptFriend(follow.id);
-                        }}
-                    >
+                            handleAcceptFriend(follow.id);}}>
                         Accept
                     </button>
-                    <button
-                        className="follow-card-header-btn"
-                        onClick={() => {
-                            handleRemoveFriend(follow.id);
-                        }}
-                    >
+                    
+                    <button className="follow-button"
+                        onClick={() => {handleRemoveFriend(follow.id);}}>
                         Decline
                     </button>
-                </div>
+                </li>
             );
         }
         else if (follow.status === 'pending') {
 
             return (
-                <div className="follow-card">
+                <li >
                     <img
-                        className="card-profile-pic"
-                        src={profilePic}
-                        alt="profile pic"
-                    ></img>
-                    <h2>
+                        className="follow-picture"
+                        src={imo_emu}
+                        alt="profile pic" />
+                    
+                    <h2 className="follow-header">
                         {friendUser.first_name} {friendUser.last_name}
                     </h2>
-                    <h3>
-                        Friend Request Pending
-                        <button
-                            className="follow-card-header-btn"
+                    
+                    <button className="follow-button"
                             onClick={() => {
-                                handleRemoveFriend(follow.id);
-                            }}
-                        >
-                            Cancel
-                        </button>
-                    </h3>
-                </div>
+                                handleRemoveFriend(follow.id);}}>
+                            Cancel Request
+                    </button>
+                </li>
             );
         }
         else {
             return (
-                <div className="follow-card">
-                    <img
-                        style={{ width: "100px", height: "100px" }}
-                        className="card"
-                        src={profilePic}
-                        alt="profile pic"
-                    />
-                    <h2>
-                        {friendUser.first_name} {friendUser.last_name}
-                    </h2>
+                <li >
+                    <img className="follow-picture"
+                        src={imo_emu}
+                        alt="profile pic"/>
+                    
+                    <h2 className="follow-header">
+                        {friendUser.first_name} {friendUser.last_name}</h2>
+                    
                     <button
                         className="card button"
-                        onClick={() => {
-                            handleFriendRequest(friendUser.id, user.id);
-                        }}
-                    >
+                        onClick={() => {handleFriendRequest(friendUser.id, user.id);}}>                    
                         Request Friendship
                     </button>
-                </div>
+                </li>
             );
         }
     }

@@ -8,6 +8,7 @@ export const useRec = () => useContext(RecContext);
 export const RecProvider = ({ children }) => {
     const { user } = useAuth();
     const [recommendations, setRecs] = useState([]);
+    console.log("User Recommendations: ", recommendations)
     useEffect(() => {
         if (user) {
 

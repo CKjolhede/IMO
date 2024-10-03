@@ -3,6 +3,9 @@ import RecCard from './RecCard';
 
 function RecFeed({ recommendations }) {
     const recs = recommendations.flat();
+    if (!recs || recs.length === 0) {
+        return <div>No recommendations found.</div>;
+    }
     return (
             <>
             <div >

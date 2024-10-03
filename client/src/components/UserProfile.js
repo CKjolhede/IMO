@@ -1,6 +1,6 @@
-import { useAuth } from "../contexts/AuthContext";
-//import { useRec } from "../contexts/RecContext";
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { useRec } from "../contexts/RecContext";
 import RecFeed from "./RecFeed";
 import RecCard from "./RecCard";
 import Follows from "./Follows";
@@ -14,7 +14,9 @@ import defaultProfilePic from "./images/imo_emu.png";
 
 const UserProfile = ({ updateUserImage }) => {
     const { user } = useAuth();
+    const { createRecommendation } = useRec();
     const [friendRecommendations, setFriendRecommendations] = useState([]);
+    console.log("num of friendRecs: " + friendRecommendations.length)
     const [followsUser, setFollowsUser] = useState([]);
     //const [followingUser, setFollowingUser] = useState([]);
     //console.log("followinguser", followingUser);
@@ -22,7 +24,7 @@ const UserProfile = ({ updateUserImage }) => {
         return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
     }
     useEffect(() => {
-    
+        console.log('followsUser', followsUser);
         const fetchFriendRecommendations = async () => {
             try {
                 const response = await fetch("/follows/" + user.id, {
@@ -37,7 +39,13 @@ const UserProfile = ({ updateUserImage }) => {
                                 const response = await fetch("/recommendations/" + friend.following_id, {
                                     method: "GET",
                                 });
-                                return await response.json();
+                                const data = await response.json();
+                                    if (data.length > 0) { return data }
+                                    else {
+                                        createRecommendation(1, friend.following_id)
+                                };
+                                return await response.json()
+
                             } catch (error) {
                                 return console.error(
                                     "Error fetching recommendations for friend:",
@@ -46,6 +54,10 @@ const UserProfile = ({ updateUserImage }) => {
                             }
                         })
                     );
+                    //const uniqueFriendRecommendations = [
+                    //    ...new Set(friendRecommendations.flat()),
+                    //];
+                    //setFriendRecommendations(uniqueFriendRecommendations);
                     setFriendRecommendations(friendRecommendations);
                 } else {
                     console.error("Failed to fetch friends:", response.statusText);
@@ -56,35 +68,8 @@ const UserProfile = ({ updateUserImage }) => {
         };
 
         fetchFriendRecommendations();
-    }, [user.id]);
+    }, [user, createRecommendation]);
     
-    
-    //const followsUserIds = tempUsers?.map(follow => follow.following_id);
-    ////const followsUserIdsPending = followsUser.filter(follow => follow.status === "pending").map(follow => follow.following_id);
-    ////console.log('followsUserIds',followsUserIds);
-    
-    //useEffect(() => {
-    //    const fetchFollowingUser = async () => {
-
-    //        try {
-    //            const responses = await Promise.all(
-    //                followsUserIds.map((id) => {
-    //                    return fetch(`./users/${id}`);
-    //                }),
-    //            );
-
-    //            const users = await Promise.all(
-    //                responses.map((response) => response.json())
-    //            );
-    //            //setFollowingUser(users);
-    //            //setFollowingUser(users);
-    //        } catch (error) {
-    //            console.error(error);
-    //        }
-    //    };
-
-    //    fetchFollowingUser();
-    //}, [followsUserIds]);
 
 
     return (
@@ -100,35 +85,31 @@ const UserProfile = ({ updateUserImage }) => {
                 <Route path="/recfeed" element={<RecCard />} />
             </Routes>
             <div className="userprofile-container">
-                <div className="userprofile-section">
-                    <div className="userprofile-card">
-                        <img
-                            className="profilePic"
-                            src={defaultProfilePic}
-                            name="profilePic"
-                            alt="ProfileImage"
-                        />
-                        <h1>
-                            {user.first_name} {user.last_name}
-                        </h1>
-                        <h2>{user.email}</h2>
-                        <h2>{formatPhone(user.phone)}</h2>
-                        <h2>zipcode: {user.zipcode}</h2>
-                        <div>
-                            <Link to="/edituser">
-                                <button className="editProfileLink">
-                                    Edit Profile
-                                </button>
-                            </Link>
-                        </div>
+                <div className="userprofile-card">
+                    <img
+                        className="profilePic"
+                        src={defaultProfilePic}
+                        name="profilePic"
+                        alt="ProfileImage"
+                    />
+                    <h1>
+                        {user.first_name} {user.last_name}
+                    </h1>
+                    <h2>{user.email}</h2>
+                    <h2>{formatPhone(user.phone)}</h2>
+                    <h2>zipcode: {user.zipcode}</h2>
+                    <div>
+                        <Link to="/edituser">
+                            <button className="editProfileLink">
+                                Edit Profile
+                            </button>
+                        </Link>
                     </div>
-
-                    <div className="userprofile-friends">
-                        <h2>Pending Friend Requests</h2>
-                        <ul className="userfriends-list">
-                            <Follows />
-                        </ul>
-                    </div>
+                </div>
+                <div className="follow-container">
+                    {/*<ul className="userfriends-list">*/}
+                        <Follows />
+                    {/*</ul>*/}
                 </div>
                 <div className="userprofile-friendRecs">
                     {friendRecommendations.length > 0 && (
@@ -138,20 +119,21 @@ const UserProfile = ({ updateUserImage }) => {
                     )}
                     <RecFeed recommendations={friendRecommendations} />
                 </div>
-                <div className="userprofile-recfeed">
-                    {friendRecommendations.length > 0 && (
-                        <h1 className="moviecard-name">
-                            Your Recommendations
-                        </h1>
-                    )}
-                    <Recommendations />
-                </div>
+            <div className="userprofile-recfeed">
+                {friendRecommendations.length > 0 && (
+                    <h1 className="moviecard-name">
+                        Your Recommendations
+                    </h1>
+                )}
+                <Recommendations />
+            </div>
             </div>
         </>
     );
 };
 
 export default UserProfile;
+
 
 //import { useAuth } from "../contexts/AuthContext";
 //import React, { useState } from "react";

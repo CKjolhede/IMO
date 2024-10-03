@@ -10,8 +10,6 @@ from dotenv import load_dotenv
 import requests
 import ipdb
 
-
-
 @app.route('/')
 def index():
     return '<h1>IMO</h1>'
@@ -149,7 +147,6 @@ class FollowsByUser(Resource):
         if followings == []:
             return make_response(jsonify("No Followings found"), 404)
         following = [follow.to_dict(
-            #only=('id','following_id', 'follower_id','status')
             ) for follow in followings] 
         return make_response(jsonify(following), 200)
 
