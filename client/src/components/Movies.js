@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useRec } from "../contexts/RecContext";
 
 
-export default function Movies({handleAddRecommendation}) {
+export default function Movies({ handleAddRecommendation }) {
     const [movies, setMovies] = useState([]);
     const { user } = useAuth();
     const { removeRecMovies } = useRec();
@@ -16,9 +16,9 @@ export default function Movies({handleAddRecommendation}) {
             try {
                 const moviefetch = await fetch('/movies', { method: 'GET' });
                 if (moviefetch.ok) {
-                    const data = await moviefetch.json();   
-                    const sortedMovies = removeRecMovies(data);                
-                    setMovies(sortedMovies);                    
+                    const data = await moviefetch.json();
+                    const sortedMovies = removeRecMovies(data);
+                    setMovies(sortedMovies);
                 }
             }
             catch (error) {
@@ -28,13 +28,17 @@ export default function Movies({handleAddRecommendation}) {
         fetchMovies()
     }, [user.id, removeRecMovies]);
     
-        return (
-            <div>
-                <MovieSearch handleAddRecommendation={handleAddRecommendation}/>
-                <h1>Movies</h1>
-                {movies?.map((movie) => (
-                    <MovieCard key={movie.tmdb_id} movie={movie} handleAddRecommendation={handleAddRecommendation}/>
-                    ))}
-            </div>
-        );
+    return (<>
+                <h1 className="page-title">Browse Movies</h1>
+                <div className="movies-page">
+                    <div className="movies-search">
+                        <MovieSearch handleAddRecommendation={handleAddRecommendation} />
+                    </div>
+                    <div className="movies-list">
+                        {movies?.map((movie) => (
+                            <MovieCard key={movie.tmdb_id} movie={movie} handleAddRecommendation={handleAddRecommendation} />
+                        ))}
+                    </div>
+                </div>
+            </>);
 }

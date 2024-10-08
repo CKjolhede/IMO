@@ -1,12 +1,12 @@
-import React from "react";
-import Home from "./Home";
-import { useAuth } from "../contexts/AuthContext";
-import { Routes, Route } from "react-router-dom";
-import Header from "./Header";
-import LoginFormContainer from "./LoginFormContainer";
-import RegisterContainer from "./RegisterContainer";
-import NotFound from "./NotFound";
-import UserProfile from "./UserProfile";
+//import React from "react";
+//import Home from "./Home";
+//import { useAuth } from "../contexts/AuthContext";
+//import { Routes, Route } from "react-router-dom";
+//import Header from "./Header";
+//import LoginFormContainer from "./LoginFormContainer";
+//import RegisterContainer from "./RegisterContainer";
+//import NotFound from "./NotFound";
+//import UserProfile from "./UserProfile";
 
 function App() {
     //    const { isLoggedIn } = useAuth();

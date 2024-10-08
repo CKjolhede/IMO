@@ -10,17 +10,13 @@ export const FriendProvider = ({ children }) => {
     const { user } = useAuth();
     const { recommendations } = useRec();
     const [friends, setFriends] = useState([]);
-    console.log("user in Friendprovider", user)
-    console.log("Friends in FriendProvider", friends);
     useEffect(() => {
-        console.log(user)
             const fetchFriends = async () => {
                 try {
                     const response = await fetch('/follows/' + user.id, { method: 'GET' });
                     if (response.ok) {
                         const data = await response.json();
                         setFriends(data);
-                        console.log(friends)
                     } else {
                         console.error('Failed to fetch friends:', response.statusText);
                     }

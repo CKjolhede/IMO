@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import FollowCard from "./FollowCard";
 // TODO: Add frame of suggested friends. Algo simply users 2 or 3 degrees of separation through current friends
 
 function FollowsList({ handleRemoveFriend, handleAcceptFriend, handleFriendRequest, follows }) {
     const [acceptedFollows, setAcceptedFollows] = useState([]);
-    console.log("accepted follows", acceptedFollows);
     const [pendingFollows, setPendingFollows] = useState([]);
-    console.log("pending follows", pendingFollows);
     const [requestedFollows, setRequestedFollows] = useState([]);
-    console.log("requested follows", requestedFollows);
+
+    const { user } = useAuth();
 
     
     useEffect(() => {
@@ -20,7 +20,8 @@ function FollowsList({ handleRemoveFriend, handleAcceptFriend, handleFriendReque
     
     return (
         <>
-            <ul>
+            <h1>Friends</h1>
+            <div>
                 {acceptedFollows?.map((friend) => (
                     <FollowCard
                         key={friend.id}
@@ -30,16 +31,16 @@ function FollowsList({ handleRemoveFriend, handleAcceptFriend, handleFriendReque
                         follow={friend}
                     />
                 ))}
-            </ul>
-
+            </div>
             <ul>
-            {pendingFollows?.map((friend) => (
+                {pendingFollows?.map((friend) => (
                     <FollowCard
                         key={friend.id}
                         handleRemoveFriend={handleRemoveFriend}
                         handleAcceptFriend={handleAcceptFriend}
                         handleFriendRequest={handleFriendRequest}
                         follow={friend}
+                        isFollower={friend.follower_id === user.id}
                     />
                 ))}
             </ul>
@@ -51,6 +52,7 @@ function FollowsList({ handleRemoveFriend, handleAcceptFriend, handleFriendReque
                         handleAcceptFriend={handleAcceptFriend}
                         handleFriendRequest={handleFriendRequest}
                         follow={friend}
+                        isFollower={friend.follower_id === user.id}
                     />
                 ))}
             </ul>

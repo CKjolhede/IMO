@@ -3,12 +3,12 @@
     grid-row: 2;
     display: grid;
     overflow-y: auto;
-    height: 600px;
+    height: 100%;
     grid-template-columns: 1fr;
     grid-column-gap: 1em;
     grid-row-gap: 1em;
-    margin: 00 0 0 0;
-    padding: 50px 50px 0 0;
+    margin: 1em 0 0 0;
+    padding: 2em 1em 0 0;
 }
 
 .follow-header {
@@ -56,7 +56,14 @@
 }
 
 .follow-search {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 20% 1fr;
+    grid-column-gap: 1em;
+    grid-row-gap: 1em;
+    margin: 3em 0 0 0;
+    padding: 5em 0em 0 0;
+    z-index: 3;
     position: top;
     align-items: center;
     grid-column: 1;
@@ -75,7 +82,7 @@
 .follow-list h1 {
     display: block;
     margin: 0 0 0 0;
-    padding: 20px 0px 0px 0px;
+    padding: 1em 0 0 0;
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -85,14 +92,13 @@
     font-weight: bold;
     font-size: 3em;
     width: 100%;
-    border-top: 5px solid var(--bg);    
+    /*border-top: 5px solid var(--bg);    */
 }
 
 .follow-list {
     grid-column: 1;
-    grid-row: 2;
+    grid-row: 1;
     overflow-y: auto;
-    position: flex;
     display: grid;
     align-items: center;
     justify-content: center;
@@ -104,11 +110,13 @@
     width: 100%;
     overflow-y: auto;
     align-items: center;
+    padding-top: 5%;
     padding-bottom: 200px;
+    background-color: var(--bg);
 }
 
 .follow-button {
-    width: 150px;
+    width: 2em;
     position: relative;
     display: inline-block;
     align-items: center;

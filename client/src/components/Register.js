@@ -42,7 +42,6 @@ function Register() {
                 .matches(/^\d{10}$/, "Phone number must be 10 digits long"),
         }),
         onSubmit: async (values) => {
-            console.log(values);
             try {
                 setErrors([]);
                 const response = await fetch("/users", {

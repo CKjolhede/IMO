@@ -17,30 +17,6 @@
     --border-radius: 8px;
     --nav-size: 60px;
 }
-/*body {
-    display: block;
-    background-color: rgba(0, 0, 0, 0.902);
-    background-image: url("../components/images/theater_dark_shadow.png"),
-        url("../components/images/redcurtainsL.jpg"),
-        url("../components/images/redcurtainsR.jpg");
-    background-repeat: repeat-x, no-repeat, no-repeat;
-    background-position: center bottom, center left, center right;
-    margin: 0, 0;
-    padding: 0, 0;
-    overflow: hidden, hidden, hidden;
-    background-attachment: fixed, fixed, fixed;
-    z-index: 20, -1, -1;
-    background-size: 63% 700px, 50% 100%, 50% 100%;
-    font-family:
-        -apple-system, BlinkMacSystemFont, 
-        "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Trajan", "Trajan Pro",
-        "Trayan", "Segoe UI", "Showtime", "Roboto", "Oxygen", "Ubuntu",
-        "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -ms-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;    
-}*/
 
 body {
     display: block;
@@ -98,17 +74,12 @@ li:first-child {
     transition: background-color 0.3s ease;
 }
 
-.card {
-  background-color: var(--bg);
-  text-align: center;
-  z-index: 50;
-}
 
 .card img {
   width: 50%;
   height: auto;
   position: relative;}
-
+*/
 
 .card button {
   display: inline-block;

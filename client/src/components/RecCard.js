@@ -3,12 +3,13 @@ import { useRec } from '../contexts/RecContext';
 import { useAuth } from '../contexts/AuthContext';
 
 function RecCard({ recommendation }) {
+    console.log("reccard recommendation", recommendation);
     const rec = recommendation;
     const { user } = useAuth();
     const { removeRecommendation } = useRec();
-    if (!rec || rec === undefined) {
-        return null;
-    }
+    //if (!rec || rec === undefined) {
+    //    return null;
+    //}
     const image_url = rec.movie?.poster_path ? 'https://image.tmdb.org/t/p/original' + rec.movie.poster_path : null;
     const image_url2 = rec.movie?.backdrop_path ? 'https://image.tmdb.org/t/p/original' + rec.movie.backdrop_path : null;
     const rounded_rating = rec.movie?.rating ? Math.round(rec.movie.rating * 10) / 10 : null;

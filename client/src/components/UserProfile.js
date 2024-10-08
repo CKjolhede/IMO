@@ -4,6 +4,7 @@ import { useRec } from "../contexts/RecContext";
 import RecFeed from "./RecFeed";
 import RecCard from "./RecCard";
 import Follows from "./Follows";
+import FollowsList from "./FollowsList";
 import EditUser from "./EditUser";
 import Recommendations from "./Recommendations";
 import ProfileModal from "./ProfileModal";
@@ -16,10 +17,8 @@ const UserProfile = ({ updateUserImage }) => {
     const { user } = useAuth();
     const { createRecommendation } = useRec();
     const [friendRecommendations, setFriendRecommendations] = useState([]);
-    console.log("num of friendRecs: " + friendRecommendations.length)
     const [followsUser, setFollowsUser] = useState([]);
     //const [followingUser, setFollowingUser] = useState([]);
-    //console.log("followinguser", followingUser);
     const formatPhone = (phone) => {
         return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
     }
@@ -54,11 +53,11 @@ const UserProfile = ({ updateUserImage }) => {
                             }
                         })
                     );
-                    //const uniqueFriendRecommendations = [
-                    //    ...new Set(friendRecommendations.flat()),
-                    //];
-                    //setFriendRecommendations(uniqueFriendRecommendations);
-                    setFriendRecommendations(friendRecommendations);
+                    const uniqueFriendRecommendations = [
+                        ...new Set(friendRecommendations.flat()),
+                    ];
+                    setFriendRecommendations(uniqueFriendRecommendations);
+                    //setFriendRecommendations(friendRecommendations);
                 } else {
                     console.error("Failed to fetch friends:", response.statusText);
                 }
@@ -68,6 +67,7 @@ const UserProfile = ({ updateUserImage }) => {
         };
 
         fetchFriendRecommendations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user, createRecommendation]);
     
 
@@ -77,13 +77,15 @@ const UserProfile = ({ updateUserImage }) => {
             <Routes>
                 <Route
                     path="/edituser"
-                    element={<EditUser updateUserImage={updateUserImage} />}
+                    element={<EditUser updateUserImage={updateUserImage} formatPhone={formatPhone}/>}
                 />
                 <Route path="/follows" element={<Follows />} />
                 <Route path="/profilemodal" element={<ProfileModal />} />
                 <Route path="/recommendations" element={<Recommendations />} />
                 <Route path="/recfeed" element={<RecCard />} />
             </Routes>
+            <h1 className="page-title-userprofile">
+                <img src={defaultProfilePic} alt="ProfileImage" /> {user.first_name}</h1>
             <div className="userprofile-container">
                 <div className="userprofile-card">
                     <img
@@ -106,11 +108,11 @@ const UserProfile = ({ updateUserImage }) => {
                         </Link>
                     </div>
                 </div>
-                <div className="follow-container">
+                {/*{/*<div className="follow-container"*/}
                     {/*<ul className="userfriends-list">*/}
-                        <Follows />
+                    {/*<div className="follow-list"><FollowsList /></div>*/}
                     {/*</ul>*/}
-                </div>
+                {/*</div>*/}
                 <div className="userprofile-friendRecs">
                     {friendRecommendations.length > 0 && (
                         <h1 className="moviecard-name">
@@ -119,14 +121,12 @@ const UserProfile = ({ updateUserImage }) => {
                     )}
                     <RecFeed recommendations={friendRecommendations} />
                 </div>
-            <div className="userprofile-recfeed">
-                {friendRecommendations.length > 0 && (
-                    <h1 className="moviecard-name">
-                        Your Recommendations
-                    </h1>
-                )}
-                <Recommendations />
-            </div>
+                <div className="userprofile-recfeed">
+                    {friendRecommendations.length > 0 && (
+                        <h1 className="moviecard-name">Your Recommendations</h1>
+                    )}
+                    <Recommendations />
+                </div>
             </div>
         </>
     );
@@ -154,7 +154,7 @@ export default UserProfile;
 
     //const imageUrl = base_url + "/images/" + Modal.image.index + ".png";
 
-    //console.log("Image URL:", imageUrl); // Log the image URL
+
 ////function UserProfile({ updateUserImage }) {//-
 ////    const base_url = "imo/client/src/components/assets";//-
 ////    const { user } = useAuth();//-
@@ -199,7 +199,6 @@ export default UserProfile;
 ////    );//-
 ////    };//-
 //    const imageUrl = base_url + "/images/" + Modal.image.index + ".png";
-//    console.log("Image URL:", imageUrl); // Log the image URL
 
 ////export default UserProfile;//-
 //    return (

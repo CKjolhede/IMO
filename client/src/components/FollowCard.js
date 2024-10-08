@@ -4,9 +4,9 @@ import { useAuth } from '../contexts/AuthContext';
 import imo_emu from "./images/imo_emu.png";
 
 
-function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendRequest, follow, pendingFollows, acceptedFollows, requestedFollows }) {
+function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendRequest, follow, isFollower }) {
     const { user } = useAuth();
-    const profilePic = { imo_emu }
+    const profilePic = imo_emu
     const [friendUser, setFriendUser] = useState("");
     
         useEffect(() => {
@@ -66,25 +66,50 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
             );
         }
         else if (follow.status === 'pending') {
-
-            return (
+            if (isFollower) {
+                return (
+                    <li >
+                        <img
+                            className="follow-picture"
+                            src={profilePic}
+                            alt="profile pic" />
+                        <h2 className="follow-header">
+                            {friendUser.first_name} {friendUser.last_name}
+                        </h2>
+                        <button className="follow-button"
+                            onClick={() => {
+                                handleRemoveFriend(follow.id);
+                            }}>
+                            Cancel Request
+                        </button>
+                    </li>
+                );
+            } 
+            else {
+                
+                return (
                 <li >
-                    <img
-                        className="follow-picture"
+                    <img className="follow-picture"
                         src={imo_emu}
-                        alt="profile pic" />
-                    
-                    <h2 className="follow-header">
+                        alt="profile pic"/>
+
+                    <div className="follow-header">
                         {friendUser.first_name} {friendUser.last_name}
-                    </h2>
+                    </div>
                     
                     <button className="follow-button"
-                            onClick={() => {
-                                handleRemoveFriend(follow.id);}}>
-                            Cancel Request
+                        onClick={() => {
+                            handleAcceptFriend(follow.id);}}>
+                        Accept
+                    </button>
+                    
+                    <button className="follow-button"
+                        onClick={() => {handleRemoveFriend(follow.id);}}>
+                        Decline
                     </button>
                 </li>
             );
+            }
         }
         else {
             return (

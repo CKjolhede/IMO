@@ -152,17 +152,16 @@
 
 .moviecard-removerec-button {
     position: relative;
-    margin-right: 2em;
     grid-column: 3;
     grid-row: 1;
-    box-shadow: 5px 5px 5px 0px #101010;
-    right: 0px;
-    bottom: 0px;
+    box-shadow: .2em .2em .2em 0em #101010;
+    right: 0em;
+    margin-right: 2em;
+    bottom: 0em;
     z-index: 2;}
     
 .moviecard-removerec-button button:hover {
-    box-shadow: 1px 1px 1px 0px inset ;
-    z-index: 2;
+    z-index: 2;    
     background-color: darkred;
     color: var(--text);
     transition: background-color 0.2s ease;}

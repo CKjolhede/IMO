@@ -1,8 +1,10 @@
 
 .header {
     display: flex;
+    position: fixed;
     top: 0;
     left: 0;
+    z-index: 4;
     font: 'Trayan';
     width: 100vw; 
     height: 100px;  

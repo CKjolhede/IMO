@@ -446,7 +446,6 @@ index be6e3d2..88164ea 100644
 +                if (response.ok) {//+
 +                    const friends = await response.json();//+
 +                    setFollows(friends);//+
-+                    console.log("userprofile friendfetchresults:", friends);//+
 +                    const friendRecommendations = await Promise.all(//+
 +                        friends?.map(async (friend) => {//+
 +                            try {//+
@@ -500,10 +499,8 @@ index be6e3d2..88164ea 100644
 +        const settingFriends = async () => follows?.map(async (friend) => {
 +            const response = await fetch("/users/" + friend.following_id, { method: 'GET' });
 +            if (response.ok) {
-+                console.log(response)
 +                debugger;
 +                const data = await response.json();
-+                console.log('friend data:', data);
 +                setFriends(data);
 +            }
 +        });
@@ -668,13 +665,11 @@ index 7628bcb..7524b6f 100644
      const { user } = useAuth();
 +    const { recommendations } = useRec();
      const [friends, setFriends] = useState([]);
-     console.log("user in Friendprovider", user)
-     console.log("Friends in FriendProvider", friends);
+
 @@ -18,6 +20,7 @@ export const FriendProvider = ({ children }) => {
                      if (response.ok) {
                          const data = await response.json();
                          setFriends(data);
-+                        console.log(friends)
                      } else {
                          console.error('Failed to fetch friends:', response.statusText);
                      }

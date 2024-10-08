@@ -14,8 +14,8 @@ function UserSearchCard({
         //setSearchState("pending");
     };
         return (
-            <div className="card">
-                <img
+            <div className="userprofile-card">
+                <img className=".profilePic"
                     src={imo_emu}
                     alt="profile pic"
                 ></img>

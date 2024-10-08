@@ -11,6 +11,9 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
     const [errors, setErrors] = useState([]);
     const baseUrl = process.env.REACT_APP_BASE_URL;
     const imageUrl = baseUrl + user.image;
+    const formatPhone = (phone) => {
+        return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+    };
     
     const formik = useFormik({
         initialValues: {
@@ -54,114 +57,125 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
 
     return (
         <>
-            <div>
-                <img
-                    className="profilePic"
-                    src={defaultProfilePic}
-                    name="profilePic"
-                    alt="ProfileImage"
-                    onClick={handleImageClick}
-                    style={{ cursor: "pointer" }}
-                />
-                {isModalOpen && <Modal onSelectImage={handleImageSelect} />}
-            </div>
-            <form onSubmit={formik.handleSubmit}>
-                <div className="input-container">
-                    <input
-                        className="input-email"
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="Email"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.email}
-                        autoComplete="on"
+            <div className="edituser-container">
+                <div className="edituser-card">
+                    <img
+                        className="edituser-profilepic"
+                        src={defaultProfilePic}
+                        name="profilePic"
+                        alt="ProfileImage"
+                        //onClick={handleImageClick}
                     />
-                    {formik.errors.email && formik.touched.email ? (
-                        <p className="error">{formik.errors.email}</p>
-                    ) : null}
-                </div>
-                <div className="input-container">
-                    <input
-                        className="input-email"
-                        id="first_name"
-                        name="first_name"
-                        type="text"
-                        placeholder="First Name"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.first_name}
-                        autoComplete="on"
-                    />
-                    {formik.errors.first_name && formik.touched.first_name ? (
-                        <p className="error">{formik.errors.first_name}</p>
-                    ) : null}
-                </div>
-                <div className="input-container">
-                    <input
-                        className="input-email"
-                        id="last_name"
-                        name="last_name"
-                        type="text"
-                        placeholder="Last Name"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.last_name}
-                        autoComplete="on"
-                    />
-                    {formik.errors.last_name && formik.touched.last_name ? (
-                        <p className="error">{formik.errors.last_name}</p>
-                    ) : null}
-                </div>
-                <div className="input-container">
-                    <input
-                        className="input-email"
-                        id="phone"
-                        name="phone"
-                        type="text"
-                        placeholder="Phone Number"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.phone}
-                        autoComplete="on"
-                    />
-                    {formik.errors.phone && formik.touched.phone ? (
-                        <p className="error">{formik.errors.phone}</p>
-                    ) : null}
-                </div>
-                <div className="input-container">
-                    <input
-                        className="input-email"
-                        id="zipcode"
-                        name="zipcode"
-                        type="text"
-                        placeholder="ZipCode"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.zipcode}
-                        autoComplete="on"
-                    />
-                    {formik.errors.zipcode && formik.touched.zipcode ? (
-                        <p className="error">{formik.errors.zipcode}</p>
-                    ) : null}
-                </div>
+                    {isModalOpen && <Modal onSelectImage={handleImageSelect} />}
 
-                <div id="submit-button">
-                    <button type="submit" className="submit-button">
-                        Update
-                    </button>
+                    <form onSubmit={formik.handleSubmit}>
+                        <div className="input-container-firstname">
+                            <input
+                                className="input-email"
+                                id="first_name"
+                                name="first_name"
+                                type="text"
+                            
+                                placeholder="First Name"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.first_name}
+                                autoComplete="on"
+                            />
+                            {formik.errors.first_name &&
+                            formik.touched.first_name ? (
+                                <p className="error">
+                                    {formik.errors.first_name}
+                                </p>
+                            ) : null}
+                        </div>
+                        <div className="input-container-lastname">
+                            <input
+                                className="input-email"
+                                id="last_name"
+                                name="last_name"
+                                type="text"
+                                placeholder="Last Name"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.last_name}
+                                autoComplete="on"
+                            />
+                            {formik.errors.last_name &&
+                            formik.touched.last_name ? (
+                                <p className="error">
+                                    {formik.errors.last_name}
+                                </p>
+                            ) : null}
+                        </div>
+                        <div className="input-container-email">
+                            <input
+                                className="input-email"
+                                id="email"
+                                name="email"
+                                type="email"
+                                placeholder="Email"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.email}
+                                autoComplete="off"
+                            />
+                            
+                            {formik.errors.email && formik.touched.email ? (
+                                <p className="error">{formik.errors.email}</p>
+                            ) : null}
+                        </div>
+                        <div className="input-container-phone">
+                            <input
+                                className="input-email"
+                                id="phone"
+                                name="phone"
+                                type="text"
+                                placeholder="Phone Number"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.phone}
+                                autoComplete="on"
+                            />
+                            {formik.errors.phone && formik.touched.phone ? (
+                                <p className="error">{formik.errors.phone}</p>
+                            ) : null}
+                        </div>
+                        <div className="input-container">
+                            <input
+                                className="input-email"
+                                id="zipcode"
+                                name="zipcode"
+                                type="text"
+                                placeholder="ZipCode"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.zipcode}
+                                autoComplete="on"
+                            />
+                            {formik.errors.zipcode && formik.touched.zipcode ? (
+                                <p className="error">{formik.errors.zipcode}</p>
+                            ) : null}
+                        </div>
+
+                        <div id="submit-button">
+                            <button type="submit" className="submit-button">
+                                Update
+                            </button>
+                        </div>
+                        {errors.length > 0 && (
+                            <div id="errors">
+                                {errors.map((error, index) => (
+                                    <p key={index} className="error">
+                                        {error.message}
+                                    </p>
+                                ))}
+                            </div>
+                        )}
+                    </form>
                 </div>
-                {errors.length > 0 && (
-                    <div id="errors">
-                        {errors.map((error, index) => (
-                            <p key={index} className="error">
-                                {error.message}
-                            </p>
-                        ))}
-                    </div>
-                )}
-            </form>
+                    <p style={{color: "red" }}>userID: {user.id}</p>
+            </div>
         </>
     );
 }

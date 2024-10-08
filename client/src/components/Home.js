@@ -20,7 +20,7 @@ import { useRec } from '../contexts/RecContext';
 import axios from 'axios';
 
 function Home() {
-    const { user, isLoggedIn} = useAuth();
+    const { user, isLoggedIn } = useAuth();
     const { createRecommendation, removeRecommendation } = useRec();
     
     const updateUserImage = async (imageUrl) => {
@@ -32,17 +32,37 @@ function Home() {
         }
     };
 
+    const handleAddRecommendation = async (movie) => {
+        const tmdbId = movie.tmdb_id;
+        console.log('Handle AddRecommendation movie tmdbid:', tmdbId);
+        const movie_in_db = await check_movie_in_db(tmdbId); 
+        console.log("handling add recommendation: ",movie_in_db)
+        if (movie_in_db && (movie_in_db.recommendations.length === 0 || !movie_in_db.recommendations.some(rec => rec.user_id === user.id))) 
+
+        //if (movie_in_db && (movie_in_db.recommendations.length === (0 || movie_in_db.recommendations.filter((recommendation) => recommendation.user_id !== user.id).length)))
+        
+        {
+            createRecommendation(movie_in_db.id, user.id);
+        }  
+        else { 
+            console.log("movie not in db, adding to db argument: ", movie);
+            const new_movie = await addMovieToDb(movie);
+            console.log("new_movie: ", new_movie);            
+            createRecommendation(new_movie.id, user.id);
+        }
+        };
     const check_movie_in_db = async function (tmdb_id) {
         const response = await fetch("/movies/tmdb/" + tmdb_id, { method: 'GET' });
-        if (response.ok) {
+        if (response.ok && response !== false) {
             const data = await response.json();
-            console.log("check movie in db", data)
-            return data;        
+            console.log("check_movie_in_db: ", data);
+            return (data);     
         } else { return false; }
     } 
     
     const addMovieToDb = async (movie) => {
         try {
+            console.log("addMovieToDb: ", movie);
         const newmovie = await fetch("/movies", {
             method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
                 tmdb_id: movie.tmdb_id,
@@ -54,24 +74,13 @@ function Home() {
                 rating: movie.vote_average
             }),
         });
+            console.log("newMovieaddedtoDB: ", newmovie);
         if (newmovie.ok) {
             return await newmovie.json();
             } 
         } catch (error) { console.error("Failed to add movie", error); }
         };
     
-    const handleAddRecommendation = async (movie) => {
-        const tmdbId = movie.tmdb_id;
-        const movie_in_db = await check_movie_in_db(tmdbId);
-        if (movie_in_db && (movie_in_db.recommendations.length === (0 || movie_in_db.recommendations.filter((recommendation) => recommendation.user_id !== user.id).length)))
-            {
-                createRecommendation(movie.id, user.id);
-            }  
-        else { 
-            const new_movie = await addMovieToDb(movie);            
-            createRecommendation(new_movie.id, user.id);
-        }
-        };
     // fetching friends of User
     
     
@@ -85,7 +94,7 @@ function Home() {
                 <div className="home-content">
                         <Routes>
                             {/*<Route path="/" />*/}
-                            <Route path="home/*" element={<UserProfile updateUserImage={updateUserImage}/>} />
+                            {/*<Route path="home/*" element={<UserProfile updateUserImage={updateUserImage}/>} />*/}
                             <Route path="follows" element={<Follows />} />
                             <Route path="edituser" element={<EditUser updateUserImage={updateUserImage} />} />
                             <Route path="moviesearch" element={<MovieSearch handleAddRecommendation={handleAddRecommendation} removeRecommendation={removeRecommendation} />} />
@@ -123,7 +132,6 @@ function Home() {
 export default Home;
     
     //const [recommendations, setRecommendations] = useState([]);
-    //console.log("home recommendations", recommendations);
     
     //const removeRecommendation = async (rec_id,) => {
     //    try {
@@ -182,7 +190,6 @@ export default Home;
         //            });
         //            if (response.ok) {
         //                const data = await response.json();
-        //                console.log("fetched recommendations", data);
         //                setRecommendations(data);
         //            }
         //        } catch (error) {

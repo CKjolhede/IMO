@@ -2,6 +2,8 @@ import React from "react";
 import Home from "./components/Home";
 import NotFound from "./components/NotFound";
 import "./css/index.css";
+import "./css/movies.css";
+import "./css/edituser.css";
 import "./css/login.css";
 import "./css/movie.css";
 import "./css/footer.css";

@@ -82,20 +82,20 @@ function Follows() {
         
         return (
             <>
-                <div className="follow-search">
+                {/*<div className="follow-search">
                     <h2>Search for Friends
                     <UserSearch       
                         handleFriendRequest={handleFriendRequest}
                     /></h2>
-                </div>
+                </div>*/}
                 
                 <div className="follow-list">
-                    <h1> Your Friends </h1>  
                     <FollowsList
-                            handleFriendRequest={handleFriendRequest}
-                            handleRemoveFriend={handleRemoveFriend}
-                            handleAcceptFriend={handleAcceptFriend}
-                            follows={follows} />
+                        handleFriendRequest={handleFriendRequest}
+                        handleRemoveFriend={handleRemoveFriend}
+                        handleAcceptFriend={handleAcceptFriend}
+                        follows={follows}
+                    />
                 </div>
             </>
         );
