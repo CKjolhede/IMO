@@ -1,0 +1,36 @@
+.about-page-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: repeat(5, 9em);
+    height: 85vh;
+    width: 92.5vw;
+    overflow-y: auto;
+    position: relative;
+    z-index: 3;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0em 0em 0 4em;
+}
+
+.about-page-container p {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    justify-content: center;
+    margin: 1em 0em 0em 0em;
+    color: var(--text);
+    font-size: 1.5em;
+}
+
+.about-page-container a{
+    color: red;
+    font-size: 1.5em;
+    text-decoration: none;
+}
+
+.about-page-container a:hover{
+    color: rgb(255, 55, 55);
+}
+
+

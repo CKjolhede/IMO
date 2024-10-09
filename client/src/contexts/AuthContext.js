@@ -1,5 +1,7 @@
 // src/contexts/AuthContext.js
 import React, { useContext, useState, createContext, useEffect, } from "react";
+
+
 import { useNavigate } from "react-router-dom";
 const AuthContext = createContext();
 
@@ -27,16 +29,18 @@ export const AuthProvider = ({ children }) => {
     
     const onEdit = (user) => {
         setAuth({ isLoggedIn: true, user: user });
-        navigate('/home/profile/')
+        navigate('/userprofile/')
     };
 
     const login = (user) => {
         setAuth({
             isLoggedIn: true,
-            user: user,
+            user: user
         });
-        navigate('/home');
+        document.body.classList.add("logged-in");
+        navigate("/userprofile/");
     };
+            
 
     const logout = async () => {
         const response = await fetch("/logout", {
@@ -47,12 +51,13 @@ export const AuthProvider = ({ children }) => {
                 isLoggedIn: false,
                 user: null,
             });
+            document.body.classList.remove('logged-in');
             navigate("/");
         }
     };
-
+    
     return (
-        <AuthContext.Provider value={{ auth, isLoggedIn: auth.isLoggedIn, user: auth.user, login, logout, onEdit }}>
+        <AuthContext.Provider value={{ auth, isLoggedIn: auth.isLoggedIn, user: auth.user, login, logout, onEdit, }}>
             {children}
         </AuthContext.Provider>
     );

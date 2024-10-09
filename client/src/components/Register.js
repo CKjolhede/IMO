@@ -5,9 +5,9 @@ import { useNavigate, NavLink} from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 function Register() {
+    const [errors, setErrors] = useState([]);
     const { login } = useAuth();
     const navigate = useNavigate();
-    const [errors, setErrors] = useState([]);
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -15,6 +15,7 @@ function Register() {
             first_name: "",
             last_name: "",
             zipcode: "",
+            phone: "",
         },
         validationSchema: yup.object().shape({
             email: yup
@@ -41,10 +42,8 @@ function Register() {
                 .matches(/^\d{10}$/, "Phone number must be 10 digits long"),
         }),
         onSubmit: async (values) => {
-            console.log(values);
             try {
                 setErrors([]);
-
                 const response = await fetch("/users", {
                     method: "POST",
                     headers: {
@@ -52,18 +51,15 @@ function Register() {
                     },
                     body: JSON.stringify(values),
                 });
-
                 if (response.ok) {
-                    console.log(response);
                     const user = await response.json();
                     login(user);
-                    navigate("/home/");
+                    navigate("/userprofile");
                 } else {
                     const errorData = await response.json();
                     setErrors(errorData.errors);
                 }
             } catch (error) {
-                //console.error("Error Registering:", error);
                 setErrors([
                     {
                         message: "An error occurred while registering. Please try again later.",
@@ -72,111 +68,117 @@ function Register() {
             }
         },
     });
-
     return (
-        <div className="form-container">
-            <form onSubmit={formik.handleSubmit}>
-                <div className="input-container-reg-email">
-                    <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="Email"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.email}
-                    />
-                    {formik.errors.email && formik.touched.email ? (
-                        <p className="error">{formik.errors.email}</p>
-                    ) : null}
-                </div>
-                <div className="input-container-reg-password">
-                    <input
-                        id="password_hash"
-                        name="password_hash"
-                        type="password"
-                        placeholder="Password"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.password}
-                    />
-                    {formik.errors.password_haah &&
-                    formik.touched.password_hash ? (
-                        <p className="error">{formik.errors.password_hash}</p>
-                    ) : null}
-                </div>
-                <div className=".input-container-reg-named">
-                    <input
-                        id="first_name"
-                        name="first_name"
-                        type="text"
-                        placeholder="First Name"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.first_name}
-                    />
-                    {formik.errors.first_name && formik.touched.first_name ? (
-                        <p className="error">{formik.errors.first_name}</p>
-                    ) : null}
-                </div>
-                <div className=".input-container-reg-name">
-                    <input
-                        id="last_name"
-                        name="last_name"
-                        type="text"
-                        placeholder="Last Name"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.last_name}
-                    />
-                    {formik.errors.last_name && formik.touched.last_name ? (
-                        <p className="error">{formik.errors.last_name}</p>
-                    ) : null}
-                </div>
-                <div className="input-container">
-                <input
-                    id="phone"
-                    name="phone"
-                    type="text"
-                    placeholder="Phone Number"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.phone}
-                />
-                {formik.errors.phone && formik.touched.phone ? (
-                    <p className="error">{formik.errors.phone}</p>
-                ) : null}
+        <div className="reg-form-container">
+            <div> 
+                <form onSubmit={formik.handleSubmit}>
+                    <h3 className="reg-header">Create Account</h3>
+                    <div>
+                        <input className="reg-input"
+                            id="email"
+                            name="email"
+                            type="email"
+                            placeholder="E-MAIL"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.email}
+                        />
+                        {formik.errors.email && formik.touched.email ? (
+                            <p className="error">{formik.errors.email}</p>
+                        ) : null}
+                    </div>
+                    <div>
+                        <input className="reg-input"
+                            id="password_hash"
+                            name="password_hash"
+                            type="password"
+                            placeholder="PASSWORD"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.password}
+                        />
+                        {formik.errors.password_hash &&
+                        formik.touched.password_hash ? (
+                            <p className="error">{formik.errors.password_hash}</p>
+                        ) : null}
+                    </div>
+                    <div>
+                        <input className="reg-input"
+                            id="first_name"
+                            name="first_name"
+                            type="text"
+                            placeholder="First Name"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.first_name}
+                        />
+                        {formik.errors.first_name && formik.touched.first_name ? (
+                            <p className="error">{formik.errors.first_name}</p>
+                        ) : null}
+                    </div>
+                    <div>
+                        <input className="reg-input"
+                            id="last_name"
+                            name="last_name"
+                            type="text"
+                            placeholder="Last Name"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.last_name}
+                        />
+                        {formik.errors.last_name && formik.touched.last_name ? (
+                            <p className="error">{formik.errors.last_name}</p>
+                        ) : null}
+                    </div>
+                    <div>
+                        <input className="reg-input"
+                            id="phone"
+                            name="phone"
+                            type="text"
+                            placeholder="000-000-0000"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.phone}
+                        />
+                        {formik.errors.phone && formik.touched.phone ? (
+                            <p className="error">{formik.errors.phone}</p>
+                        ) : null}
+                    </div>
+                    <div>
+                        <input className="reg-input"
+                            id="zipcode"
+                            name="zipcode"
+                            type="text"
+                            placeholder="ZipCode"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.zipcode}
+                        />
+                        {formik.errors.zipcode && formik.touched.zipcode ? (
+                            <p className="error">{formik.errors.zipcode}</p>
+                        ) : null}
+                    </div>
+                    <div className="input-container-submit">
+                        <button className="submit-button" type="submit">
+                            Register
+                        </button>
+                    </div>
+                    <div id="errors">
+                        {errors.map((error, index) => (
+                            <p key={index} className="error">
+                                {error.message}
+                            </p>
+                        ))}
+                    </div>
+                    <div>
+                        <NavLink
+                            className="loginlink"
+                            to="../userprofile">
+                            Already have an Account
+                        </NavLink>      
+                    </div>
+                </form>
             </div>
-               <div className="input-container">
-                <input
-                    id="zipcode"
-                    name="zipcode"
-                    type="text"
-                    placeholder="ZipCode"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.zipcode}
-                />
-                {formik.errors.zipcode && formik.touched.zipcode ? (
-                    <p className="error">{formik.errors.zipcode}</p>
-                ) : null}
-            </div>
-                <div id="submit-button">
-                    <button type="submit">Register</button>
-                </div>
-                <div id="errors">
-                    {errors.map((error, index) => (
-                        <p key={index} className="error">
-                            {error.message}
-                        </p>
-                    ))}
-                </div>
-            </form>
-            <button className="button-register">
-                <NavLink to="../loginformcontainer">
-                    Already have an Account
-                </NavLink>
-            </button>
         </div>
     );
 }

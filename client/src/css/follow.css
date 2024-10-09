@@ -1,0 +1,269 @@
+/*.follow-container {
+    display: grid;
+    height: 95vh;
+    grid-template-columns: 1fr 3fr 1fr 3fr 1fr;
+    grid-template-rows: 10% 1fr 3fr;
+    margin: 4em 3em 0 3em;
+    overflow: hidden;
+    padding: 2em 0em 0 0;
+    background-color: var(--bg);
+}*/
+.follow-container {
+    position: relative;
+    display: grid;
+    height: 90vh;
+    grid-template-columns: 1fr 2fr 2fr 2fr;
+    grid-template-rows: auto 1fr auto;
+    margin: 2em 0em 0 0 ;
+    padding-top: 3em;
+    padding-left: 2em;
+    z-index: 0;
+    background-color: var(--bg);
+}
+
+/*.follow-search {
+    grid-column: 2;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-row-gap: 1em;
+    margin: 3em 30em 0 3em;
+    padding: 3em 0em 0em 3em;
+    z-index: 3;
+    overflow-y: auto;
+    position: top;
+
+    z-index: 2;
+    color: var(--text);
+    font-weight: bold;
+    text-align: left;
+}*/
+
+.follow-search {
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 2em;
+    overflow-y: auto;
+    color: var(--text);
+}
+
+/*.follow-usersearchcard {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: .2fr;
+    z-index: 2;*/
+
+.follow-usersearchcard {
+    width: 100%;
+    margin-bottom: 1em;
+    padding: 1em;
+    background-color: var(--card-bg);
+    border-radius: 5px;
+}
+
+.follow-header {
+    display: relative;
+    font-size: 30px;
+    margin: 0 0 0 0;
+    padding: 0px 0px 10px 0px;
+    z-index: 3;
+    color: var(--text);
+    font-weight: bold;
+    font-size: 2em;
+    width: 100%;
+}
+
+/*.follow-picture {
+    grid-column: 1;
+    grid-row: 2 auto;
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 100px;
+    margin: 0 0 0 0;
+    padding: 25px 0 0 0;
+}*/
+
+.follow-picture {
+    display: flex;
+    position: center;
+    justify-content: center;
+    width: 7em;
+    height: 7em;
+    margin-bottom: 1em;
+    background-color: darkred;
+    border-radius: 50%;
+}
+
+.follow-container::-webkit-scrollbar {
+    display: flex;
+    width: 10px;
+    height: 100%;
+    padding: 0 10px 0 0;
+    z-index: 3;       
+}
+
+.follow-list::-webkit-scrollbar-thumb {
+    background-color: darkred;
+    width: 10px;
+    border-radius: 10px;
+    /*z-index: 3;*/
+}
+
+.follow-list::-webkit-scrollbar-track {
+    background-color: black;
+    width: .5px;
+    z-index: 3;
+}
+
+
+
+.follow-list-accepted, .follow-list-pending, .follow-list-requested, h1 {
+    display: block;
+    margin: 0 0 0 0;
+    padding: 1em 0 0 0;
+    position: sticky;
+    justify-content: center;
+    text-align: center;
+    z-index: 3;
+    text-decoration: underline;
+    color: var(--text);
+    font-weight: bold;
+    font-size: 1.3em;
+    width: 100%;
+    /*border-top: 5px solid var(--bg);    */
+}
+
+/*.follow-list {
+    grid-column: 1;
+    grid-row: 1;
+    overflow-y: auto;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 3;
+    color: var(--text);
+    font-weight: bold;
+    font-size: .75em;
+    width: 100%;
+    overflow-y: auto;
+    align-items: center;
+    padding-top: 5%;
+    padding-bottom: 200px;
+    background-color: var(--bg);
+}*/
+
+.follow-list-accepted {
+    grid-column: 2;
+    grid-row: 1;
+    display: grid;
+    height: 85vh;
+    align-items: center;
+    grid-template-columns: 1fr;
+    grid-gap: 1em;
+    margin: 0em 0em 0em 0em;
+    padding: 3em 0em 15em 0em;
+    overflow-y: auto;
+    color: var(--text);
+}
+.follow-list-pending {
+    grid-column: 3;
+    grid-row: 1;
+    display: grid;
+    height: 85vh;
+    align-items: center;
+    grid-template-columns: 1fr;
+    grid-gap: 1em;
+    margin: 0em 0em 0em 0em;
+    padding: 3em 0em 15em 0em;
+    overflow-y: auto;
+    color: var(--text);
+}
+.follow-list-requested {
+    grid-column: 4;
+    grid-row: 1;
+    display: grid;
+    height: 85vh;
+    align-items: center;
+    grid-template-columns: 1fr;
+    grid-gap: 1em;
+    margin: 0em 0em 0em 0em;
+    padding: 3em 0em 15em 0em;
+    overflow-y: auto;
+    color: var(--text);
+}
+
+/*.follow-button {
+    width: 10em;
+    position: relative;
+    display: inline-block;
+    color: var(--bg);
+    border-radius: 10%;
+    height: 20px;
+    margin-top: -1em;
+    padding-bottom: 1em;
+}*/
+
+.follow-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10em;
+    height: 1.5em;
+    background-color: var(--bg);
+    color: var(--text);
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.follow-button:hover {
+    text-decoration: none;
+    background-color: darkred;
+    color: var(--bg);
+}
+
+.follow-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1em;
+    background-color: var(--card-bg);
+    border-radius: 5px;
+}
+.follow-name {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.page-title-follow {
+    position: absolute;
+    top: 0%;
+    left: 20%;
+    margin-top: -1em;
+    z-index: 4;
+    color: var(--text);
+    font-weight: bold;
+    font-size: 3em;
+    align-items: center;
+
+}
+
+.page-title-follow img{   
+    background-color: var(--bg);
+    border-radius: 50%;
+    border-style: solid, black;
+    border-width: 1px;
+    display: inline-block;
+    width: 1.5em;
+    height: auto;
+    z-index: 1;
+}

@@ -1,28 +1,21 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import audience from "./images/audience.png"
 function Footer() {
 
     return (
-        <div>
+        <div className="footer">
             <ul className="footer">
-                <li>
-                    <NavLink to="/home/about">
-                            About Us
-                    </NavLink>
+                <li className="footer-about">
+                    <NavLink to="about">About</NavLink>
                 </li>
 
-                <li>
-                    <NavLink to="/home/contact">
-                            Contact
-
-                    </NavLink>
+                <li className="footer-contact">
+                    <NavLink to="contact">Contact</NavLink>
                 </li>
-                
-                <li>
-                    <NavLink
-                        to="/home/follows" >
-                    Friends
-                    </NavLink>
+
+                <li className="footer-follows">
+                    <NavLink to="follows">Friends</NavLink>
                 </li>
                 {/*<NavLink
                     to="/home/moviesearch"
@@ -31,20 +24,16 @@ function Footer() {
                     Find Movies
                 </NavLink>*/}
 
-                <li>
-                <NavLink
-                    to="/home/movies"
-                >
-                    Browse Movies
-                </NavLink>
+                <li className="footer-movies">
+                    <NavLink to="movies">Browse Movies</NavLink>
                 </li>
-                <li>
+                {/*<li>
                 <NavLink
-                    to="/home/recommendations"
+                    to="recommendations"
                 >
                     Recommendations
                     </NavLink>
-                </li>
+                </li>*/}
                 {/*<NavLink
                     to="/home/edituser"
                     className={({ isActive }) => (isActive ? "active" : "")}
@@ -52,6 +41,7 @@ function Footer() {
                     Edit User
                 </NavLink>*/}
             </ul>
+            <img className="audience" src={audience} alt="audience" />
         </div>
     );
 }

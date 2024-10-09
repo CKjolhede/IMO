@@ -7,7 +7,6 @@ import ProfilePicture from './ProfilePicture';
 function Profile() {
     const { user } = useAuth();
     const { friendUserId } = useParams();
-    console.log(friendUserId);
     const [friendUser, setFriendUser] = useState(null);
     
     

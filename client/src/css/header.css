@@ -1,0 +1,40 @@
+
+.header {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    font: 'Trayan';
+    width: 100vw; 
+    height: 100px;  
+    flex-direction: row;
+    /*float: top;    */
+    align-items: center;
+    background-image: url("../components/images/redcurtainsL.jpg");
+    background-repeat: no-repeat;
+    padding: 0px 100px 0px 0px;
+    margin: -10px 0px 0px 0px ;
+    box-shadow: 0px 3px 3px #101010;  
+    background-size: cover;
+    justify-content: space-between;
+}
+.logo {
+    display: flex;
+    position: fixed top;
+    padding: 0px 0px 0px 0px;
+    float: left;
+    width: auto;
+    height: 100px;}
+
+.button-header-logout {
+    color: white;
+    display: flex;
+    font-size: 25px;
+    justify-content: end;
+    padding: 0px 0px 0px 0px;
+    align-items: end;
+    font-family: 'Trayan';
+    text-decoration: none;
+}
+

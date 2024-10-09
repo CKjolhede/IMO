@@ -10,7 +10,6 @@ from dotenv import load_dotenv
 import requests
 import ipdb
 
-
 @app.route('/')
 def index():
     return '<h1>IMO</h1>'
@@ -148,7 +147,6 @@ class FollowsByUser(Resource):
         if followings == []:
             return make_response(jsonify("No Followings found"), 404)
         following = [follow.to_dict(
-            #only=('id','following_id', 'follower_id','status')
             ) for follow in followings] 
         return make_response(jsonify(following), 200)
 
@@ -181,7 +179,7 @@ class RecommendationsByUserId(Resource):
         recommendations = Recommendation.query.filter(Recommendation.user_id == id).all()
         if recommendations == []:
             raise NotFound
-        recommendations = [recommendation.to_dict(only=('id', 'movie.id', 'movie_id', 'user.id','user.first_name', 'user.last_name','user.image', 'movie.title', 'movie.overview', 'movie.release_date', 'movie.backdrop_path', 'movie.poster_path', )) for recommendation in recommendations]
+        recommendations = [recommendation.to_dict(only=('id', 'movie.id', 'movie_id', 'user.id','user.first_name', 'user.last_name','user.image', 'movie.title', 'movie.overview', 'movie.release_date', 'movie.backdrop_path', 'movie.poster_path', 'movie.rating')) for recommendation in recommendations]
         return make_response(recommendations, 200)
 
 class RecommendationsById(Resource):  
@@ -195,7 +193,7 @@ class RecommendationsById(Resource):
 class Recommendations(Resource):
     def get(self):
         recommendations = Recommendation.query.all()
-        recs = [rec.to_dict(only=['id', 'movie_id', 'user.id', 'user.first_name', 'user.last_name', 'movie.title', 'movie.overview', 'movie.release_date', 'movie.backdrop_path', 'movie.poster_path']) for rec in recommendations]
+        recs = [rec.to_dict(only=['id', 'movie_id', 'user.id', 'user.first_name', 'user.last_name', 'movie.title', 'movie.overview', {int('movie.rating')}, 'movie.release_date', 'movie.backdrop_path', 'movie.poster_path']) for rec in recommendations]
         return make_response(recs, 200)
     
     def post(self):

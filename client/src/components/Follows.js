@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import FollowsList from './FollowsList';
 import UserSearch from './UserSearch';
+import defaultProfilePic from "./images/imo_emu.png";
 
 function Follows() {
     const { user } = useAuth();
@@ -77,18 +78,35 @@ function Follows() {
         }
         catch (error) {
             console.error("Failed to send friend request", error);
-        }};
+        }
+    };
         
         return (
             <>
-                <div>
-                    <h2>Search for Friends</h2>
+                {/*<div className="follow-search">
+                    <h2>Search for Friends
                     <UserSearch       
                         handleFriendRequest={handleFriendRequest}
-                    />
-                </div>
-                <div>
-                <h1>Friends</h1>
+                    /></h2>
+                </div>*/}
+                {/*<h1 className="page-title"> Friends</h1>*/}
+                {/*<h1 className="page-title-follow">
+                    <img src={defaultProfilePic} alt="ProfileImage" />
+                    {user.first_name}
+                </h1>*/}
+                <h1 className="page-title-userprofile">
+                    <img src={defaultProfilePic} alt="ProfileImage" />
+                    {user.first_name}
+                </h1>
+                <div className="follow-container">
+                    <div className="follow-search">
+                        <h2>
+                            Search for Friends
+                            <UserSearch
+                                handleFriendRequest={handleFriendRequest}
+                            />
+                        </h2>
+                    </div>
                     <FollowsList
                         handleFriendRequest={handleFriendRequest}
                         handleRemoveFriend={handleRemoveFriend}

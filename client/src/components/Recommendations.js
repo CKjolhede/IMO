@@ -1,17 +1,18 @@
 import React from "react";   
 import RecCard from "./RecCard";
+import { useAuth } from "../contexts/AuthContext";
 import { useRec } from "../contexts/RecContext";   
         
 function Recommendations() {
+        const { user } = useAuth();
         const { recommendations } = useRec();
-        console.log("in Recommendations.js", recommendations);
         return (
                 <>
-                <h1>Recommendations</h1>
-                <div className="Reclist">     
-                        {recommendations.map((recommendation) => (<RecCard key={recommendation.id}
-                        recommendation = {recommendation}/>
-                        ))}
+                <div>     
+                                {recommendations.filter(recommendation => recommendation.user.id === user.id)?.map((recommendation) => <div key={recommendation.id}>
+                                <RecCard recommendation = {recommendation} />
+                                </div>)
+                        }       
                 </div>
                 </>
         );

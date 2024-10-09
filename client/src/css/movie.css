@@ -1,0 +1,159 @@
+.moviecard-name {
+    display: block;
+    position: relative;
+    grid-column: 3;
+    grid-row: 1;
+    top: 0px;
+    font-size: 2em;
+    padding: 0px 0px 0px 0px;
+    z-index: 2;
+    color: var(--text);
+    font-weight: bold;
+    width: 100%;
+    height: auto;
+    text-align: center;
+}
+
+.moviecard-body {
+    display: grid;
+    position: relative;
+    grid-template-columns: 150px 500px;
+    color: var(--text);
+    overflow: hidden;
+    border: 1px solid black;
+    border-radius: 5%;
+    margin: 20px 5px;
+    box-shadow: 0px 5px 5px 0px #101010;
+    background-color: var(--bg);
+    --bg: #00000030;
+    
+}
+.moviecard-body:hover {
+    grid-template-columns: 150px 500px;
+    color: var(--text);
+    overflow: hidden;
+    border: 2px solid black;
+    border-radius: 5%;
+    margin: 20px 5px;
+    transition: background-color 1.5s ease;
+    display: grid;
+    position: relative;
+    box-shadow: 5px 5px 5px 1px #101010;
+    background-color: var(--bg);
+    --bg: #000000;
+}
+.moviecard-details-container {
+    display: grid;
+    position: absolute;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr .5fr 1fr;
+    grid-column: 2;
+    grid-row: 3;
+    width: 100%;
+    height: 100%;
+    z-index: 1;}
+
+.moviecard-body img {
+    max-width: 800px;}
+
+
+.moviecard-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.3;}
+
+.moviecard-header {
+    position: relative;
+    align-content: center;
+    border-radius: 10px 0px;
+    grid-column: 2;
+    grid-row: 1;
+    padding-left: 2em;
+    width: 100%;
+    height: 100%;
+    z-index: 1;}
+
+.moviecard-poster {
+    display: relative;
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    padding-left: .75em;
+    z-index: 1;
+
+}
+.moviecard-overview {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 1.5em;
+    font-weight: bold;
+    width: 100%;
+    height: auto;
+    padding: 0px 10px ;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+    top: 0;
+    left: 0;
+
+}
+.moviecard-release {
+    position: relative;
+    text-align: center;
+    font-size: 2em;
+    color: var(--text);
+    font-weight: bold;
+    grid-column: 1;
+    grid-row: 3;
+    padding-left: 1em;
+    width: 100%;
+    height: 100%;
+    z-index: 1;}
+
+
+.moviecard-rating {
+    position: relative;
+    font-size: 1.2em;
+    text-align: center;
+    color: var(--text);
+    font-weight: bold;
+    grid-column: 1;
+    grid-row: 1;
+    z-index: 1;}    
+
+.moviecard-tmdbid {
+    position: relative;
+    text-align: left;
+    font-size: 1em;
+    color: var(--text);
+    grid-column: 3;
+    grid-row: 3;
+    right: 0px;
+    bottom: 0px;
+    z-index: 1;}
+
+.moviecard-title {
+    margin-left: 3em;
+}
+
+
+.moviecard-removerec-button {
+    position: relative;
+    grid-column: 3;
+    grid-row: 1;
+    box-shadow: .2em .2em .2em 0em #101010;
+    right: 0em;
+    margin-right: 8em;
+    margin-bottom: 3em;
+    bottom: 0em;
+    z-index: 2;}
+    
+.moviecard-removerec-button button:hover {
+    z-index: 2;    
+    background-color: darkred;
+    color: var(--text);
+    transition: background-color 0.2s ease;}

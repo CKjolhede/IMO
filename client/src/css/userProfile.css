@@ -1,0 +1,232 @@
+
+.page-title {
+    position: relative;
+    top: 0%;
+    left: 0%;
+    z-index: 4;
+    color: var(--text);
+    font-weight: bold;
+    font-size: 3em;
+    align-items: center;
+    margin-top: -.5em;
+}
+.page-title-userprofile {
+    position: absolute;
+    top: 0%;
+    left: 30%;
+    z-index: 4;
+    color: var(--text);
+    font-weight: bold;
+    font-size: 3em;
+    align-items: center;
+    margin-top: -.5em;
+    text-decoration: none;
+
+}
+
+.page-title-userprofile img{   
+    display: relative;
+    width: 1em;
+    height: auto;
+    z-index: 4;
+    background-color: var(--bg);
+    border-radius: 50%;
+    border-width: 1px;
+    display: inline-block;
+    margin-left: .5em;
+}
+
+.page-title-followlist {
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    z-index: 4;
+    color: var(--text);
+    font-weight: bold;
+    font-size: 4em;
+    align-items: center;
+}
+
+.userprofile-container {
+    position: absolute;
+    display: grid;
+    border: 5px 5px 2px 0px solid #000;
+    height: 80vh;
+    z-index: 2;
+    overflow: hidden;
+    background-color: transparent;
+    grid-template-rows: 250px 1fr;
+    grid-template-columns: 1fr 2fr .1fr 2fr;
+    margin: 5% 0 0 0;}
+
+.userprofile-card {
+    grid-column: 1;
+    grid-row: 1;
+    z-index: 4;
+    position: absolute;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows:150px 30px 30px 30px 30px;
+    background-color: transparent;
+    align-items: center;
+    height: auto;
+    justify-content: left;
+    text-decoration: none;
+    color: var(--text);
+    margin: 0 0px 0 0;
+    left: 50px;
+    border-bottom: 5px solid var(--bg);
+}
+
+.profilePic {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0px;
+    position: relative;
+    width: 150px;
+    height: auto;
+    left: 50px;
+}
+
+.userprofile-friendRecs {
+    grid-column: 2;
+    grid-row: 1;
+    display: block;
+    height: 1000px;
+    z-index: 4;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    overflow-y: auto;
+    color: var(--text);
+    margin: 0px 0px 0px 0px;
+    padding: 20px 0px 500px 0;
+}
+.userprofile-friendRecs h1 {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0 0 0 0;
+    position: sticky;
+    mix-blend-mode: darken;
+    z-index: 3;
+    
+}
+
+.userprofile-recfeed {
+    grid-column: 4;
+    grid-row: 1;
+    display: block;
+    z-index: 4;
+    /*height: 650px;*/
+    height: 1000px;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    overflow-y: auto;
+    color: var(--text);
+    margin: 0 0 0 0;
+    padding: 20px 150px 500px 0px;
+}
+
+.userprofile-recfeed h1 {
+    margin: 0 0 0 0;
+    position: sticky;
+    mix-blend-mode: darken;
+    z-index: 3;
+    
+}
+.userprofile-recfeed::-webkit-scrollbar {
+    display: flex;
+    width: 10px;
+    height: 100%;
+    padding: 0 10px 0 0;
+    z-index: 3;       
+}
+
+.userprofile-recfeed::-webkit-scrollbar-thumb {
+    background-color: darkred;
+    width: 10px;
+    border-radius: 10px;
+    /*z-index: 3;*/
+}
+
+.userprofile-recfeed::-webkit-scrollbar-track {
+    background-color: black;
+    width: .5px;
+    z-index: 3;
+}
+
+.userprofile-friendRecs::-webkit-scrollbar {
+    display: flex;
+    width: 10px;
+    height: 100%;
+    padding: 0 10px 0 0;
+    z-index: 3;       
+}
+
+.userprofile-friendRecs::-webkit-scrollbar-thumb {
+    background-color: darkred;
+    border-radius: 10px;
+    z-index: 3;
+}
+
+.userprofile-friendRecs::-webkit-scrollbar-track {
+    background-color: black;
+    width: 1px;
+    z-index: 3;} 
+
+.editProfileLink { 
+    font-size: 16px;
+    display: block;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 250px;
+    z-index: 3;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 5px 5px 5px 0px #101010;
+    color: var(--text);
+    background-color: darkred;;
+    border-radius: 25px;
+    margin: 10px 0 20px 0;
+    padding: 0 0 0px 0;
+    }
+
+.editProfileLink:hover {
+    background-color: rgb(100, 30, 30);
+    text-decoration: none;
+    color: var(--text);
+    transition: background-color 0.2s ease;
+    box-shadow: 5px 5px 5px 0px #101010;
+    z-index: 3}
+
+.editProfileLink:active{
+    top: 5px;
+    left: 5px;
+    z-index: 3;
+    text-decoration: none;
+    box-shadow: 0px 0px 0px 0px #101010;
+    transition: active 0.2s ease;
+}
+
+.userprofile-friend {
+    grid-column: 1;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr .25fr;
+    grid-row-gap: 1em;
+    z-index: 4;
+    overflow-y: auto;
+    flex-direction: column;
+}
+
+.userprofile-friend img {
+    grid-column: 1;
+    grid-row: 1;
+    width: 200px;
+    height: auto;
+    z-index: 4;
+}

@@ -1,0 +1,66 @@
+.edituser-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr ;
+    height: 90vh;
+    width: 94vw;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    position: relative;
+    z-index: 1;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 5em 0em 0 3em;
+    padding: 0 30em 0 0 ;
+}
+
+.edituser-card {
+    grid-column: 2;
+    grid-row: 1;
+    z-index: 4;
+    position: flex;
+    display: grid;
+    overflow: hidden;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows:  15em;
+    background-color: transparent;
+    align-items: center;
+    justify-content: left;
+    text-decoration: none;
+    color: var(--text);
+    margin: 0 0 0 0;
+    padding: 5em 0 0 2em 
+}        
+.edituser-card h1 {
+    left: 2em;
+    border-bottom: 5px solid var(--bg);
+}
+
+.edituser-profilepic {
+    grid-column: 2;
+    grid-row: 1;
+    z-index: 4;
+    display: flex;
+    width: 18em;
+    height: auto;
+    position: relative;
+    margin: 0 0 0 0;
+    cursor: pointer;
+}
+
+/*.edituser-section {
+    grid-column: 3/5;
+    grid-row: 1;
+    z-index: 4;
+    display: grid;
+    
+}*/
+
+.input-container-firstname {
+    grid-column: 2;
+    grid-row: 1;
+    z-index: 3;
+    position: top;
+    align-items: center;
+    top: 0px;
+}

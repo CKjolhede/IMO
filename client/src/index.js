@@ -1,10 +1,21 @@
 import React from "react";
-import App from "./components/App";
-import "./index.css";
-//import "./chris.css";
+import Home from "./components/Home";
+import "./css/index.css";
+import "./css/movies.css";
+import "./css/edituser.css";
+import "./css/login.css";
+import "./css/movie.css";
+import "./css/footer.css";
+import "./css/header.css";
+import "./css/register.css"
+import "./css/about.css";
+import "./css/userProfile.css";
+import "./css/header.css";
+import "./css/follow.css";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter as Router} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+//import { FriendProvider } from "./contexts/FriendContext";
 import { RecProvider } from "./contexts/RecContext";
 
 
@@ -13,10 +24,14 @@ const root = createRoot(container);
 root.render(
     <Router>
         <AuthProvider>
-            <RecProvider>
-            {/*<Routes><Route path="/app" element={<App />} /></Routes>*/}
-                <App />
+            {/*<FriendProvider>*/}
+                <RecProvider>
+                    <Routes>
+                        <Route path="/*" element={<Home />} />
+                    </Routes>                    
+                    {/*<Home />*/}
             </RecProvider>
+            {/*</FriendProvider>*/}
         </AuthProvider>
     </Router>
 );

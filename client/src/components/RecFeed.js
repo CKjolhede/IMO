@@ -1,30 +1,22 @@
-import React, { useState,useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import React from 'react';
 import RecCard from './RecCard';
 
-
-
-function RecFeed() {
-    const { user } = useAuth();
-    const [recFeed, setRecFeed] = useState([]);
-    
-    useEffect(() => {
-        const response = (fetch('/recommendations/' + user.id, { method: 'GET' }));
-        if (response.ok) {
-            const data = response.json();
-            setRecFeed(data);
-        }
-    }, [user.id]);
-    
+function RecFeed({ recommendations }) {
+    const recs = recommendations.flat();
+    if (!recs || recs.length === 0) {
+        return <h1 className="userprofile-friendRecs" style={{ textAlign: 'center', fontSize: '30px', fontWeight: 'bold' }}>No friend recommendations found.</h1>;
+    }
     return (
-        <div>
-            <ul>
-                {recFeed.map((rec) => <li>(<RecCard
-                    key={rec.id}
-                    rec={rec}
-                />)</li>)}</ul>   
-        </div>
+            <>
+            <div >
+                {recs?.map((recommendation) => <div key={recommendation.id}>
+                    <RecCard recommendation={recommendation} />
+                </div>)
+                }
+            </div>
+            </>
     );
-}  
+}
+
 
 export default RecFeed;

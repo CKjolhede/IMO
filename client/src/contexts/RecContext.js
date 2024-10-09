@@ -7,7 +7,7 @@ export const useRec = () => useContext(RecContext);
 
 export const RecProvider = ({ children }) => {
     const { user } = useAuth();
-    const [recommendations, setRecs] = useState({});
+    const [recommendations, setRecs] = useState([]);
     useEffect(() => {
         if (user) {
 
@@ -18,8 +18,8 @@ export const RecProvider = ({ children }) => {
                     });
                     if (response.ok) {
                         const data = await response.json();
-                        console.log("fetched recommendations", data);
                         setRecs(data);
+                        console.log("Recommendations fetched:", data);
                     }
                 } catch (error) {
                     console.error("Unable to fetch recommendations:", error);
@@ -44,9 +44,45 @@ export const RecProvider = ({ children }) => {
         }
     };
 
+//    const createRecommendation = async (movie_id, user_id) => {
+//        try {
+//            console.log("movie_id", movie_id);
+//            console.log("user_id", user_id);
+//            const response = await fetch("/recommendations", {
+//                method: "POST",
+//                headers: { "Content-Type": "application/json" },
+//                body: JSON.stringify({
+//                    movie_id: movie_id,
+//                    user_id: user_id,
+//                }),
+//            });
+//            if (!response.ok) {
+//                throw new Error(`HTTP error! status: ${response.status}`);
+//            } else {
+//                const data = await response.json();
+//                setRecs([data, ...recommendations]);
+//            }
+//    } catch (error) {
+//        console.error("Failed to create recommendation", error);
+//    }
+    //}
+    
+
+    // TEST from AI //
     const createRecommendation = async (movie_id, user_id) => {
         try {
-            const response = await fetch("/recommendations", {
+            console.log("movie_id", movie_id);
+            console.log("user_id", user_id);
+            const response = await fetch("/movies/tmdb/" + movie_id, {
+                method: "GET",
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data) {
+                    movie_id = data.id;
+                }
+            }
+            const recResponse = await fetch("/recommendations", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -54,20 +90,20 @@ export const RecProvider = ({ children }) => {
                     user_id: user_id,
                 }),
             });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            if (!recResponse.ok) {
+                throw new Error(`HTTP error! status: ${recResponse.status}`);
             } else {
-                const data = await response.json();
-                console.log("created recommendation", data);
+                const data = await recResponse.json();
                 setRecs([data, ...recommendations]);
             }
-    } catch (error) {
-        console.error("Failed to create recommendation", error);
-    }
-}
+        } catch (error) {
+            console.error("Failed to create recommendation", error);
+        }
+    };
+
     
-    const noRecMovies = (movieList) => {
-        console.log("movieList in noRecMovie fxn", movieList)
+    
+    const removeRecMovies = (movieList) => {
         return movieList.filter(
             (movie) =>
                 !movie.recommendations.some(
@@ -78,7 +114,7 @@ export const RecProvider = ({ children }) => {
     };
 
     return (
-        <RecContext.Provider value={{ recommendations, removeRecommendation, createRecommendation, setRecs, noRecMovies }}>
+        <RecContext.Provider value={{ recommendations, removeRecommendation, createRecommendation, setRecs, removeRecMovies }}>
             {children}
         </RecContext.Provider>
         )
