@@ -4,6 +4,7 @@ import MovieCard from "./MovieCard";
 import MovieSearch from "./MovieSearch";
 import { useAuth } from '../contexts/AuthContext';
 import { useRec } from "../contexts/RecContext";
+import defaultProfilePic from "./images/imo_emu.png";
 
 
 export default function Movies({ handleAddRecommendation }) {
@@ -28,17 +29,29 @@ export default function Movies({ handleAddRecommendation }) {
         fetchMovies()
     }, [user.id, removeRecMovies]);
     
-    return (<>
-                <h1 className="page-title">Browse Movies</h1>
-                <div className="movies-page">
-                    <div className="movies-search">
-                        <MovieSearch handleAddRecommendation={handleAddRecommendation} />
-                    </div>
-                    <div className="movies-list">
-                        {movies?.map((movie) => (
-                            <MovieCard key={movie.tmdb_id} movie={movie} handleAddRecommendation={handleAddRecommendation} />
-                        ))}
-                    </div>
+    return (
+        <>
+            <h1 className="page-title">Browse Movies</h1>
+            <h1 className="page-title-userprofile">
+                <img src={defaultProfilePic} alt="ProfileImage" />{" "}
+                {user.first_name}
+            </h1>
+            <div className="movies-page">
+                <div className="movies-search">
+                    <MovieSearch
+                        handleAddRecommendation={handleAddRecommendation}
+                    />
                 </div>
-            </>);
+                <div className="movies-list">
+                    {movies?.map((movie) => (
+                        <MovieCard
+                            key={movie.tmdb_id}
+                            movie={movie}
+                            handleAddRecommendation={handleAddRecommendation}
+                        />
+                    ))}
+                </div>
+            </div>
+        </>
+    );
 }

@@ -79,7 +79,7 @@ const UserProfile = ({ updateUserImage }) => {
                     path="/edituser"
                     element={<EditUser updateUserImage={updateUserImage} formatPhone={formatPhone}/>}
                 />
-                <Route path="/follows" element={<Follows />} />
+                {/*<Route path="/follows" element={<Follows />} />*/}
                 <Route path="/profilemodal" element={<ProfileModal />} />
                 <Route path="/recommendations" element={<Recommendations />} />
                 <Route path="/recfeed" element={<RecCard />} />

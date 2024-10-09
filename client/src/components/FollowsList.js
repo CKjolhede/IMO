@@ -20,8 +20,8 @@ function FollowsList({ handleRemoveFriend, handleAcceptFriend, handleFriendReque
     
     return (
         <>
-            <h1>Friends</h1>
-            <div>
+            <ul className="follow-list-accepted">
+                <h1>{'Your ' +acceptedFollows?.length + ' Friends' }</h1>
                 {acceptedFollows?.map((friend) => (
                     <FollowCard
                         key={friend.id}
@@ -31,8 +31,9 @@ function FollowsList({ handleRemoveFriend, handleAcceptFriend, handleFriendReque
                         follow={friend}
                     />
                 ))}
-            </div>
-            <ul>
+            </ul>
+            <ul className="follow-list-pending">
+                    <h1>Requested Connections</h1>
                 {pendingFollows?.map((friend) => (
                     <FollowCard
                         key={friend.id}
@@ -44,7 +45,8 @@ function FollowsList({ handleRemoveFriend, handleAcceptFriend, handleFriendReque
                     />
                 ))}
             </ul>
-            <ul>
+            <ul className="follow-list-requested">
+                    <h1>Pending Connections</h1>
                 {requestedFollows?.map((friend) => (
                     <FollowCard
                         key={friend.id}

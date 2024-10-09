@@ -57,6 +57,11 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
 
     return (
         <>
+            <h1 className="page-title">Update Your Profile</h1>
+            <h1 className="page-title-userprofile">
+                <img src={defaultProfilePic} alt="ProfileImage" />{" "}
+                {user.first_name}
+            </h1>
             <div className="edituser-container">
                 <div className="edituser-card">
                     <img
@@ -75,7 +80,6 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
                                 id="first_name"
                                 name="first_name"
                                 type="text"
-                            
                                 placeholder="First Name"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
@@ -120,7 +124,7 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
                                 value={formik.values.email}
                                 autoComplete="off"
                             />
-                            
+
                             {formik.errors.email && formik.touched.email ? (
                                 <p className="error">{formik.errors.email}</p>
                             ) : null}
@@ -172,9 +176,18 @@ function EditUser(handleImageClick, handleImageSelect, isModalOpen) {
                                 ))}
                             </div>
                         )}
+                        <p
+                            style={{
+                                display: "flex",
+                                bottom: "0",
+                                right: "0",
+                                color: "red",
+                            }}
+                        >
+                            userID: {user.id}
+                        </p>
                     </form>
                 </div>
-                    <p style={{color: "red" }}>userID: {user.id}</p>
             </div>
         </>
     );

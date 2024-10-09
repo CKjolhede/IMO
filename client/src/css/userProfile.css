@@ -18,6 +18,18 @@
     font-weight: bold;
     font-size: 3em;
     align-items: center;
+
+}
+
+.page-title-userprofile img{   
+    background-color: var(--bg);
+    border-radius: 50%;
+    border-style: solid, black;
+    border-width: 1px;
+    display: inline-block;
+    width: 1.5em;
+    height: auto;
+    z-index: 4;
 }
 
 .page-title-followlist {

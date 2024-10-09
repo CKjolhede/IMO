@@ -14,15 +14,16 @@ function UserSearchCard({
         //setSearchState("pending");
     };
         return (
-            <div className="userprofile-card">
-                <img className=".profilePic"
+            //<div className="userprofile-card">
+            <div className="follow-usersearchcard">
+                <img className="follow-picture"
                     src={imo_emu}
                     alt="profile pic"
-                ></img>
+                />
                 <div className="follow-card-header">
-                    {friendUser.first_name} {friendUser.last_name}
+                    <p>{friendUser.first_name} {friendUser.last_name}</p>
                 </div>
-                <button
+                <button className="follow-button"
                     onClick = {handleRequest}>
                     Friend Request
                 </button>

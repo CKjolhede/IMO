@@ -24,12 +24,12 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
         }
         else if (follow.status === 'accepted') {
             return (
-                <li >
+                <li className="follow-card">
                     <img className="follow-picture"
                         src={imo_emu}
                         alt="profile pic"/>
                     
-                    <div className="follow-header">
+                    <div className="follow-name">
                         {friendUser.first_name} {friendUser.last_name}
                     </div>
                     
@@ -43,23 +43,32 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
         }
         else if (follow.status === 'requested') {
             return (
-                <li >
-                    <img className="follow-picture"
-                        src={profilePic}
-                        alt="profile pic"/>
+                <li className="follow-card">
+                    <img
+                        className="follow-picture"
+                        src={imo_emu}
+                        alt="profile pic"
+                    />
 
-                    <div className="follow-header">
+                    <div className="follow-name">
                         {friendUser.first_name} {friendUser.last_name}
                     </div>
-                    
-                    <button className="follow-button"
+
+                    <button
+                        className="follow-button"
                         onClick={() => {
-                            handleAcceptFriend(follow.id);}}>
+                            handleAcceptFriend(follow.id);
+                        }}
+                    >
                         Accept
                     </button>
-                    
-                    <button className="follow-button"
-                        onClick={() => {handleRemoveFriend(follow.id);}}>
+
+                    <button
+                        className="follow-button"
+                        onClick={() => {
+                            handleRemoveFriend(follow.id);
+                        }}
+                    >
                         Decline
                     </button>
                 </li>
@@ -68,18 +77,21 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
         else if (follow.status === 'pending') {
             if (isFollower) {
                 return (
-                    <li >
+                    <li className="follow-card">
                         <img
                             className="follow-picture"
-                            src={profilePic}
-                            alt="profile pic" />
-                        <h2 className="follow-header">
+                            src={imo_emu}
+                            alt="profile pic"
+                        />
+                        <div className="follow-name">
                             {friendUser.first_name} {friendUser.last_name}
-                        </h2>
-                        <button className="follow-button"
+                        </div>
+                        <button
+                            className="follow-button"
                             onClick={() => {
                                 handleRemoveFriend(follow.id);
-                            }}>
+                            }}
+                        >
                             Cancel Request
                         </button>
                     </li>
@@ -88,27 +100,36 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
             else {
                 
                 return (
-                <li >
-                    <img className="follow-picture"
-                        src={imo_emu}
-                        alt="profile pic"/>
+                    <li className="follow-card">
+                        <img
+                            className="follow-picture"
+                            src={imo_emu}
+                            alt="profile pic"
+                        />
 
-                    <div className="follow-header">
-                        {friendUser.first_name} {friendUser.last_name}
-                    </div>
-                    
-                    <button className="follow-button"
-                        onClick={() => {
-                            handleAcceptFriend(follow.id);}}>
-                        Accept
-                    </button>
-                    
-                    <button className="follow-button"
-                        onClick={() => {handleRemoveFriend(follow.id);}}>
-                        Decline
-                    </button>
-                </li>
-            );
+                        <div className="follow-name">
+                            {friendUser.first_name} {friendUser.last_name}
+                        </div>
+
+                        <button
+                            className="follow-button"
+                            onClick={() => {
+                                handleAcceptFriend(follow.id);
+                            }}
+                        >
+                            Accept
+                        </button>
+
+                        <button
+                            className="follow-button"
+                            onClick={() => {
+                                handleRemoveFriend(follow.id);
+                            }}
+                        >
+                            Decline
+                        </button>
+                    </li>
+                );
             }
         }
         else {
@@ -118,11 +139,11 @@ function FollowCard({ handleRemoveFriend, handleAcceptFriend, handleFriendReques
                         src={imo_emu}
                         alt="profile pic"/>
                     
-                    <h2 className="follow-header">
+                    <h2 className="follow-name">
                         {friendUser.first_name} {friendUser.last_name}</h2>
                     
                     <button
-                        className="card button"
+                        className="follow-button"
                         onClick={() => {handleFriendRequest(friendUser.id, user.id);}}>                    
                         Request Friendship
                     </button>

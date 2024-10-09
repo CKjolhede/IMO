@@ -4,7 +4,7 @@ import RecCard from './RecCard';
 function RecFeed({ recommendations }) {
     const recs = recommendations.flat();
     if (!recs || recs.length === 0) {
-        return <div>No recommendations found.</div>;
+        return <h1 className="userprofile-friendRecs" style={{ textAlign: 'center', fontSize: '30px', fontWeight: 'bold' }}>No friend recommendations found.</h1>;
     }
     return (
             <>

@@ -31,10 +31,16 @@ const UserSearch = ({handleFriendRequest}) => {
                 }}
                 placeholder="Search by name"
             />
-            <button className="input-button" onClick={handleSearch}>
-                Search
+            <button style={{visibility: "hidden"}}
+                onClick={handleSearch}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        handleSearch();
+                    }
+                }}
+            >
             </button>
-            <ul>
+            <div >
                 {users?.map((user) => (
                     <UserSearchCard
                         key={user.id}
@@ -42,7 +48,7 @@ const UserSearch = ({handleFriendRequest}) => {
                         friendUser={user}
                     />
                 ))}
-            </ul>
+            </div>
         </div>
     );
     };

@@ -2,24 +2,25 @@
     display: grid;
     grid-template-columns: 1fr 2fr;
     grid-template-rows: 1fr ;
-    height: 80vh;
-    width: 92.5vw;
-    overflow-y: auto;
+    height: 90vh;
+    width: 94vw;
+    overflow-y: hidden;
+    overflow-x: hidden;
     position: relative;
     z-index: 1;
     background-color: var(--bg);
     color: var(--text);
-    margin: 0 0 0 0em;
-    padding: 0% 30% 0 0 ;
+    margin: 5em 0em 0 3em;
+    padding: 0 30em 0 0 ;
 }
 
 .edituser-card {
-    grid-column: 1;
+    grid-column: 2;
     grid-row: 1;
     z-index: 4;
-    position: absolute;
+    position: flex;
     display: grid;
-    overflow-y: auto;
+    overflow: hidden;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows:  15em;
     background-color: transparent;
@@ -28,7 +29,7 @@
     text-decoration: none;
     color: var(--text);
     margin: 0 0 0 0;
-    padding: 5em 
+    padding: 5em 0 0 2em 
 }        
 .edituser-card h1 {
     left: 2em;
@@ -39,10 +40,10 @@
     grid-column: 2;
     grid-row: 1;
     z-index: 4;
-    display: inline-block;
+    display: flex;
     width: 18em;
     height: auto;
-    position: absolute;
+    position: relative;
     margin: 0 0 0 0;
     cursor: pointer;
 }
