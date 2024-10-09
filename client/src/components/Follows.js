@@ -94,12 +94,18 @@ function Follows() {
                     <img src={defaultProfilePic} alt="ProfileImage" />
                     {user.first_name}
                 </h1>*/}
+                <h1 className="page-title-userprofile">
+                    <img src={defaultProfilePic} alt="ProfileImage" />
+                    {user.first_name}
+                </h1>
                 <div className="follow-container">
                     <div className="follow-search">
-                        <h2>Search for Friends
-                        <UserSearch       
-                            handleFriendRequest={handleFriendRequest}
-                        /></h2>
+                        <h2>
+                            Search for Friends
+                            <UserSearch
+                                handleFriendRequest={handleFriendRequest}
+                            />
+                        </h2>
                     </div>
                     <FollowsList
                         handleFriendRequest={handleFriendRequest}

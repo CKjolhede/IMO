@@ -31,10 +31,10 @@ export default function Movies({ handleAddRecommendation }) {
     
     return (
         <>
-            <h1 className="page-title">Browse Movies</h1>
+            <h1 className="page-title">Most Popular Movies</h1>
             <h1 className="page-title-userprofile">
-                <img src={defaultProfilePic} alt="ProfileImage" />{" "}
                 {user.first_name}
+                <img src={defaultProfilePic} alt="ProfileImage" />{" "}
             </h1>
             <div className="movies-page">
                 <div className="movies-search">

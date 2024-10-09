@@ -37,9 +37,6 @@ function MovieCard({ movie, handleAddRecommendation, isSearchResult }) {
                             <p className="moviecard-rating">
                                 User Rating: {rounded_rating}
                             </p>
-                            <p className="moviecard-tmdbid">
-                                TMDB ID: {movie.tmdbid}
-                            </p>
                                 <p className="moviecard-removerec-button">
                                     <button
                                         onClick={() =>
@@ -55,7 +52,7 @@ function MovieCard({ movie, handleAddRecommendation, isSearchResult }) {
                 )}
                 {isSearchResult && (
                 <div>            
-                    <h2>{movie.title}</h2>
+                    <h2 className="moviecard-title">{movie.title}</h2>
                     <div className="moviecard-poster">
                         <img
                             src={image_url}

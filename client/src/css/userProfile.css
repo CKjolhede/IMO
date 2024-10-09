@@ -1,35 +1,39 @@
 
 .page-title {
-    position: fixed;
+    position: relative;
     top: 0%;
-    left: 40%;
+    left: 0%;
     z-index: 4;
     color: var(--text);
     font-weight: bold;
     font-size: 3em;
     align-items: center;
+    margin-top: -.5em;
 }
 .page-title-userprofile {
     position: absolute;
     top: 0%;
-    left: 75%;
+    left: 30%;
     z-index: 4;
     color: var(--text);
     font-weight: bold;
     font-size: 3em;
     align-items: center;
+    margin-top: -.5em;
+    text-decoration: none;
 
 }
 
 .page-title-userprofile img{   
-    background-color: var(--bg);
-    border-radius: 50%;
-    border-style: solid, black;
-    border-width: 1px;
-    display: inline-block;
-    width: 1.5em;
+    display: relative;
+    width: 1em;
     height: auto;
     z-index: 4;
+    background-color: var(--bg);
+    border-radius: 50%;
+    border-width: 1px;
+    display: inline-block;
+    margin-left: .5em;
 }
 
 .page-title-followlist {
@@ -41,13 +45,6 @@
     font-weight: bold;
     font-size: 4em;
     align-items: center;
-}
-
-.page-title-userprofile img{
-    display: inline-block;
-    width: 1em;
-    height: auto;
-    z-index: 4;
 }
 
 .userprofile-container {

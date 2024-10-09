@@ -14,17 +14,6 @@
     text-align: center;
 }
 
-/*.moviecard-name::before {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--bg);
-    z-index: -1;}*/
-
 .moviecard-body {
     display: grid;
     position: relative;
@@ -56,7 +45,6 @@
 .moviecard-details-container {
     display: grid;
     position: absolute;
-    /*background-color: var(--bg);*/
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr .5fr 1fr;
     grid-column: 2;
@@ -81,7 +69,6 @@
 .moviecard-header {
     position: relative;
     align-content: center;
-    /*background-color: var(--bg);*/
     border-radius: 10px 0px;
     grid-column: 2;
     grid-row: 1;
@@ -97,12 +84,11 @@
     width: 100%;
     padding-left: .75em;
     z-index: 1;
-    /*background-color: var(--bg);*/
+
 }
 .moviecard-overview {
     grid-column: 2;
     grid-row: 2;
-    /*background-color: var(--bg); */
     font-size: 1.5em;
     font-weight: bold;
     width: 100%;
@@ -141,7 +127,7 @@
 
 .moviecard-tmdbid {
     position: relative;
-    text-align: center;
+    text-align: left;
     font-size: 1em;
     color: var(--text);
     grid-column: 3;
@@ -150,13 +136,19 @@
     bottom: 0px;
     z-index: 1;}
 
+.moviecard-title {
+    margin-left: 3em;
+}
+
+
 .moviecard-removerec-button {
     position: relative;
     grid-column: 3;
     grid-row: 1;
     box-shadow: .2em .2em .2em 0em #101010;
     right: 0em;
-    margin-right: 2em;
+    margin-right: 8em;
+    margin-bottom: 3em;
     bottom: 0em;
     z-index: 2;}
     
