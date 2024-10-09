@@ -1,17 +1,12 @@
-# Phase 4 Full-Stack Application Project Template
-
-## Learning Goals
-
-- Discuss the basic directory structure of a full-stack Flask/React application.
-- Carry out the first steps in creating your Phase 4 project.
-
----
+# IMO
 
 ## Introduction
+IMO
+is a platform designed to provide users an easy way to share their favorite movies with their friends and family. Users can also see what movies are popular among their friends, and the most popular movies being watched worldwide.
 
-Fork and clone this lesson for a template for your full-stack application. Take
-a look at the directory structure before we begin (NOTE: node_modules will be
-generated in a subsequent step):
+Although the most popular streaming services offer recommendations based on the movies you watch, IMO offers a more personal experience. Who knows you better than your friends and family? Typically, friends will share common interests and have similiar preferences. So who better than to be able to suggest a movie that you will enjoy?
+
+This site was designed as a capstone project for the Flatiron School's Software Engineering Immersive. The project was created as a showcase to demonstrate to potential employers my skillset, my knowledge and my potential.
 
 ```console
 $ tree -L 2
